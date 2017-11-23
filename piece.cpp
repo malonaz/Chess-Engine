@@ -1,3 +1,2 @@
 // -*- C++ -*-
 #include "piece.h"
-
