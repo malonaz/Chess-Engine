@@ -13,7 +13,7 @@ square.o: square.cpp square.h piece.h
 piece.o: piece.cpp piece.h square.h
 	g++ -Wall -g -c piece.cpp
 
-pawn.o: pawn.cpp pawn.h piece.h
+pawn.o: pawn.cpp pawn.h piece.h square.h
 	g++ -Wall -g -c pawn.cpp
 
 clean:
