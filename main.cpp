@@ -3,6 +3,7 @@
 #include "utils.h"
 
 int main(){
+  //
   Chessboard cb;
   std::cout << "Number of Squares: " << Square::num_squares << std::endl;
   std::cout << "Number of Pieces: " << Piece::num_pieces << std::endl;
