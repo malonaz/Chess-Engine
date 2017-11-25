@@ -19,7 +19,7 @@ void ChessBoard::init(){
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
     for (rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
       square_ptrs[rank][file] = new Square(file, rank);
-
+  
   for (file = MIN_INDEX; file <= MAX_INDEX; file++){
     square_ptrs[1][file]->setPiece(new Pawn(white));
     square_ptrs[6][file]->setPiece(new Pawn(black));
@@ -71,7 +71,7 @@ void ChessBoard::printBoard(){
       if (current_sqr->isEmpty())
 	std::cout << ' ';
       else
-	std::cout << current_sqr->getPiece()->getRepr();
+	std::cout << current_sqr->getPiece()->getID();
     }
     std::cout << std::endl;
   }

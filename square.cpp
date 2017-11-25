@@ -6,7 +6,7 @@
 int Square::num_squares = 0;
 
 Square::Square(int file, int rank)
-  :file(file), rank(rank){
+  :file(file), rank(rank), piece_ptr(0){
   num_squares++;
 }
 
@@ -27,7 +27,6 @@ const int Square::ranksTo(Square* sqr_dest_ptr) const{
 
 void Square::setPiece(Piece* piece_ptr){
   this->piece_ptr = piece_ptr;
-  piece_ptr->setSquare(this);
 }
 
 
@@ -39,7 +38,8 @@ void Square::destroyPiece(){
 }
 
 bool Square::movePiece(Square* sqr_dest_ptr){
-  if (!isEmpty() && piece_ptr->isLegalMove(sqr_dest_ptr)){
+  if (!isEmpty() && piece_ptr->move(this, sqr_dest_ptr)){
+    piece_ptr->setToMoved();
     sqr_dest_ptr->destroyPiece();
     sqr_dest_ptr->setPiece(piece_ptr);
     piece_ptr = 0; // set to NULL

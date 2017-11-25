@@ -24,7 +24,8 @@ private:
 public:
   static int num_squares;
   /**
-   * Constructor which initializes constants file and rank.
+   * Constructor which initializes constants file and rank
+   * and sets piece_ptr to NULL.
    */
   Square(int file, int rank);
 
@@ -91,6 +92,8 @@ public:
    *      > sets piece_ptr to NULL
    */
   bool movePiece(Square* sqr_dest_ptr);
+
+  
 };
 
 

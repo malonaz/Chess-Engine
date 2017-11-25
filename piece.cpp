@@ -5,8 +5,8 @@
 int Piece::num_pieces = 0;
 
 
-Piece::Piece(Color color, char repr)
-  :color(color), has_moved(false), repr(repr){
+Piece::Piece(const Color color, const int id)
+  :color(color), has_moved(false), id(id){
   num_pieces++;
 }
 

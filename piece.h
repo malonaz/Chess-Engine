@@ -5,7 +5,8 @@
 // forward declaration
 class Square;
 
-#define NO_MOVEMENT 0
+#define NO_MOVE 0
+#define PAWN 1
 
 // used to represent the color of pieces
 enum Color{white, black};
@@ -19,15 +20,13 @@ enum Color{white, black};
  *  - a color (black or white)
  *  - has_moved which indicates whether this piece has moved
  *    squares since the beginning of a chess game.
- *  - a Square ptr pointing to the square this piece is on
  *  - a constant character representing the type of piece it is 
  */
 class Piece{
 protected:
   const Color color;
   bool has_moved;
-  Square* square_ptr;
-  const char repr;
+  const int id;
 
 public:
     static int num_pieces;
@@ -36,8 +35,7 @@ public:
    * Constructor which, given a color and a character representation,
    * instantiates both of these constant fields.
    */
-  Piece(Color color, char repr);
-
+  Piece(const Color color, const int id);
 
   /**
    * Virtual destructor so derived destructor is called when
@@ -49,19 +47,21 @@ public:
    * Pure virtual observer method, which all 
    * derived pieces will need to implement
    */
-  virtual bool isLegalMove(Square* sqr_dest_ptr)const = 0;
+  virtual bool move(Square* sqr_source_ptr,
+			   Square* sqr_dest_ptr)const = 0;
+
 
   /**
-   * Mutator method which:
-   *   - sets this square_ptr to given square_ptr
+   * Observer method which sets has_moved to true
    */
-  void setSquare(Square* square_ptr){this->square_ptr = square_ptr;}
+  void setToMoved(){has_moved = true;};
+
   
   /**
    * Observer method, which returns the character 
    * representation of this piece
    */
-  const char getRepr()const{return repr;}
+  const int getID()const{return id;}
 
   /**
    * Observer method, which returns the color 

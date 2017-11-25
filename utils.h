@@ -8,7 +8,6 @@
 
 bool isValidSquare(const char* square_string);
 
-
 const int getRank(const char* square_string);
 
 const int getFile(const char* square_string);
