@@ -14,31 +14,61 @@
  * a boolean variable to keep track of which player's
  * turn is it next.
  */
-class Chessboard{
+class ChessBoard{
 private:
   Square* square_ptrs[8][8];
-  bool white_turn;
+  Color color_to_play;
 public:
   /**
-   *  Constructor which:
+   *  Constructor which simply calls init method
+   */
+  ChessBoard(){init();}
+  
+  /**
+   * Destructor which calls destroySquares
+   */
+  ~ChessBoard(){destroySquares();}
+
+  /**
+   * Method which:
    *  - initializes white_turn to true;
    *  - creates 64 Square objects on the heap
    *    and assigns their pointers to the square_ptrs array.
    */
-  Chessboard();
+  void init();
 
   /**
-   * Destructor which:
-   *  - deletes all 64 square objects on the heap,
+   * helper method which:
+   *  - deletes all 64 square objects on the heap
    */
-  ~Chessboard();
+  void destroySquares();
 
+  
+  /**
+   * Method which:
+   *  - calls destructor
+   *  - calls init
+   */
+  void resetBoard();
+
+  
   /**
    * Reader method which given a rank and a file,
    * returns the approprite square pointer;
    */
-  Square* getSquare(int rank, int file) const {return square_ptrs[rank][file];}
+  Square* getSquare(const char* sqr_str)const;
+  
+  /*
+   * Method which given two strings: 
+   *  - if one of the string does not represents a square as 
+   *    a letter in [A-H] and a number in [1-8], ???
+   *  -  
+   */
+  void submitMove(const char* source_sqr_str,
+		  const char* dest_sqr_str);
 
+
+  void changeColorToPlay();
   
   /**
    * Reader debugging method which prints the chessboard
@@ -46,6 +76,7 @@ public:
    */
   void printBoard();
 
+  void printObjects();
 };
 
 #endif

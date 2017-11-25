@@ -30,19 +30,20 @@ protected:
   const char repr;
 
 public:
+    static int num_pieces;
   
   /**
    * Constructor which, given a color and a character representation,
    * instantiates both of these constant fields.
    */
-  Piece(Color color, char repr)
-    : color(color), has_moved(false), repr(repr){}
+  Piece(Color color, char repr);
+
 
   /**
    * Virtual destructor so derived destructor is called when
    * manipulating a derived Piece object.
    */
-  virtual ~Piece(){}
+  virtual ~Piece(){num_pieces--;}
 
   /**
    * Pure virtual observer method, which all 
@@ -51,10 +52,11 @@ public:
   virtual bool isLegalMove(Square* sqr_dest_ptr)const = 0;
 
   /**
-   * Mutator method, which sets this square_ptr to given square_ptr
+   * Mutator method which:
+   *   - sets this square_ptr to given square_ptr
    */
   void setSquare(Square* square_ptr){this->square_ptr = square_ptr;}
-
+  
   /**
    * Observer method, which returns the character 
    * representation of this piece
@@ -66,6 +68,7 @@ public:
    * of this piece
    */
   const Color getColor() const{return color;}
+
 };
 
 #endif

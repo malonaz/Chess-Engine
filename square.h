@@ -20,8 +20,9 @@ private:
   const int file;
   const int rank;
   Piece* piece_ptr;
-
+  
 public:
+  static int num_squares;
   /**
    * Constructor which initializes constants file and rank.
    */
@@ -31,6 +32,7 @@ public:
    * Destructor which deletes piece_ptr if is_free is false;
    */
   ~Square();
+
   
   /**
    * Internal helper method which, given a valid destination square ptr

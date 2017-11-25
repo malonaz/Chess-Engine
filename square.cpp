@@ -2,11 +2,17 @@
 #include "square.h"
 #include <iostream>
 
+
+int Square::num_squares = 0;
+
 Square::Square(int file, int rank)
-  :file(file), rank(rank){}
+  :file(file), rank(rank){
+  num_squares++;
+}
 
 
 Square::~Square(){
+  num_squares--;
   destroyPiece();
 }
 

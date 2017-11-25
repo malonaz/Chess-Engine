@@ -40,6 +40,7 @@ public:
    * false otherwise
    */
   bool isLegalMove(Square* sqr_dest_ptr)const;
+
   
 };
 
