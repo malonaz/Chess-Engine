@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+#define WHITE 1
+#define BLACK 0
 
 void ChessBoard::destroySquares(){
   for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
@@ -15,15 +17,15 @@ void ChessBoard::destroySquares(){
 }
 
 void ChessBoard::init(){
-  color_to_play = white;
+  white_to_play = true;
   int file, rank;
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
     for (rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
       square_ptrs[rank][file] = new Square(this, file, rank);
   
   for (file = MIN_INDEX; file <= MAX_INDEX; file++){
-    square_ptrs[1][file]->setPiece(new Pawn(white));
-    square_ptrs[6][file]->setPiece(new Pawn(black));
+    square_ptrs[1][file]->setPiece(new Pawn(WHITE));
+    square_ptrs[6][file]->setPiece(new Pawn(BLACK));
   }
 }
 
@@ -43,19 +45,22 @@ void ChessBoard::submitMove(const char* source_sqr_str,
   Square* dest_sqr = getSquare(dest_sqr_str);
 
   if (source_sqr->isEmpty() ||
-      !(source_sqr->getPiece()->getColor() == color_to_play))
+      !(source_sqr->getPiece()->isWhite() == white_to_play))
     return;
 
   if (source_sqr->movePiece(dest_sqr))
-    changeColorToPlay();
+    prepareNextTurn();
       
 }
 
-void ChessBoard::changeColorToPlay(){
-  if (color_to_play == white)
-    color_to_play = black;
-  else
-    color_to_play = white;
+void ChessBoard::prepareNextTurn(){
+  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
+    for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
+      if (!square_ptrs[rank][file]->isEmpty())
+	if (square_ptrs[rank][file]->getPiece()->isWhite() != white_to_play)
+	  square_ptrs[rank][file]->getPiece()->update();
+
+  white_to_play = !white_to_play;
 }
 Square* ChessBoard::getSquare(const char* sqr_str)const{
   int rank, file;

@@ -25,13 +25,17 @@ public:
    * calls its superclass constructor with
    * the given color and the pawn char representation
    */
-  Pawn(Color color): Piece(color, PAWN), can_be_taken_en_passant(false){}
+  Pawn(const bool is_white): Piece(is_white, PAWN), can_be_taken_en_passant(false){}
 
   /**
    * Destructor. Empty
    */
   ~Pawn(){}
 
+
+  void update(){can_be_taken_en_passant = false;}
+
+  
   /**
    * Implements superclass pure virtual method.
    * This method checks that the move to sqr_dest_ptr

@@ -21,7 +21,7 @@ class square;
 class ChessBoard{
 private:
   Square* square_ptrs[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
-  Color color_to_play;
+  bool white_to_play;
   
 public:
   /**
@@ -73,7 +73,7 @@ public:
    */
   Square* getSquare(const char* sqr_str)const;
 
-  void changeColorToPlay();
+  void prepareNextTurn();
   
   /**
    * Reader debugging method which prints the chessboard

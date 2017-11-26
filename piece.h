@@ -9,9 +9,6 @@
 // forward declaration
 class Square;
 
-// used to represent the color of pieces
-enum Color{white, black};
-
 
 /**
  * Piece. This abstract superclass represents the shared
@@ -25,7 +22,7 @@ enum Color{white, black};
  */
 class Piece{
 protected:
-  const Color color;
+  const bool is_white;
   bool has_moved;
   const int id;
 
@@ -36,7 +33,7 @@ public:
    * Constructor which, given a color and a character representation,
    * instantiates both of these constant fields.
    */
-  Piece(const Color color, const int id);
+  Piece(const bool is_white, const int id);
 
   /**
    * Virtual destructor so derived destructor is called when
@@ -49,8 +46,9 @@ public:
    * derived pieces will need to implement
    */
   virtual bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr) = 0;
-  
 
+  virtual void update() = 0;
+  
   /**
    * Observer method which sets has_moved to true
    */
@@ -67,7 +65,7 @@ public:
    * Observer method, which returns the color 
    * of this piece
    */
-  const Color getColor() const{return color;}
+  const bool isWhite() const{return is_white;}
 
 };
 
