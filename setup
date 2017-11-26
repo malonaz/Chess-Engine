@@ -1,0 +1,40 @@
+#!/bin/bash
+# Sets up my coding environment
+
+# declare file arrays
+declare -a files=("ChessMain.cpp"
+		  "chessboard.cpp chessboard.h"
+		  "square.cpp square.h"
+		  "piece.cpp piece.h"
+		  "pawn.cpp pawn.h")
+
+# loop through files by reference
+for i in "${!files[@]}";do
+    
+    # switch to desk i
+    wmctrl -s $i      
+    sleep 0.05
+
+    if [ $1 = "close" ] && [[ $i != 0 ]];then 
+	#close active window
+	wmctrl -c :ACTIVE:
+
+    elif [ $1 = "open" ];then
+	
+	# open file in emacs
+	emacs ${files[$i]} & disown
+	sleep 0.5
+
+	# maximize window
+	wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+	sleep 0.5
+	
+    fi
+    
+done
+
+# return to desktop 0
+wmctrl -s 0
+
+
+
