@@ -5,6 +5,8 @@
 
 // definitions
 #define SQUARES_PER_SIDE 8
+#define WHITE_RANK 0
+#define BLACK_RANK 7
 
 #include "piece.h"
 // forward declarations

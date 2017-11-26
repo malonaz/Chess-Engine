@@ -52,6 +52,7 @@ public:
   int getRank(){return rank;}
   int getFile(){return file;}
 
+  bool getPath(Square* sqr_dest_ptr, Square** path, int &path_size);
   void getRow(Square** row);
   void getColumn(Square** column);
   void getDiagonals(Square*** diagonals);

@@ -2,6 +2,8 @@
 #include "chessboard.h"
 #include "square.h"
 #include "pawn.h"
+#include "knight.h"
+#include "rook.h"
 #include "utils.h"
 
 #include <iostream>
@@ -22,11 +24,25 @@ void ChessBoard::init(){
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
     for (rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
       square_ptrs[rank][file] = new Square(this, file, rank);
-  
+
+  // set Pawns
   for (file = MIN_INDEX; file <= MAX_INDEX; file++){
-    square_ptrs[1][file]->setPiece(new Pawn(WHITE));
-    square_ptrs[6][file]->setPiece(new Pawn(BLACK));
+    square_ptrs[PAWN_WHITE_INITIAL_RANK][file]->setPiece(new Pawn(WHITE));
+    square_ptrs[PAWN_BLACK_INITIAL_RANK][file]->setPiece(new Pawn(BLACK));
   }
+
+  // set Knights
+  square_ptrs[WHITE_RANK][KNIGHT1_FILE]->setPiece(new Knight(WHITE));
+  square_ptrs[WHITE_RANK][KNIGHT2_FILE]->setPiece(new Knight(WHITE));
+  square_ptrs[BLACK_RANK][KNIGHT1_FILE]->setPiece(new Knight(BLACK));
+  square_ptrs[BLACK_RANK][KNIGHT2_FILE]->setPiece(new Knight(BLACK));
+
+  // set Rooks
+  square_ptrs[WHITE_RANK][ROOK1_FILE]->setPiece(new Rook(WHITE));
+  square_ptrs[WHITE_RANK][ROOK2_FILE]->setPiece(new Rook(WHITE));
+  square_ptrs[BLACK_RANK][ROOK1_FILE]->setPiece(new Rook(BLACK));
+  square_ptrs[BLACK_RANK][ROOK2_FILE]->setPiece(new Rook(BLACK));
+  
 }
 
 void ChessBoard::resetBoard(){
@@ -37,17 +53,17 @@ void ChessBoard::resetBoard(){
 
 void ChessBoard::submitMove(const char* source_sqr_str,
 			   const char* dest_sqr_str){
-  if (!isValidSquare(source_sqr_str) ||
-      !isValidSquare(dest_sqr_str))
+  if (!isValidSquare(source_sqr_str) || !isValidSquare(dest_sqr_str))
     return;
 
   Square* source_sqr = getSquare(source_sqr_str);
   Square* dest_sqr = getSquare(dest_sqr_str);
 
+  // make sure it is the correct color to play
   if (source_sqr->isEmpty() ||
-      !(source_sqr->getPiece()->isWhite() == white_to_play))
+      source_sqr->getPiece()->isWhite() != white_to_play)
     return;
-
+  
   if (source_sqr->movePiece(dest_sqr))
     prepareNextTurn();
       

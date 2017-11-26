@@ -6,7 +6,17 @@ declare -a files=("ChessMain.cpp"
 		  "chessboard.cpp chessboard.h"
 		  "square.cpp square.h"
 		  "piece.cpp piece.h"
-		  "pawn.cpp pawn.h")
+		  "pawn.cpp pawn.h"
+		  "knight.cpp knight.h"
+		  "rook.cpp rook.h"
+		  "utils.cpp utils.h")
+
+declare -i NUM_FILES=5
+NUM_FILES=${#files[@]}
+NUM_FILES=$NUM_FILES+2
+
+#set number of workspaces equal to number of files
+#wmctrl -n $NUM_FILES
 
 # loop through files by reference
 for i in "${!files[@]}";do
@@ -25,8 +35,13 @@ for i in "${!files[@]}";do
 	emacs ${files[$i]} & disown
 	sleep 0.5
 
-	# maximize window
-	wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+	if [ $i == 0 ];then
+	    xdotool key super+Right # snap right
+	else
+	    #maximize window
+	    wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+	fi
+	    
 	sleep 0.5
 	
     fi

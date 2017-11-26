@@ -3,8 +3,10 @@
 #define PIECE_H
 
 //definitions 
-#define NO_MOVE 0
 #define PAWN 1
+#define KNIGHT 2
+#define ROOK 3
+#define NO_MOVE 0
 
 // forward declaration
 class Square;
@@ -22,7 +24,7 @@ class Square;
  */
 class Piece{
 protected:
-  const bool is_white;
+  const bool white;
   bool has_moved;
   const int id;
 
@@ -33,13 +35,14 @@ public:
    * Constructor which, given a color and a character representation,
    * instantiates both of these constant fields.
    */
-  Piece(const bool is_white, const int id);
+  Piece(const bool white, const int id);
 
   /**
    * Virtual destructor so derived destructor is called when
    * manipulating a derived Piece object.
    */
   virtual ~Piece(){num_pieces--;}
+
   
   /**
    * Pure virtual observer method, which all 
@@ -53,7 +56,6 @@ public:
    * Observer method which sets has_moved to true
    */
   void setToMoved(){has_moved = true;};
-
   
   /**
    * Observer method, which returns the character 
@@ -65,7 +67,7 @@ public:
    * Observer method, which returns the color 
    * of this piece
    */
-  const bool isWhite() const{return is_white;}
+  const bool isWhite() const{return white;}
 
 };
 

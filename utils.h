@@ -13,6 +13,13 @@
 #define LOWEST_FILE_CHAR 'A'
 #define LOWEST_RANK_CHAR '1'
 
+// dimensions
+#define INCORRECT -1
+#define NONE 0
+#define DIAGONAL 1
+#define HORIZONTAL 2
+#define VERTICAL 3
+
 bool isValidSquare(const char* square_string);
 
 const int parseRank(const char* square_string);
@@ -20,5 +27,8 @@ const int parseRank(const char* square_string);
 const int parseFile(const char* square_string);
 
 bool validIndex(int index);
+
+int getMoveDimension(int rank_shift, int file_shift);
+
 
 #endif

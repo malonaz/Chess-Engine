@@ -1,44 +1,36 @@
 // -*- C++ -*-
-#ifndef PAWN_H
-#define PAWN_H
+#ifndef KNIGHT_H
+#define KNIGHT_H
 
 #include "piece.h"
 
-
-
-
 // definitions
-#define PAWN_LATERAL_MOVE 1
-#define PAWN_FORWARD_MOVE 1
-#define PAWN_MAX_FIRST_FORWARD_MOVE 2
-#define PAWN_WHITE_INITIAL_RANK 1
-#define PAWN_BLACK_INITIAL_RANK 6
+#define KNIGHT_MOVE_HYPOTHENUS_SQUARED 5
+#define KNIGHT1_FILE 1
+#define KNIGHT2_FILE 6
 
 // forward declarations
 class Square;
 
-
 /**
- * Pawn. This derived class represents a chess pawn.
+ * Knight. This derived class represents a chess knight.
  */
-class Pawn: public Piece{
-private:
-  bool en_passant;
+class Knight: public Piece{
 public:
   /**
    * Constructor which, given a color,
    * calls its superclass constructor with
-   * the given color and the pawn char representation
+   * the given color and the knight char representation
    */
-  Pawn(const bool white): Piece(white, PAWN), en_passant(false){}
+  Knight(const bool white): Piece(white, KNIGHT){}
 
   /**
    * Destructor. Empty
    */
-  ~Pawn(){}
+  ~Knight(){}
 
 
-  void update(){en_passant = false;}
+  void update(){}
 
   
   /**
@@ -53,8 +45,6 @@ public:
    * false otherwise
    */
   bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
-
-  bool canEnPassant(Square* sqr_dest_ptr);
 
   
 };

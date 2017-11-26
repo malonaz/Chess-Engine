@@ -31,9 +31,10 @@ int main() {
     cb.submitMove("D4", "D5");
     cb.submitMove("C7", "C5");
     cb.submitMove("D5", "C6");
-    //cb.submitMove("E6", "D5");
+    cb.submitMove("B8", "C6");
     cb.printBoard();
     cb.printObjects();
+    return 0;
     //
     
     cb.submitMove("F8", "B4");

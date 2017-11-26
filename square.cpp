@@ -22,9 +22,11 @@ const int Square::filesTo(Square* sqr_dest_ptr) const{
   return sqr_dest_ptr->file - file;
 }
 
-
 const int Square::ranksTo(Square* sqr_dest_ptr) const{
   return sqr_dest_ptr->rank - rank;
+}
+
+bool getPath(Square* sqr_dest_ptr, Square** path, int &path_size){
 }
 
 void Square::getRow(Square** row){
@@ -47,7 +49,12 @@ void Square::destroyPiece(){
 }
 
 bool Square::movePiece(Square* sqr_dest_ptr){
-  if (!isEmpty() && piece_ptr->move(this, sqr_dest_ptr)){
+  // make sure you are not moving a piece on top of another
+  if (!sqr_dest_ptr-> isEmpty() &&
+      sqr_dest_ptr->getPiece()->isWhite() == getPiece()->isWhite())
+    return false;
+  
+  if (piece_ptr->move(this, sqr_dest_ptr)){
     piece_ptr->setToMoved();
     sqr_dest_ptr->destroyPiece();
     sqr_dest_ptr->setPiece(piece_ptr);
