@@ -2,11 +2,12 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-// forward declaration
-class Square;
-
+//definitions 
 #define NO_MOVE 0
 #define PAWN 1
+
+// forward declaration
+class Square;
 
 // used to represent the color of pieces
 enum Color{white, black};
@@ -42,14 +43,13 @@ public:
    * manipulating a derived Piece object.
    */
   virtual ~Piece(){num_pieces--;}
-
+  
   /**
    * Pure virtual observer method, which all 
    * derived pieces will need to implement
    */
-  virtual bool move(Square* sqr_source_ptr,
-			   Square* sqr_dest_ptr)const = 0;
-
+  virtual bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr) = 0;
+  
 
   /**
    * Observer method which sets has_moved to true

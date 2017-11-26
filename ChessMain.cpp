@@ -8,6 +8,8 @@ using namespace std;
 
 int main() {
 
+
+  
     cout << "===========================" << endl;
     cout << "Testing the Chess Engine" << endl;
     cout << "===========================" << endl;
@@ -15,10 +17,10 @@ int main() {
  
     ChessBoard cb;
     cout << endl;
-  
+    
     cb.submitMove("D7", "D6");
     cout << endl;
-
+    
     cb.submitMove("D4", "H6");
     cout << endl;
     
@@ -27,7 +29,9 @@ int main() {
     //
     cb.submitMove("E7", "E6");
     cb.submitMove("D4", "D5");
-    cb.submitMove("E6", "D5");
+    cb.submitMove("C7", "C5");
+    cb.submitMove("D5", "C6");
+    //cb.submitMove("E6", "D5");
     cb.printBoard();
     cb.printObjects();
     //

@@ -1,5 +1,6 @@
 // -*- C++ -*-
 #include "chessboard.h"
+#include "square.h"
 #include "pawn.h"
 #include "utils.h"
 
@@ -18,7 +19,7 @@ void ChessBoard::init(){
   int file, rank;
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
     for (rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-      square_ptrs[rank][file] = new Square(file, rank);
+      square_ptrs[rank][file] = new Square(this, file, rank);
   
   for (file = MIN_INDEX; file <= MAX_INDEX; file++){
     square_ptrs[1][file]->setPiece(new Pawn(white));
@@ -30,7 +31,6 @@ void ChessBoard::resetBoard(){
   destroySquares();
   init();
 }
-    
 
 
 void ChessBoard::submitMove(const char* source_sqr_str,
@@ -59,10 +59,22 @@ void ChessBoard::changeColorToPlay(){
 }
 Square* ChessBoard::getSquare(const char* sqr_str)const{
   int rank, file;
-  rank = getRank(sqr_str);
-  file = getFile(sqr_str);
+  rank = parseRank(sqr_str);
+  file = parseFile(sqr_str);
   return square_ptrs[rank][file];
 }
+
+void ChessBoard::getRow(int rank, Square** row){
+  for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
+    *(row + file) = square_ptrs[rank][file];
+}
+
+
+void ChessBoard::getColumn(int file, Square** column){
+  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
+    *(column + rank) = square_ptrs[rank][file];
+}
+
 
 void ChessBoard::printBoard(){
   for (int rank = MAX_INDEX; rank >= MIN_INDEX; rank--){

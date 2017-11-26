@@ -3,17 +3,21 @@
 #define PAWN_H
 
 #include "piece.h"
-#include "square.h"
 
-
+// definitions
 #define PAWN_LATERAL_MOVE 1
 #define PAWN_FORWARD_MOVE 1
 #define PAWN_MAX_FIRST_FORWARD_MOVE 2
+
+// forward declarations
+class Square;
+
 
 /**
  * Pawn. This derived class represents a chess pawn.
  */
 class Pawn: public Piece{
+private:
   bool can_be_taken_en_passant;
 public:
   /**
@@ -39,10 +43,9 @@ public:
    * returns true if one of those cases is true
    * false otherwise
    */
-  bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr)const;
+  bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
 
-  void enableEnPassant(Square* sqr_dest_ptr);
-
+  bool canEnPassant(Square* sqr_dest_ptr);
 
   
 };

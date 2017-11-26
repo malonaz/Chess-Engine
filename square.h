@@ -2,9 +2,9 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
-#include "piece.h"
-
-
+// forward declarations
+class Piece;
+class ChessBoard;
 /**
  * Square. This class represents a square
  * on a chessboard as:
@@ -17,17 +17,17 @@
  */
 class Square{
 private:
+  ChessBoard* chessboard;
   const int file;
   const int rank;
   Piece* piece_ptr;
-  
 public:
   static int num_squares;
   /**
    * Constructor which initializes constants file and rank
    * and sets piece_ptr to NULL.
    */
-  Square(int file, int rank);
+  Square(ChessBoard* chessboard, int file, int rank);
 
   /**
    * Destructor which deletes piece_ptr if is_free is false;
@@ -49,6 +49,12 @@ public:
    */
   const int ranksTo(Square* sqr_dest_ptr) const;
 
+  int getRank(){return rank;}
+  int getFile(){return file;}
+
+  void getRow(Square** row);
+  void getColumn(Square** column);
+  void getDiagonals(Square*** diagonals);
 
   ///////////////////// PIECE RELATED METHODS
   /**
@@ -92,7 +98,6 @@ public:
    *      > sets piece_ptr to NULL
    */
   bool movePiece(Square* sqr_dest_ptr);
-
   
 };
 

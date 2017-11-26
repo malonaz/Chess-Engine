@@ -2,11 +2,15 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-#include "square.h"
-#include "piece.h"
 
-#define MIN_INDEX 0
-#define MAX_INDEX 7
+// definitions
+#define SQUARES_PER_SIDE 8
+
+#include "piece.h"
+// forward declarations
+class square;
+
+
 
 /**
  * Chessboard. This class represents a chessboard,
@@ -16,8 +20,9 @@
  */
 class ChessBoard{
 private:
-  Square* square_ptrs[8][8];
+  Square* square_ptrs[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
   Color color_to_play;
+  
 public:
   /**
    *  Constructor which simply calls init method
@@ -43,21 +48,6 @@ public:
    */
   void destroySquares();
 
-  
-  /**
-   * Method which:
-   *  - calls destructor
-   *  - calls init
-   */
-  void resetBoard();
-
-  
-  /**
-   * Reader method which given a rank and a file,
-   * returns the approprite square pointer;
-   */
-  Square* getSquare(const char* sqr_str)const;
-  
   /*
    * Method which given two strings: 
    *  - if one of the string does not represents a square as 
@@ -66,7 +56,22 @@ public:
    */
   void submitMove(const char* source_sqr_str,
 		  const char* dest_sqr_str);
+  /**
+   * Method which:
+   *  - calls destructor
+   *  - calls init
+   */
+  void resetBoard();
+    
+  void getRow(int rank, Square** row);
+  void getColumn(int file, Square** column);
+  void getDiagonals(int rank, int file, Square*** diagonals);
 
+  /**
+   * Reader method which given a rank and a file,
+   * returns the approprite square pointer;
+   */
+  Square* getSquare(const char* sqr_str)const;
 
   void changeColorToPlay();
   
@@ -77,6 +82,8 @@ public:
   void printBoard();
 
   void printObjects();
+
+
 };
 
 #endif

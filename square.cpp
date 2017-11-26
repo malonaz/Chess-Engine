@@ -1,12 +1,14 @@
 // -*- C++ -*-
 #include "square.h"
+#include "chessboard.h"
+#include "piece.h"
+#include "utils.h"
 #include <iostream>
-
 
 int Square::num_squares = 0;
 
-Square::Square(int file, int rank)
-  :file(file), rank(rank), piece_ptr(0){
+Square::Square(ChessBoard* chessboard, int file, int rank)
+  :chessboard(chessboard),file(file), rank(rank), piece_ptr(0){
   num_squares++;
 }
 
@@ -25,10 +27,17 @@ const int Square::ranksTo(Square* sqr_dest_ptr) const{
   return sqr_dest_ptr->rank - rank;
 }
 
+void Square::getRow(Square** row){
+  chessboard->getRow(rank, row);
+}
+
+void Square::getColumn(Square** column){
+  chessboard->getColumn(file, column);
+}
+
 void Square::setPiece(Piece* piece_ptr){
   this->piece_ptr = piece_ptr;
 }
-
 
 void Square::destroyPiece(){
   if (!isEmpty()){
@@ -54,3 +63,5 @@ bool Square::isEmpty()const{
     return true;
   return false;
 }
+
+
