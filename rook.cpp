@@ -6,7 +6,7 @@
 bool Rook::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   Square* path[8];
   // true indicates we don't want diagonal paths
-  if (!sqr_source_ptr->getPath(sqr_dest_ptr, path, true))
+  if (!sqr_source_ptr->getPath(sqr_dest_ptr, path, id))
     return false;
 
 

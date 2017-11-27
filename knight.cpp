@@ -21,4 +21,3 @@ bool Knight::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   
   return false;
 }
-  

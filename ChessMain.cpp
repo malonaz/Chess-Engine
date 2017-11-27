@@ -34,14 +34,24 @@ int main() {
     cb.submitMove("B8", "C6");
     cb.submitMove("B1", "C3");
     cb.submitMove("G8", "F6");
-    cb.submitMove("A1", "D1");
-    cb.submitMove("A8", "C8");
-    cb.submitMove("D1", "D7");
-    cb.submitMove("F6", "D7");
+    cb.submitMove("A1", "B1");
+    cb.submitMove("G7", "G6");
+    cb.submitMove("C1", "F4");
+    cb.submitMove("F8" ,"G7");
     cb.printBoard();
     cb.printObjects();
     return 0;
-    //
+
+
+    cb.submitMove("A8", "C8");
+    
+    cb.submitMove("D1", "D7");
+    cb.submitMove("F6", "D7");
+    cb.submitMove("C1", "E3");
+    cb.submitMove("G7", "G6");
+    cb.submitMove("A1", "B1");
+    cb.submitMove("H8", "E7");
+        //
     
     cb.submitMove("F8", "B4");
     cout << endl;

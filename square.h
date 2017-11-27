@@ -81,7 +81,7 @@ public:
    *     path array, starting with this square and ending with the 
    *     destination square, then returns true
    */
-  bool getPath(Square* sqr_dest_ptr, Square** path, bool no_diagonal = false);
+  bool getPath(Square* sqr_dest_ptr, Square** path, int piece_ID);
 
   /**
    * Method which given an array of 8 Square pointers, copies all
@@ -96,7 +96,7 @@ public:
   void getColumn(Square** column);
 
   
-  void getDiagonals(Square*** diagonals);
+  void getDiagonal(Square* sqr_dst_ptr, Square** diagonal);
 
   // PIECE RELATED METHODS //
   

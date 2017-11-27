@@ -4,6 +4,7 @@
 #include "pawn.h"
 #include "knight.h"
 #include "rook.h"
+#include "bishop.h"
 #include "utils.h"
 
 #include <iostream>
@@ -18,7 +19,7 @@ void ChessBoard::destroySquares(){
     }
 }
 
-void ChessBoard::init(){
+void ChessBoard::init(){ // try to pass class to generic set piece ...
   white_to_play = true;
   int file, rank;
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
@@ -42,6 +43,13 @@ void ChessBoard::init(){
   square_ptrs[WHITE_RANK1][ROOK2_FILE]->setPiece(new Rook(WHITE));
   square_ptrs[BLACK_RANK1][ROOK1_FILE]->setPiece(new Rook(BLACK));
   square_ptrs[BLACK_RANK1][ROOK2_FILE]->setPiece(new Rook(BLACK));
+
+  //set Bishops
+  square_ptrs[WHITE_RANK1][BISHOP1_FILE]->setPiece(new Bishop(WHITE));
+  square_ptrs[WHITE_RANK1][BISHOP2_FILE]->setPiece(new Bishop(WHITE));
+  square_ptrs[BLACK_RANK1][BISHOP1_FILE]->setPiece(new Bishop(BLACK));
+  square_ptrs[BLACK_RANK1][BISHOP2_FILE]->setPiece(new Bishop(BLACK));
+
   
 }
 
@@ -66,6 +74,8 @@ void ChessBoard::submitMove(const char* source_sqr_str,
   
   if (source_sqr->movePiece(dest_sqr))
     prepareNextTurn();
+  else
+    std::cout << "invalid move: " << source_sqr_str <<  " to " << dest_sqr_str << std::endl;
       
 }
 

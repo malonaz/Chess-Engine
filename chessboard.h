@@ -13,10 +13,13 @@
 #define BLACK_RANK2 6
 
 // files
-#define KNIGHT1_FILE 1
-#define KNIGHT2_FILE 6
 #define ROOK1_FILE 0
+#define KNIGHT1_FILE 1
+#define BISHOP1_FILE 2
+#define BISHOP2_FILE 5
+#define KNIGHT2_FILE 6
 #define ROOK2_FILE 7
+
 
 
 // forward declarations
