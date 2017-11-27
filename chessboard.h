@@ -59,7 +59,7 @@ public:
   void destroySquares();
 
   /*
-   * Method which given two strings: 
+   * Method which, given two strings: 
    *  - if one of the string does not represents a square as 
    *    a letter in [A-H] and a number in [1-8], ???
    *  -  
@@ -68,14 +68,34 @@ public:
 		  const char* dest_sqr_str);
   /**
    * Method which:
-   *  - calls destructor
-   *  - calls init
+   *  - deletes all Squares???
    */
   void resetBoard();
-    
+
+
+  /**
+   * Method which, given a rank and an array of 8 Square pointers:
+   *   - copies all pointers to Squares in that rank in order 
+   *      starting with file 0 and ending with file 7
+   */
   void getRow(int rank, Square** row);
+
+  /**
+   * Method which, given a file and an array of 8 Square pointers:
+   *   - copies all pointers to Squares in that file in order
+   *     starting with rank 0 and ending with rank 7
+   */
   void getColumn(int file, Square** column);
-  void getDiagonals(int rank, int file, Square*** diagonals);
+
+
+  /**
+   * Method which, given a file, a rank and an array of 8 square pointers:
+   *   - looks at the rank increasing diagonal (/) if rank_increasing is true
+   *     otherwise looks at the rank decreasing diagonal (\)
+   *   - copies all pointers to squares in the diagonal that contains 
+   *     the square with given rank and file, in appropriate order.
+   */
+  void getDiagonal(int rank, int file, Square** diagonals, bool rank_increasing);
 
   /**
    * Reader method which given a rank and a file,

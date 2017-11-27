@@ -32,6 +32,12 @@ int main() {
     cb.submitMove("C7", "C5");
     cb.submitMove("D5", "C6");
     cb.submitMove("B8", "C6");
+    cb.submitMove("B1", "C3");
+    cb.submitMove("G8", "F6");
+    cb.submitMove("A1", "D1");
+    cb.submitMove("A8", "C8");
+    cb.submitMove("D1", "D7");
+    cb.submitMove("F6", "D7");
     cb.printBoard();
     cb.printObjects();
     return 0;
