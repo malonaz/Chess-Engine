@@ -26,7 +26,34 @@ const int Square::ranksTo(Square* sqr_dest_ptr) const{
   return sqr_dest_ptr->rank - rank;
 }
 
-bool getPath(Square* sqr_dest_ptr, Square** path, int &path_size){
+int getPointerIndex(Square** pointers, Square* pointer){
+  int index =0;
+  for (; pointers[index] != pointer; index++);
+  return index;
+}
+
+bool Square::getPath(Square* sqr_dest_ptr, Square** path, bool no_diagonal){
+  int rank_shift = ranksTo(sqr_dest_ptr);
+  int file_shift = filesTo(sqr_dest_ptr);
+  int moveDimension = getMoveDimension(rank_shift, file_shift);
+  Square** raw_path = {0};
+  
+  if (moveDimension == HORIZONTAL)
+    getRow(raw_path);
+  else if (moveDimension == VERTICAL)
+    getColumn(raw_path);
+  else if (moveDimension == DIAGONAL && !no_diagonal)
+    return false; // must implement;
+  else 
+    return false;
+
+  int current_index = getPointerIndex(raw_path, this);
+  int end_index = getPointerIndex(raw_path, sqr_dest_ptr);
+
+  for (int i = 0; current_index != end_index; current_index++, i++)
+    path[i] = raw_path[current_index];
+
+  return true;
 }
 
 void Square::getRow(Square** row){
@@ -38,6 +65,7 @@ void Square::getColumn(Square** column){
 }
 
 void Square::setPiece(Piece* piece_ptr){
+  destroyPiece();
   this->piece_ptr = piece_ptr;
 }
 
@@ -56,7 +84,6 @@ bool Square::movePiece(Square* sqr_dest_ptr){
   
   if (piece_ptr->move(this, sqr_dest_ptr)){
     piece_ptr->setToMoved();
-    sqr_dest_ptr->destroyPiece();
     sqr_dest_ptr->setPiece(piece_ptr);
     piece_ptr = 0; // set to NULL
     return true;

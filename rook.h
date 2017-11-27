@@ -5,8 +5,6 @@
 #include "piece.h"
 
 // definitions
-#define ROOK1_FILE 0
-#define ROOK2_FILE 7
 
 // forward declarations
 class Square;

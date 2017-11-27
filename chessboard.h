@@ -2,17 +2,25 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
+#include "piece.h"
 
 // definitions
 #define SQUARES_PER_SIDE 8
-#define WHITE_RANK 0
-#define BLACK_RANK 7
+// ranks
+#define WHITE_RANK1 0
+#define WHITE_RANK2 1
+#define BLACK_RANK1 7
+#define BLACK_RANK2 6
 
-#include "piece.h"
+// files
+#define KNIGHT1_FILE 1
+#define KNIGHT2_FILE 6
+#define ROOK1_FILE 0
+#define ROOK2_FILE 7
+
+
 // forward declarations
 class square;
-
-
 
 /**
  * Chessboard. This class represents a chessboard,

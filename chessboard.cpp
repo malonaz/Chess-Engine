@@ -27,21 +27,21 @@ void ChessBoard::init(){
 
   // set Pawns
   for (file = MIN_INDEX; file <= MAX_INDEX; file++){
-    square_ptrs[PAWN_WHITE_INITIAL_RANK][file]->setPiece(new Pawn(WHITE));
-    square_ptrs[PAWN_BLACK_INITIAL_RANK][file]->setPiece(new Pawn(BLACK));
+    square_ptrs[WHITE_RANK2][file]->setPiece(new Pawn(WHITE));
+    square_ptrs[BLACK_RANK2][file]->setPiece(new Pawn(BLACK));
   }
 
   // set Knights
-  square_ptrs[WHITE_RANK][KNIGHT1_FILE]->setPiece(new Knight(WHITE));
-  square_ptrs[WHITE_RANK][KNIGHT2_FILE]->setPiece(new Knight(WHITE));
-  square_ptrs[BLACK_RANK][KNIGHT1_FILE]->setPiece(new Knight(BLACK));
-  square_ptrs[BLACK_RANK][KNIGHT2_FILE]->setPiece(new Knight(BLACK));
+  square_ptrs[WHITE_RANK1][KNIGHT1_FILE]->setPiece(new Knight(WHITE));
+  square_ptrs[WHITE_RANK1][KNIGHT2_FILE]->setPiece(new Knight(WHITE));
+  square_ptrs[BLACK_RANK1][KNIGHT1_FILE]->setPiece(new Knight(BLACK));
+  square_ptrs[BLACK_RANK1][KNIGHT2_FILE]->setPiece(new Knight(BLACK));
 
   // set Rooks
-  square_ptrs[WHITE_RANK][ROOK1_FILE]->setPiece(new Rook(WHITE));
-  square_ptrs[WHITE_RANK][ROOK2_FILE]->setPiece(new Rook(WHITE));
-  square_ptrs[BLACK_RANK][ROOK1_FILE]->setPiece(new Rook(BLACK));
-  square_ptrs[BLACK_RANK][ROOK2_FILE]->setPiece(new Rook(BLACK));
+  square_ptrs[WHITE_RANK1][ROOK1_FILE]->setPiece(new Rook(WHITE));
+  square_ptrs[WHITE_RANK1][ROOK2_FILE]->setPiece(new Rook(WHITE));
+  square_ptrs[BLACK_RANK1][ROOK1_FILE]->setPiece(new Rook(BLACK));
+  square_ptrs[BLACK_RANK1][ROOK2_FILE]->setPiece(new Rook(BLACK));
   
 }
 

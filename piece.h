@@ -6,7 +6,6 @@
 #define PAWN 1
 #define KNIGHT 2
 #define ROOK 3
-#define NO_MOVE 0
 
 // forward declaration
 class Square;

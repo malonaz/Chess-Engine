@@ -13,7 +13,7 @@
  */
 bool twoSquaresPush(int ranks_to_dest, int files_to_dest){
   if (ranks_to_dest != PAWN_MAX_FIRST_FORWARD_MOVE ||
-      files_to_dest != NO_MOVE)
+      files_to_dest != NONE)
     return false;
   
   return true;
@@ -25,7 +25,7 @@ bool twoSquaresPush(int ranks_to_dest, int files_to_dest){
  */
 bool simplePawnPush(int ranks_to_dest, int files_to_dest){
    if (ranks_to_dest != PAWN_FORWARD_MOVE ||
-       files_to_dest != NO_MOVE)
+       files_to_dest != NONE)
      return false;
    return true;  
 }

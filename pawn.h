@@ -11,8 +11,6 @@
 #define PAWN_LATERAL_MOVE 1
 #define PAWN_FORWARD_MOVE 1
 #define PAWN_MAX_FIRST_FORWARD_MOVE 2
-#define PAWN_WHITE_INITIAL_RANK 1
-#define PAWN_BLACK_INITIAL_RANK 6
 
 // forward declarations
 class Square;
