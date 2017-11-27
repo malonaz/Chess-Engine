@@ -154,7 +154,7 @@ bool ChessBoard::isKingInCheck(Color color){
       if (current_piece->getColor() == color)
 	continue;
       
-      if (current_piece->move(current_square, kings_square_ptrs[color]))
+      if (current_piece->canMove(current_square, kings_square_ptrs[color]))
 	return true;	
     }
   return false;

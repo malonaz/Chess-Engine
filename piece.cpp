@@ -10,7 +10,7 @@ Piece::Piece(const Color color, const PieceType type)
 }
 
 
-bool Piece::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
+bool Piece::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   Square* path[8];
   if (!sqr_source_ptr->getPath(sqr_dest_ptr, path, type))
     return false;

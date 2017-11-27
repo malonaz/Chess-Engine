@@ -42,7 +42,7 @@ bool pawnTakes(int ranks_to_dest, int files_to_dest){
    return true;
 }
 
-bool Pawn::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
+bool Pawn::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   int ranks_to_dest = sqr_source_ptr->ranksTo(sqr_dest_ptr);
   int files_to_dest = std::abs(sqr_source_ptr->filesTo(sqr_dest_ptr));
   ranks_to_dest *= (color)? 1: -1; // switch to black perspective

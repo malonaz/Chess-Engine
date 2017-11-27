@@ -47,7 +47,7 @@ public:
    * returns true if one of those cases is true
    * false otherwise
    */
-  bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
+  bool canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr);
 
   bool canEnPassant(Square* sqr_dest_ptr);
 

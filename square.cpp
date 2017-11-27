@@ -85,7 +85,7 @@ bool Square::movePiece(Square* sqr_dest_ptr){
       sqr_dest_ptr->getPiece()->getColor() == getPiece()->getColor())
     return false;
   
-  if (piece_ptr->move(this, sqr_dest_ptr)){
+  if (piece_ptr->canMove(this, sqr_dest_ptr)){
     piece_ptr->setToMoved();
     sqr_dest_ptr->setPiece(piece_ptr);
     piece_ptr = 0; // set to NULL

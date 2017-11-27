@@ -50,7 +50,7 @@ public:
    * Pure virtual observer method, which all 
    * derived pieces will need to implement
    */
-  virtual bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
+  virtual bool canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr);
 
   virtual void update() = 0;
   

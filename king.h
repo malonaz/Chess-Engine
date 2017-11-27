@@ -27,7 +27,7 @@ public:
    */
   ~King(){}
   
-  bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
+  bool canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr);
   
   void update(){}
 
