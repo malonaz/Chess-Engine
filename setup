@@ -9,6 +9,7 @@ declare -a files=("ChessMain.cpp"
 		  "pawn.cpp pawn.h"
 		  "knight.cpp knight.h"
 		  "rook.cpp rook.h"
+		  "bishop.cpp bishop.h"
 		  "utils.cpp utils.h")
 
 declare -i NUM_FILES=5

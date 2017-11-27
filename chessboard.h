@@ -92,10 +92,11 @@ public:
    * Method which, given a file, a rank and an array of 8 square pointers:
    *   - looks at the rank increasing diagonal (/) if rank_increasing is true
    *     otherwise looks at the rank decreasing diagonal (\)
-   *   - copies all pointers to squares in the diagonal that contains 
-   *     the square with given rank and file, in appropriate order.
+   *   - copies all pointers to squares in the appropriate diagonal that contains 
+   *     the square with given rank and file, in increasing file order.
    */
-  void getDiagonal(int rank, int file, Square** diagonals, bool rank_increasing);
+  void getDiagonal(int rank, int file, Square** diagonal,
+		   bool rank_increasing);
 
   /**
    * Reader method which given a rank and a file,

@@ -97,6 +97,27 @@ void ChessBoard::getColumn(int file, Square** column){
 }
 
 
+void ChessBoard::getDiagonal(int rank, int file, Square** diagonal,
+			     bool rank_increasing){
+  int current_rank = rank, current_file = file;
+  int rank_increment = (rank_increasing)? 1 : -1;
+    
+  while (current_rank != MIN_INDEX && current_file != MIN_INDEX){
+    current_rank -= rank_increment;
+    current_file--;
+  }
+  
+  int diagonal_index = 0;
+  while (current_rank != MAX_INDEX && current_file != MAX_INDEX){
+    diagonal[diagonal_index] = square_ptrs[current_rank][current_file];
+    diagonal_index++;
+    current_rank += rank_increment;
+    current_file++;
+  }
+    
+}
+
+
 void ChessBoard::printBoard(){
   for (int rank = MAX_INDEX; rank >= MIN_INDEX; rank--){
     for (int file = MIN_INDEX; file <= MAX_INDEX; file++){

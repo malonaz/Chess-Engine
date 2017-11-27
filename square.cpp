@@ -49,10 +49,9 @@ bool Square::getPath(Square* sqr_dest_ptr, Square** path, bool no_diagonal){
 
   int current_index = getPointerIndex(raw_path, this);
   int end_index = getPointerIndex(raw_path, sqr_dest_ptr);
-  int increment = (current_index < end_index)? 1: -1; 
+  int increment = (current_index < end_index)? 1: -1;
   for (int i = 0; current_index <= end_index; current_index += increment, i++)
     path[i] = raw_path[current_index];
-  
   return true;
 }
 

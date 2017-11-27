@@ -1,4 +1,4 @@
-chess: ChessMain.o chessboard.o square.o piece.o pawn.o knight.o rook.o utils.o
+chess: ChessMain.o chessboard.o square.o piece.o pawn.o knight.o rook.o bishop.o utils.o
 	g++ -Wall -g -o chess $^
 
 ChessMain.o: ChessMain.cpp chessboard.h
@@ -21,6 +21,8 @@ knight.o: knight.cpp knight.h piece.h square.h
 
 rook.o: rook.cpp rook.h  piece.h square.h
 	g++ -Wall -g -c rook.cpp
+
+bishop.o: bishop.cpp bishop.h piece.h square.h
 
 utils.o: utils.cpp utils.h
 	g++ -Wall -g -c utils.cpp

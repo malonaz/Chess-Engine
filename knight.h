@@ -6,8 +6,6 @@
 
 // definitions
 #define KNIGHT_MOVE_HYPOTHENUS_SQUARED 5
-#define KNIGHT1_FILE 1
-#define KNIGHT2_FILE 6
 
 // forward declarations
 class Square;

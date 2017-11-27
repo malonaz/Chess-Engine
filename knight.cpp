@@ -18,7 +18,7 @@ bool Knight::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
 
   if (isLegalKnightMove(ranks_to_dest, files_to_dest))
     return true;
-
+  
   return false;
 }
   
