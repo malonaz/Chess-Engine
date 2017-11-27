@@ -55,3 +55,8 @@ int getMoveDimension(int rank_shift, int file_shift){
   }
   return INCORRECT;
 }
+
+
+int getMoveMagnitudeSquared(int rank_shift, int file_shift){
+  return rank_shift*rank_shift + file_shift*file_shift;
+}

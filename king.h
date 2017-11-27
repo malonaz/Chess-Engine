@@ -5,6 +5,7 @@
 #include "piece.h"
 
 // definitions
+#define KING_MOVE_MAGNITUDE_SQUARED 1
 
 // forward declarations
 class Square;
@@ -25,8 +26,12 @@ public:
    * Destructor. Empty
    */
   ~King(){}
-
+  
+  bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
+  
   void update(){}
+
+  
 };
 
 

@@ -30,5 +30,7 @@ bool validIndex(int index);
 
 int getMoveDimension(int rank_shift, int file_shift);
 
+int getMoveMagnitudeSquared(int rank_shift, int file_shift);
 
+  
 #endif

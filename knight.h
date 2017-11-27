@@ -5,7 +5,7 @@
 #include "piece.h"
 
 // definitions
-#define KNIGHT_MOVE_HYPOTHENUS_SQUARED 5
+#define KNIGHT_MOVE_MAGNITUDE_SQUARED 5
 
 // forward declarations
 class Square;

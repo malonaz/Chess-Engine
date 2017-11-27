@@ -25,8 +25,7 @@ public:
    * Destructor. Empty
    */
   ~Queen(){}
-
-
+  
   void update(){}
 };
 
