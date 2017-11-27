@@ -28,21 +28,6 @@ public:
 
 
   void update(){}
-
-  
-  /**
-   * Implements superclass pure virtual method.
-   * This method checks that the move to sqr_dest_ptr
-   * is one of four moves a pawn can make:
-   *   1) initial move forward 2 ranks
-   *   2) simple move forward 1 rank
-   *   3) pawn takes
-   *   4) en passant take
-   * returns true if one of those cases is true
-   * false otherwise
-   */
-  bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
-
   
 };
 

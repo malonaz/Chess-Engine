@@ -13,12 +13,14 @@
 #define BLACK_RANK2 6
 
 // files
-#define ROOK1_FILE 0
+#define ROOK1_FILE   0
 #define KNIGHT1_FILE 1
 #define BISHOP1_FILE 2
+#define QUEEN_FILE   3
+#define KING_FILE    4
 #define BISHOP2_FILE 5
 #define KNIGHT2_FILE 6
-#define ROOK2_FILE 7
+#define ROOK2_FILE   7
 
 
 

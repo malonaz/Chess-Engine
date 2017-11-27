@@ -5,6 +5,8 @@
 #include "knight.h"
 #include "rook.h"
 #include "bishop.h"
+#include "queen.h"
+#include "king.h"
 #include "utils.h"
 
 #include <iostream>
@@ -44,12 +46,17 @@ void ChessBoard::init(){ // try to pass class to generic set piece ...
   square_ptrs[BLACK_RANK1][ROOK1_FILE]->setPiece(new Rook(BLACK));
   square_ptrs[BLACK_RANK1][ROOK2_FILE]->setPiece(new Rook(BLACK));
 
-  //set Bishops
+  // set Bishops
   square_ptrs[WHITE_RANK1][BISHOP1_FILE]->setPiece(new Bishop(WHITE));
   square_ptrs[WHITE_RANK1][BISHOP2_FILE]->setPiece(new Bishop(WHITE));
   square_ptrs[BLACK_RANK1][BISHOP1_FILE]->setPiece(new Bishop(BLACK));
   square_ptrs[BLACK_RANK1][BISHOP2_FILE]->setPiece(new Bishop(BLACK));
 
+  // set Queens & Kings
+  square_ptrs[WHITE_RANK1][QUEEN_FILE]->setPiece(new Queen(WHITE));
+  square_ptrs[WHITE_RANK1][KING_FILE]->setPiece(new King(WHITE));
+  square_ptrs[BLACK_RANK1][QUEEN_FILE]->setPiece(new Queen(BLACK));
+  square_ptrs[BLACK_RANK1][KING_FILE]->setPiece(new King(BLACK));
   
 }
 

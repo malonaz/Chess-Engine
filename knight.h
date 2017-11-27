@@ -27,9 +27,7 @@ public:
    */
   ~Knight(){}
 
-
   void update(){}
-
   
   /**
    * Implements superclass pure virtual method.
@@ -44,7 +42,6 @@ public:
    */
   bool move(Square* sqr_source_ptr, Square* sqr_dest_ptr);
 
-  
 };
 
 

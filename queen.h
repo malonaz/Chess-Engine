@@ -1,6 +1,6 @@
 // -*- C++ -*-
-#ifndef ROOK_H
-#define ROOK_H
+#ifndef QUEEN_H
+#define QUEEN_H
 
 #include "piece.h"
 
@@ -10,26 +10,24 @@
 class Square;
 
 /**
- * Rook. This derived class represents a chess rook.
+ * Queen. This derived class represents a chess queen.
  */
-class Rook: public Piece{
+class Queen: public Piece{
 public:
   /**
    * Constructor which, given a color,
    * calls its superclass constructor with
    * the given color and the knight char representation
    */
-  Rook(const bool white): Piece(white, ROOK){}
+  Queen(const bool white): Piece(white, QUEEN){}
 
   /**
    * Destructor. Empty
    */
-  ~Rook(){}
+  ~Queen(){}
 
 
   void update(){}
-
-  
 };
 
 
