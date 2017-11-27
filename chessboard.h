@@ -4,8 +4,16 @@
 
 #include "piece.h"
 
+// GUI
+#define HORIZONTAL_BAR " ---------------------------------"
+#define VERTICAL_BAR " | "
+
+
 // definitions
 #define SQUARES_PER_SIDE 8
+#define NUMBER_OF_COLORS 2
+#define NUMBER_OF_PIECES_PER_COLOR 8
+
 // ranks
 #define WHITE_RANK1 0
 #define WHITE_RANK2 1
@@ -23,7 +31,6 @@
 #define ROOK2_FILE   7
 
 
-
 // forward declarations
 class square;
 
@@ -36,7 +43,8 @@ class square;
 class ChessBoard{
 private:
   Square* square_ptrs[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
-  bool white_to_play;
+  Square* kings_square_ptrs[NUMBER_OF_COLORS];
+  Color color_to_play;
   
 public:
   /**
@@ -110,6 +118,9 @@ public:
   Square* getSquare(const char* sqr_str)const;
 
   void prepareNextTurn();
+
+
+  bool isKingInCheck(Color color);
   
   /**
    * Reader debugging method which prints the chessboard
@@ -118,7 +129,6 @@ public:
   void printBoard();
 
   void printObjects();
-
 
 };
 

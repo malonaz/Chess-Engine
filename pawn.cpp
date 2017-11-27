@@ -45,7 +45,7 @@ bool pawnTakes(int ranks_to_dest, int files_to_dest){
 bool Pawn::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   int ranks_to_dest = sqr_source_ptr->ranksTo(sqr_dest_ptr);
   int files_to_dest = std::abs(sqr_source_ptr->filesTo(sqr_dest_ptr));
-  ranks_to_dest *= (white)? 1: -1; // switch to black perspective
+  ranks_to_dest *= (color)? 1: -1; // switch to black perspective
   bool dest_sqr_empty  = sqr_dest_ptr->isEmpty();
   
   if (twoSquaresPush(ranks_to_dest, files_to_dest))
@@ -69,14 +69,14 @@ bool Pawn::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
 }
  
 bool Pawn::canEnPassant(Square* sqr_dest_ptr){
-  int en_passant_offset = (white)? -1: 1;
+  int en_passant_offset = (color)? -1: 1;
   Square* column[8];
   Pawn* pawn;
   sqr_dest_ptr->getColumn(column);
   // must be a valid index since we're moving one square back after a pawn take
   Square* en_passant_sqr = column[sqr_dest_ptr->getRank() + en_passant_offset];
   if (en_passant_sqr->isEmpty() ||
-      en_passant_sqr->getPiece()->getID() != PAWN)
+      en_passant_sqr->getPiece()->getType() != PAWN)
     return false;
 
   pawn = static_cast<Pawn*>(en_passant_sqr->getPiece());

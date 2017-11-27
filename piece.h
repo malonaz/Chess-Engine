@@ -2,13 +2,13 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-//definitions 
-#define PAWN 1
-#define KNIGHT 2
-#define ROOK 3
-#define BISHOP 4
-#define QUEEN 5
-#define KING 6
+#include <iostream>
+
+// colors
+enum Color {BLACK, WHITE};
+  
+// pieces
+enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING};
 
 // forward declaration
 class Square;
@@ -26,9 +26,9 @@ class Square;
  */
 class Piece{
 protected:
-  const bool white;
+  const Color color;
   bool has_moved;
-  const int id;
+  const PieceType type;
 
 public:
     static int num_pieces;
@@ -37,7 +37,7 @@ public:
    * Constructor which, given a color and a character representation,
    * instantiates both of these constant fields.
    */
-  Piece(const bool white, const int id);
+  Piece(const Color color, const PieceType type);
 
   /**
    * Virtual destructor so derived destructor is called when
@@ -63,14 +63,15 @@ public:
    * Observer method, which returns the character 
    * representation of this piece
    */
-  const int getID()const{return id;}
+  const int getType()const{return type;}
 
   /**
    * Observer method, which returns the color 
    * of this piece
    */
-  const bool isWhite() const{return white;}
+  const Color getColor() const{return color;}
 
+  friend std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr);
 };
 
 #endif

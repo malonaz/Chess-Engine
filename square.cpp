@@ -1,7 +1,6 @@
 // -*- C++ -*-
 #include "square.h"
 #include "chessboard.h"
-#include "piece.h"
 #include "utils.h"
 #include <iostream>
 
@@ -32,17 +31,17 @@ int getPointerIndex(Square** pointers, Square* pointer){
   return index;
 }
 
-bool Square::getPath(Square* sqr_dest_ptr, Square** path, int piece_ID){
+bool Square::getPath(Square* sqr_dest_ptr, Square** path, PieceType piece_type){
   int rank_shift = ranksTo(sqr_dest_ptr);
   int file_shift = filesTo(sqr_dest_ptr);
   int moveDimension = getMoveDimension(rank_shift, file_shift);
   Square* raw_path[8]= {};
   
-  if (moveDimension == HORIZONTAL && piece_ID != BISHOP)
+  if (moveDimension == HORIZONTAL && piece_type != BISHOP)
     getRow(raw_path);
-  else if (moveDimension == VERTICAL && piece_ID != BISHOP)
+  else if (moveDimension == VERTICAL && piece_type != BISHOP)
     getColumn(raw_path);
-  else if (moveDimension == DIAGONAL && piece_ID != ROOK)
+  else if (moveDimension == DIAGONAL && piece_type != ROOK)
     getDiagonal(sqr_dest_ptr, raw_path);
   else 
     return false;
@@ -83,7 +82,7 @@ void Square::destroyPiece(){
 bool Square::movePiece(Square* sqr_dest_ptr){
   // make sure you are not moving a piece on top of another of same color
   if (!sqr_dest_ptr-> isEmpty() &&
-      sqr_dest_ptr->getPiece()->isWhite() == getPiece()->isWhite())
+      sqr_dest_ptr->getPiece()->getColor() == getPiece()->getColor())
     return false;
   
   if (piece_ptr->move(this, sqr_dest_ptr)){
@@ -101,5 +100,4 @@ bool Square::isEmpty()const{
     return true;
   return false;
 }
-
 

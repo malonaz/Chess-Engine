@@ -2,9 +2,11 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
+#include "piece.h"
+
 // forward declarations
-class Piece;
 class ChessBoard;
+
 
 
 /**
@@ -81,7 +83,7 @@ public:
    *     path array, starting with this square and ending with the 
    *     destination square, then returns true
    */
-  bool getPath(Square* sqr_dest_ptr, Square** path, int piece_ID);
+  bool getPath(Square* sqr_dest_ptr, Square** path, PieceType piece_type);
 
   /**
    * Method which given an array of 8 Square pointers, copies all
@@ -134,7 +136,7 @@ public:
    *      > updates the moved piece to indicate it has moved
    */
   bool movePiece(Square* sqr_dest_ptr);
-  
+
 };
 
 

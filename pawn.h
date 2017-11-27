@@ -4,9 +4,6 @@
 
 #include "piece.h"
 
-
-
-
 // definitions
 #define PAWN_LATERAL_MOVE 1
 #define PAWN_FORWARD_MOVE 1
@@ -28,7 +25,7 @@ public:
    * calls its superclass constructor with
    * the given color and the pawn char representation
    */
-  Pawn(const bool white): Piece(white, PAWN), en_passant(false){}
+  Pawn(const Color  color): Piece(color, PAWN), en_passant(false){}
 
   /**
    * Destructor. Empty

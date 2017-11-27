@@ -4,7 +4,6 @@
 using namespace std;
 
 #include "chessboard.h"
-//#include "square.h"
 
 int main() {
 

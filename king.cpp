@@ -11,7 +11,7 @@ bool King::move(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   
   if (moveMagnitudeSquared != KING_MOVE_MAGNITUDE_SQUARED)
     return false;
-
+  
   return true;
 
 }

@@ -19,7 +19,7 @@ public:
    * calls its superclass constructor with
    * the given color and the knight char representation
    */
-  Rook(const bool white): Piece(white, ROOK){}
+  Rook(const Color color): Piece(color, ROOK){}
 
   /**
    * Destructor. Empty
