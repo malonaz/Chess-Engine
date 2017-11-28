@@ -3,7 +3,7 @@
 
 # declare file arrays
 declare -a files=("ChessMain.cpp"
-		  "chessboard.cpp chessboard.h"
+		  "ChessBoard.cpp ChessBoard.h"
 		  "square.cpp square.h"
 		  "piece.cpp piece.h"
 		  "pawn.cpp pawn.h"

@@ -52,7 +52,7 @@ void ChessBoard::init(){
   square_ptrs[BLACK_RANK1][QUEEN_FILE]->setPiece(new Queen(BLACK));
   square_ptrs[BLACK_RANK1][KING_FILE]->setPiece(new King(BLACK));
 
-  // cocpie pointers to kings into kings_square_ptrs
+  // copie pointers to kings into kings_square_ptrs
   kings_square_ptrs[WHITE] = square_ptrs[WHITE_RANK1][KING_FILE];
   kings_square_ptrs[BLACK] = square_ptrs[BLACK_RANK1][KING_FILE];
 }

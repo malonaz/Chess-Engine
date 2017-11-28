@@ -99,12 +99,8 @@ void Square::destroyPiece(){
 }
 
 bool Square::movePiece(Square* sqr_dest_ptr){
-  // make sure you are not moving a piece on top of another of same color
-  if (!sqr_dest_ptr-> isEmpty() &&
-      sqr_dest_ptr->getPiece()->getColor() == getPiece()->getColor())
-    return false;
-  
   if (piece_ptr->canMove(this, sqr_dest_ptr)){
+    
     if (movePutsKingInCheck(sqr_dest_ptr))
       return false;
     
