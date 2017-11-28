@@ -20,7 +20,7 @@ void ChessBoard::init(){
   // create Squares
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
     for (rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-      square_ptrs[rank][file] = new Square(this, file, rank);
+      square_ptrs[rank][file] = new Square(this, rank, file);
   
   // create and set Pawns
   for (file = MIN_INDEX; file <= MAX_INDEX; file++){
@@ -86,7 +86,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
   }
 
   if (piece_p->getColor() != color_to_play){
-    std::cout << "It is not " << piece_p->getColor() << "'s turn to move!\n";
+    std::cout << "It is not " << piece_p->getColor() << "turn to move!\n";
     return;
   }
   
@@ -99,7 +99,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
     to_square_piece_color = to_square_p->getPiece()->getColor();
   }
 
-  std::cout << piece_p;
+  std::cout << piece_p->getColor() << piece_p->getType();
   
   if (from_square_p->movePiece(to_square_p)){
     if (piece_p->getType() == KING)
@@ -113,7 +113,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
     std::cout << " moves from " << from_square << " to " << to_square;
 
     if (to_square_has_piece)
-      std::cout << " taking " << to_square_piece_color << "'s " << to_square_piece_type;
+      std::cout << " taking " << to_square_piece_color << to_square_piece_type;
     prepareNextTurn();
     std::cout << std::endl;
     return;
@@ -133,6 +133,7 @@ void ChessBoard::prepareNextTurn(){
   
   if (kingIsInCheck(color_to_play)){
     std::cout << std::endl << color_to_play << " is in check";
+
     if (cannotMove(color_to_play))
 	std::cout << "mate";
   }  
@@ -170,7 +171,7 @@ bool ChessBoard::kingIsInCheck(Color color){
 }
 
 
-bool ChessBoard::cannotMove(Color color)const{
+bool ChessBoard::cannotMove(Color color) const{
   Square* current_square;
   
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
@@ -182,7 +183,9 @@ bool ChessBoard::cannotMove(Color color)const{
 	if (current_square->getPiece()->getColor() == color)
 	  if (current_square->pieceCanMove())
 	    return false;
+      
     }
+  
   return true;
 }
 

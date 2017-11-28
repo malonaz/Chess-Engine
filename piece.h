@@ -10,6 +10,8 @@ std::ostream& operator<<(std::ostream& stream, Color color);
   
 // pieces
 enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING};
+std::ostream& operator<<(std::ostream& stream, PieceType type);
+
 
 // forward declaration
 class Square;
@@ -71,11 +73,6 @@ public:
    */
   const Color getColor() const{return color;}
 
-  /**
-   * Friend. Overloads << Operator to stream information about this
-   * piece's color and type.
-   */
-  friend std::ostream& operator<<(std::ostream& stream, Piece* piece_p);
 };
 
 #endif

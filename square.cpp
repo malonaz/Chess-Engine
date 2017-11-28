@@ -42,7 +42,7 @@ bool Square::getPath(Square* dest_p, Square** path, PieceType type){ // remove p
   int rank_diff = rankDiff(dest_p);
   int file_diff = fileDiff(dest_p);
   int moveDimension = getMoveDimension(rank_diff, file_diff);
-  Square* raw_path[8]= {}; // set to null for getPointerIndex function
+  Square* raw_path[8] = {}; // set to null for getPointerIndex function
   
   if (moveDimension == HORIZONTAL && type != BISHOP)
     getRank(raw_path);
@@ -60,7 +60,7 @@ bool Square::getPath(Square* dest_p, Square** path, PieceType type){ // remove p
   int current_i = getPointerIndex(raw_path, this);
   int end_i = getPointerIndex(raw_path, dest_p);
   int incr = (current_i < end_i)? 1: -1;
-
+  
   for (int i = 0; current_i != end_i + incr; current_i += incr, i++)
     path[i] = raw_path[current_i];
   
@@ -156,9 +156,12 @@ bool Square::hasPiece()const{
 
 
 bool Square::pieceCanMove(){
+  Square* dest_p;
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
-      Square* dest_p = chessboard_p->getSquare(rank_i, file_i);
+
+      dest_p = chessboard_p->getSquare(rank_i, file_i);
+      
       if (piece_p->canMove(this, dest_p) && !movePutsKingInCheck(dest_p))
 	return true;	   
     }

@@ -44,7 +44,7 @@ bool pawnTakes(int rank_diff, int file_diff){
 bool Pawn::canMove(Square* from_square_p, Square* to_square_p){
   int rank_diff = from_square_p->rankDiff(to_square_p);
   int abs_file_diff = std::abs(from_square_p->fileDiff(to_square_p));
-  rank_diff *= (color)? 1: -1; // switch to black perspective
+  rank_diff *= (color == WHITE)? 1: -1; // switch to black perspective
   bool to_square_has_piece  = to_square_p->hasPiece();
 
   bool pawn_takes = pawnTakes(rank_diff, abs_file_diff);
@@ -57,16 +57,16 @@ bool Pawn::canMove(Square* from_square_p, Square* to_square_p){
   if (pawn_takes && to_square_has_piece)
     return true;
  
-  if (pawn_takes && canEnPassant(to_square_p))
+  if (pawn_takes && !to_square_has_piece && canEnPassant(to_square_p))
     return true;
 
   if (two_square_pawn_push && !to_square_has_piece){
-    
+
     Square* square_below = to_square_p->getSquareBelow(color); 
 
     if (square_below->hasPiece()) // cannot move past a piece
       return false;
-    
+
     en_passant = true; // this pawn can be taken en passant next turn
     return true;
   }
@@ -80,11 +80,11 @@ bool Pawn::canEnPassant(Square* to_square_p, bool destroy_piece){
   Square* en_passant_file[8], *en_passant_square;
   Piece* en_passant_piece;
   Pawn* en_passant_pawn;
-  int en_passant_rank = to_square_p->getRankIndex() + en_passant_rank_offset;
+  int en_passant_rank_i = to_square_p->getRankIndex() + en_passant_rank_offset;
 
   to_square_p->getFile(en_passant_file);
   
-  en_passant_square = en_passant_file[en_passant_rank]; // must be valid rank index
+  en_passant_square = en_passant_file[en_passant_rank_i]; // must be valid rank index
   
   if (!en_passant_square->hasPiece())
     return false;
