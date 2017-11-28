@@ -49,98 +49,88 @@ private:
   
 public:
   /**
-   * Constructor. Creates 64 Squares and 32 Pieces and sets them up on 
-   * the board. These Squares and Pieces are allocated memory which the 
-   * desctructor will free. 
-   */
+   * Constructor. Calls init method.
+   */			 
   ChessBoard(){init();}
-
   
+
   /**
-   * Destructor. Frees memory allocated to Squares. Square's destructor 
-   * frees memory allocated to its Piece if it has one.
+   * Destructor. Calls destroySquares method.
    */
   ~ChessBoard(){destroySquares();}
+  
 
   /**
-   * Mutator. Creates 64 chessboard Squares and copes their pointers to the
+   * Mutator. Creates 64 chessboard Squares and copies their pointers into
    * square_ptrs array. Creates 32 Pieces and sets them on the appropriate
-   * squares as chess rules dicate it. Copies Kings pointers to 
-   * kings_square_ptrs. Sets the color to play next to white.
+   * squares as standard chess rules would have it. Copies Kings pointers
+   * to kings_square_ptrs. Sets the color to play next to white.
    */
   void init();
+  
 
   /**
-   * Mutator. Frees memory allocated to ChessBoard Squares.
+   * Mutator. Frees memory allocated to all 64 ChessBoard Squares.
    */
   void destroySquares();
-
+  
 
   /**
-   * Mutator. Frees memory allocated to Squares and Pieces, then calls init.
+   * Mutator. calls destroySquares then init.
    */
   void resetBoard();
-  
+
   
   /**
-   * Mutator. If both inputs are valid (see utils.h) and from_square has
-   * a piece, moves the piece to to_square if it is possible and legal
+   * Mutator. Requires both inputs be valid (see utils.h) and from_square
+   * has a piece. Moves the piece to to_square if it is possible and legal
    * according to the rules of chess.
    */
-  void submitMove(const char* from_square,
-		  const char* to_square);
+  void submitMove(const char* from_square, const char* to_square);
 
-  /**
-   * Mutator. Requires rank array size >= 8. Copies pointers to Squares 
-   * with given rank_index into rank, in increasing file index order.
-   */
-  void getRow(int rank_index, Square** rank);
-
-
-  /**
-   * Mutator. Requires file array size >= 8. Copies pointers to Squares 
-   * with given file_index into file, in increasing file index order.
-   */
-  void getColumn(int file_index, Square** file);
-
-
-
-  /**
-   * Mutator. Requires diagonal array size >= 8. Looks at rank index 
-   * increasing Copies pointers to 
-   * Squares on the diagonal that contains Square with given rank_index and
-   * file index, in increasing file index order.
-   */
   
   /**
-   * Method which, given a file, a rank and an array of 8 square pointers:
-   *   - looks at the rank increasing diagonal (/) if rank_increasing is true
-   *     otherwise looks at the rank decreasing diagonal (\)
-   *   - copies all pointers to squares in the appropriate diagonal that contains 
-   *     the square with given rank and file, in increasing file order.
+   * Observer. Requires input be a valid (see utils.h) chess square coordinate.
+   * returns a pointer to the square at the given coordinates.
    */
-  void getDiagonal(int rank, int file, Square** diagonal,
-		   bool rank_increasing);
+  Square* getSquare(const char* sqr_coordinates)const;
+
 
   /**
-   * Reader method which given a rank and a file,
-   * returns the approprite square pointer;
+   * Observer. Requires valid rank and file index in range [0,7], returns
+   * pointer to square at the the given indices.
    */
-  Square* getSquare(const char* sqr_str)const;
+  Square* getSquare(int i_rank, int i_file)const{return square_ptrs[i_rank][i_file];}
 
+  /**
+   * Mutator. Changes the color to play next. Checks if next player is in
+   * stalemate, checkmate or check. Writes information to std output stream.
+   */
   void prepareNextTurn();
 
 
+  /**
+   * Observer. returns true if king is in check.
+   */
   bool kingIsInCheck(Color color);
 
-  bool noPieceCanMove(Color color);
+  
   /**
-   * Reader debugging method which prints the chessboard
-   * to the standard output stream.
+   * Observer. Returns true if player of given color cannot move any piece.
    */
-  void printBoard();
+  bool cannotMove(Color color)const;
 
-  void printObjects();
+  
+  /**
+   * Observer. Prints board state to std output stream.
+   */
+  void printBoard()const;
+
+  
+  /**
+   * Observer. Prints number of Squares and Pieces to the board.
+   */
+  void printObjects()const;
 
 };
 

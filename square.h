@@ -85,19 +85,25 @@ public:
    */
   bool getPath(Square* sqr_dest_ptr, Square** path, PieceType piece_type);
 
+
   /**
-   * Method which given an array of 8 Square pointers, copies all
-   * pointers to the Squares in the same row as this square into it.
+   * Mutator. Requires row array size >= 8. Copies pointers to Squares 
+   * in this Square's row into row, in increasing file index order.
    */
   void getRow(Square** row);
 
   /**
-   * Method which given an array of 8 Square pointers, copies all
-   * pointers to the Squares in the same column as this square into it.
+   * Mutator. Requires column array size >= 8. Copies pointers to Squares
+   * in this Square's column into column, in increasing file index order.
    */
   void getColumn(Square** column);
 
-  
+
+  /**
+   * Mutator. Requires diagonal array size >= 8. Copies pointers to Squares
+   * in the chessboard diagonal that contains both this square and the one
+   * sqr_dest_ptr points to, in increasing file order.
+   */
   void getDiagonal(Square* sqr_dest_ptr, Square** diagonal);
 
   // PIECE RELATED METHODS //

@@ -11,15 +11,7 @@
 
 #include <iostream>
 
-
-void ChessBoard::destroySquares(){
-  for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
-    for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++){ 
-      delete square_ptrs[rank][file];
-    }
-}
-
-void ChessBoard::init(){ // try to pass class to generic set piece ...
+void ChessBoard::init(){
   color_to_play = WHITE;
   int file, rank;
 
@@ -60,9 +52,19 @@ void ChessBoard::init(){ // try to pass class to generic set piece ...
   square_ptrs[BLACK_RANK1][QUEEN_FILE]->setPiece(new Queen(BLACK));
   square_ptrs[BLACK_RANK1][KING_FILE]->setPiece(new King(BLACK));
 
+  // cocpie pointers to kings into kings_square_ptrs
   kings_square_ptrs[WHITE] = square_ptrs[WHITE_RANK1][KING_FILE];
   kings_square_ptrs[BLACK] = square_ptrs[BLACK_RANK1][KING_FILE];
 }
+
+
+void ChessBoard::destroySquares(){
+  for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
+    for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++){ 
+      delete square_ptrs[rank][file]; 
+    }
+}
+
 
 void ChessBoard::resetBoard(){
   destroySquares();
@@ -70,53 +72,51 @@ void ChessBoard::resetBoard(){
 }
 
 
-void ChessBoard::submitMove(const char* source_sqr_str,
-			   const char* dest_sqr_str){
-  if (!isValidSquare(source_sqr_str) || !isValidSquare(dest_sqr_str))
+void ChessBoard::submitMove(const char* from_square, const char* to_square){
+  if (!isValidSquare(from_square) || !isValidSquare(to_square))
     return;
 
-  Square* source_sqr = getSquare(source_sqr_str);
-  Square* dest_sqr = getSquare(dest_sqr_str);
-  Piece* piece_ptr = source_sqr->getPiece();
+  Square* from_square_p = getSquare(from_square);
+  Square* to_square_p = getSquare(to_square);
+  Piece* piece_p = from_square_p->getPiece();
   
-  // make sure it is the correct color to play
-  if (source_sqr->isEmpty()){
-    std::cout << "There is no piece at position " << source_sqr_str << "!" << std::endl;
+  if (from_square_p->isEmpty()){
+    std::cout << "There is no piece at position " << from_square_p_str << "!" << std::endl;
     return;
   }
 
-  if (piece_ptr->getColor() != color_to_play){
-    std::cout << "It is not " << piece_ptr->getColor() << "'s turn to move!" << std::endl; 
+  if (piece_p->getColor() != color_to_play){
+    std::cout << "It is not " << piece_p->getColor() << "'s turn to move!" << std::endl; 
     return;
   }
   
-  bool dest_sqr_has_piece = !dest_sqr->isEmpty();
-  PieceType dest_sqr_piece_type;
-  Color dest_sqr_piece_color;
-  if (dest_sqr_has_piece){
-    dest_sqr_piece_type = dest_sqr->getPiece()->getType();
-    dest_sqr_piece_color = dest_sqr->getPiece()->getColor();
+  bool to_square_p_has_piece = !to_square_p->isEmpty();
+  PieceType to_square_p_piece_type;
+  Color to_square_p_piece_color;
+  if (to_square_p_has_piece){
+    to_square_p_piece_type = to_square_p->getPiece()->getType();
+    to_square_p_piece_color = to_square_p->getPiece()->getColor();
   }
   
 
-  std::cout << piece_ptr->getColor() << "'s " << piece_ptr->getType();
-  if (source_sqr->movePiece(dest_sqr)){
-    if (piece_ptr->getType() == KING)
-      kings_square_ptrs[piece_ptr->getColor()] = dest_sqr;
+  std::cout << piece_p->getColor() << "'s " << piece_p->getType();
+  if (from_square_p->movePiece(to_square_p)){
+    if (piece_p->getType() == KING)
+      kings_square_ps[piece_p->getColor()] = to_square_p;
 
-    if (piece_ptr->getType() == PAWN){
-      Pawn* pawn = static_cast<Pawn*>(piece_ptr);
-      if (pawn->canEnPassant(dest_sqr, true))
+    if (piece_p->getType() == PAWN){
+      Pawn* pawn = static_cast<Pawn*>(piece_p);
+      if (pawn->canEnPassant(to_square_p, true))
 	std::cout << " taking en passant ";
     }
-    std::cout << " moves from " << source_sqr_str << " to " << dest_sqr_str;
+    std::cout << " moves from " << from_square_p_str << " to " << to_square_p_str;
 
-    if (dest_sqr_has_piece)
-      std::cout << " taking " << dest_sqr_piece_color << "'s " << dest_sqr_piece_type;
+    if (to_square_p_has_piece)
+      std::cout << " taking " << to_square_p_piece_color << "'s " << to_square_p_piece_type;
 
       prepareNextTurn();
   }else{
-    std::cout << " cannot move to " << dest_sqr_str << "!";
+    std::cout << " cannot move to " << to_square_p_str << "!";
   }
   std::cout << std::endl;
 }
@@ -132,7 +132,7 @@ void ChessBoard::prepareNextTurn(){
   
   if (kingIsInCheck(color_to_play)){
     std::cout << std::endl << color_to_play << " is in check";
-    if (noPieceCanMove(color_to_play))
+    if (cannotMove(color_to_play))
 	std::cout << "mate";
   }
   
@@ -145,38 +145,6 @@ Square* ChessBoard::getSquare(const char* sqr_str)const{
   return square_ptrs[rank][file];
 }
 
-void ChessBoard::getRow(int rank, Square** row){
-  for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
-    *(row + file) = square_ptrs[rank][file];
-}
-
-
-void ChessBoard::getColumn(int file, Square** column){
-  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-    *(column + rank) = square_ptrs[rank][file];
-}
-
-
-void ChessBoard::getDiagonal(int rank, int file, Square** diagonal,
-			     bool rank_increasing){
-  int current_rank = rank, current_file = file;
-  int rank_increment = (rank_increasing)? 1 : -1;
-  int start_rank_limit = (rank_increasing)? MIN_INDEX: MAX_INDEX;
-  
-  while (current_rank != start_rank_limit && current_file != MIN_INDEX){
-    current_rank -= rank_increment;
-    current_file--;
-  }
-  
-  int diagonal_index = 0;
-  while (validIndex(current_rank) && validIndex(current_file)){
-    diagonal[diagonal_index] = square_ptrs[current_rank][current_file];
-    diagonal_index++;
-    current_rank += rank_increment;
-    current_file++;
-  }
-    
-}
 
 bool ChessBoard::kingIsInCheck(Color color){
   Square* current_square;
@@ -198,7 +166,7 @@ bool ChessBoard::kingIsInCheck(Color color){
 }
 
 
-bool ChessBoard::noPieceCanMove(Color color){
+bool ChessBoard::cannotMove(Color color)const{
   Square* current_square;
   for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
     for (int file = MIN_INDEX; file <= MIN_INDEX; file++){
@@ -215,7 +183,7 @@ bool ChessBoard::noPieceCanMove(Color color){
 }
 
     
-void ChessBoard::printBoard(){
+void ChessBoard::printBoard()const{
   for (int rank = MAX_INDEX; rank >= MIN_INDEX; rank--){
     std::cout << HORIZONTAL_BAR  << std::endl;
     for (int file = MIN_INDEX; file <= MAX_INDEX; file++){
@@ -233,7 +201,7 @@ void ChessBoard::printBoard(){
 }
 
 
-void ChessBoard::printObjects(){
+void ChessBoard::printObjects()const{
   std::cout << "Number of Squares: " << Square::num_squares << std::endl;
   std::cout << "Number of Pieces: " << Piece::num_pieces << std::endl;
 }

@@ -55,18 +55,35 @@ bool Square::getPath(Square* sqr_dest_ptr, Square** path, PieceType piece_type){
   return true;
 }
 
-void Square::getRow(Square** row){
-  chessboard->getRow(rank, row);
+void Square::getRow(Square** rank_arr){
+  for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
+    rank_arr[file] = chessboard->getSquare(rank, file);
 }
 
-void Square::getColumn(Square** column){
-  chessboard->getColumn(file, column);
+void Square::getColumn(Square** file_arr){
+  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
+    file_arr[rank] = chessboard->getSquare(rank, file);
 }
 
-void Square::getDiagonal(Square* sqr_dest_ptr, Square** diagonal){
-  int rank_shift = ranksTo(sqr_dest_ptr);
-  int file_shift = filesTo(sqr_dest_ptr);
-  chessboard->getDiagonal(rank, file, diagonal, rank_shift*file_shift > 0);
+void Square::getDiagonal(Square* sqr_dest_ptr, Square** diagonal_arr){
+  bool rank_increasing = ranksTo(sqr_dest_ptr)*filesTo(sqr_dest_ptr) > 0;
+
+  int current_rank = rank, current_file = file;
+  int rank_increment = (rank_increasing)? 1 : -1;
+  int start_rank_limit = (rank_increasing)? MIN_INDEX: MAX_INDEX;
+  
+  while (current_rank != start_rank_limit && current_file != MIN_INDEX){
+    current_rank -= rank_increment;
+    current_file--;
+  }
+  
+  int diagonal_arr_index = 0;
+  while (validIndex(current_rank) && validIndex(current_file)){
+    diagonal_arr[diagonal_arr_index] = chessboard->getSquare(current_rank, current_file);
+    diagonal_arr_index++;
+    current_rank += rank_increment;
+    current_file++;
+  }
 }
 
 void Square::setPiece(Piece* piece_ptr){
@@ -123,12 +140,11 @@ bool Square::isEmpty()const{
 
 
 bool Square::pieceCanMove(){
-  Square* row[SQUARES_PER_SIDE];
-  for (int rank_index = MIN_INDEX; rank_index <= MAX_INDEX; rank_index++){
-    chessboard->getRow(rank_index, row);
-    for (int file_index = MIN_INDEX; file_index <= MAX_INDEX; file_index++){
-      if (piece_ptr->canMove(this, row[file_index]) &&
-	  !movePutsKingInCheck(row[file_index]))
+  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++){
+    for (int file = MIN_INDEX; file <= MAX_INDEX; file++){
+      Square* to_square = chessboard->getSquare(rank, file);
+      if (piece_ptr->canMove(this, to_square) &&
+	  !movePutsKingInCheck(to_square))
 	return true;	   
     }
   }
