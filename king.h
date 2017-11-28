@@ -5,7 +5,7 @@
 #include "piece.h"
 
 // definitions
-#define KING_MOVE_MAGNITUDE_SQUARED 1
+#define KING_MAX_1D_SHIFT 1
 
 // forward declarations
 class Square;

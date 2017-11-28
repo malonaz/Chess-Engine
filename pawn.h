@@ -49,7 +49,7 @@ public:
    */
   bool canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr);
 
-  bool canEnPassant(Square* sqr_dest_ptr);
+  bool canEnPassant(Square* sqr_dest_ptr, bool destroy_piece = false);
 
   
 };

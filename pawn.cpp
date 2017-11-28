@@ -65,10 +65,11 @@ bool Pawn::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){
     if (dest_sqr_empty && canEnPassant(sqr_dest_ptr))
       return true;
   }
+
   return false;
 }
  
-bool Pawn::canEnPassant(Square* sqr_dest_ptr){
+bool Pawn::canEnPassant(Square* sqr_dest_ptr, bool destroy_piece){
   int en_passant_offset = (color)? -1: 1;
   Square* column[8];
   Pawn* pawn;
@@ -82,7 +83,9 @@ bool Pawn::canEnPassant(Square* sqr_dest_ptr){
   pawn = static_cast<Pawn*>(en_passant_sqr->getPiece());
   if (!(pawn->en_passant))
     return false;
+
+  if (destroy_piece)
+    en_passant_sqr->destroyPiece();
   
-  en_passant_sqr->destroyPiece();
   return true;
 }

@@ -103,11 +103,18 @@ void ChessBoard::submitMove(const char* source_sqr_str,
   if (source_sqr->movePiece(dest_sqr)){
     if (piece_ptr->getType() == KING)
       kings_square_ptrs[piece_ptr->getColor()] = dest_sqr;
-    prepareNextTurn();
+
+    if (piece_ptr->getType() == PAWN){
+      Pawn* pawn = static_cast<Pawn*>(piece_ptr);
+      if (pawn->canEnPassant(dest_sqr, true))
+	std::cout << " taking en passant ";
+    }
     std::cout << " moves from " << source_sqr_str << " to " << dest_sqr_str;
 
     if (dest_sqr_has_piece)
       std::cout << " taking " << dest_sqr_piece_color << "'s " << dest_sqr_piece_type;
+
+      prepareNextTurn();
   }else{
     std::cout << " cannot move to " << dest_sqr_str << "!";
   }
@@ -122,7 +129,11 @@ void ChessBoard::prepareNextTurn(){
 	  square_ptrs[rank][file]->getPiece()->update();
 
   color_to_play = (color_to_play == WHITE)? BLACK: WHITE;
+  
+  if (kingIsInCheck(color_to_play))
+    std::cout << std::endl << color_to_play << " is in check";
 }
+
 Square* ChessBoard::getSquare(const char* sqr_str)const{
   int rank, file;
   rank = parseRank(sqr_str);

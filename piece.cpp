@@ -19,7 +19,7 @@ bool Piece::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   for (int i = 1; path[i] != sqr_dest_ptr; i++)
     if (!path[i]->isEmpty())
       return false;
-  
+
   return true;
 }
   
