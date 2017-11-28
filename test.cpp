@@ -1,5 +1,5 @@
 #include "test.h"
-#include "chessboard.h"
+#include "ChessBoard.h"
 #include <iostream>
 
 using namespace std;

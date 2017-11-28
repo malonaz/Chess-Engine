@@ -1,11 +1,11 @@
-chess: ChessMain.o chessboard.o square.o piece.o pawn.o knight.o rook.o bishop.o queen.o king.o utils.o test.o
+chess: ChessMain.o ChessBoard.o square.o piece.o pawn.o knight.o rook.o bishop.o queen.o king.o utils.o test.o
 	g++ -Wall -g -o chess $^
 
-ChessMain.o: ChessMain.cpp chessboard.h
+ChessMain.o: ChessMain.cpp ChessBoard.h
 	g++ -Wall -g -c ChessMain.cpp
 
-chessboard.o: chessboard.cpp chessboard.h square.h piece.h
-	g++ -Wall -g -c chessboard.cpp
+ChessBoard.o: ChessBoard.cpp ChessBoard.h square.h piece.h
+	g++ -Wall -g -c ChessBoard.cpp
 
 square.o: square.cpp square.h piece.h
 	g++ -Wall -g -c square.cpp
@@ -35,7 +35,7 @@ utils.o: utils.cpp utils.h
 	g++ -Wall -g -c utils.cpp
 
 
-test.o: test.cpp test.h chessboard.h
+test.o: test.cpp test.h ChessBoard.h
 	g++ -Wall -g -c test.cpp
 
 clean:

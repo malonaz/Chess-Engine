@@ -1,5 +1,5 @@
 // -*- C++ -*-
-#include "chessboard.h"
+#include "ChessBoard.h"
 #include "square.h"
 #include "pawn.h"
 #include "knight.h"
@@ -23,7 +23,7 @@ void ChessBoard::init(){ // try to pass class to generic set piece ...
   color_to_play = WHITE;
   int file, rank;
 
-  std::cout << "A New chess game is started!" << std::endl;
+  std::cout << "A new chess game is started!" << std::endl;
   
   // create Squares
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)

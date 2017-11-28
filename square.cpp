@@ -1,6 +1,6 @@
 // -*- C++ -*-
 #include "square.h"
-#include "chessboard.h"
+#include "ChessBoard.h"
 #include "utils.h"
 #include <iostream>
 
