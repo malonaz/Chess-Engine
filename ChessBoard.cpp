@@ -89,6 +89,15 @@ void ChessBoard::submitMove(const char* source_sqr_str,
     std::cout << "It is not " << piece_ptr->getColor() << "'s turn to move!" << std::endl; 
     return;
   }
+  
+  bool dest_sqr_has_piece = !dest_sqr->isEmpty();
+  PieceType dest_sqr_piece_type;
+  Color dest_sqr_piece_color;
+  if (dest_sqr_has_piece){
+    dest_sqr_piece_type = dest_sqr->getPiece()->getType();
+    dest_sqr_piece_color = dest_sqr->getPiece()->getColor();
+  }
+  
 
   std::cout << piece_ptr->getColor() << "'s " << piece_ptr->getType();
   if (source_sqr->movePiece(dest_sqr)){
@@ -96,6 +105,9 @@ void ChessBoard::submitMove(const char* source_sqr_str,
       kings_square_ptrs[piece_ptr->getColor()] = dest_sqr;
     prepareNextTurn();
     std::cout << " moves from " << source_sqr_str << " to " << dest_sqr_str;
+
+    if (dest_sqr_has_piece)
+      std::cout << " taking " << dest_sqr_piece_color << "'s " << dest_sqr_piece_type;
   }else{
     std::cout << " cannot move to " << dest_sqr_str << "!";
   }
