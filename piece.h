@@ -74,6 +74,8 @@ public:
    */
   const Color getColor() const{return color;}
 
+  void print()const;
+  
   friend std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr);
 };
 

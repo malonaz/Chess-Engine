@@ -88,6 +88,13 @@ public:
    */
   void submitMove(const char* from_square, const char* to_square);
 
+
+  /**
+   * Mutator. Changes the color to play next. Checks if next player is in
+   * stalemate, checkmate or check. Writes information to std output stream.
+   */
+  void prepareNextTurn();
+
   
   /**
    * Observer. Requires input be a valid (see utils.h) chess square coordinate.
@@ -100,15 +107,9 @@ public:
    * Observer. Requires valid rank and file index in range [0,7], returns
    * pointer to square at the the given indices.
    */
-  Square* getSquare(int i_rank, int i_file)const{return square_ptrs[i_rank][i_file];}
+  Square* getSquare(int i_rank, int i_file)const;
 
-  /**
-   * Mutator. Changes the color to play next. Checks if next player is in
-   * stalemate, checkmate or check. Writes information to std output stream.
-   */
-  void prepareNextTurn();
-
-
+  
   /**
    * Observer. returns true if king is in check.
    */

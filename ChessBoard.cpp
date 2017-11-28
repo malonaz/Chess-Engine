@@ -81,45 +81,45 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
   Piece* piece_p = from_square_p->getPiece();
   
   if (from_square_p->isEmpty()){
-    std::cout << "There is no piece at position " << from_square_p_str << "!" << std::endl;
+    std::cout << "There is no piece at position " << from_square << "!\n";
     return;
   }
 
   if (piece_p->getColor() != color_to_play){
-    std::cout << "It is not " << piece_p->getColor() << "'s turn to move!" << std::endl; 
+    std::cout << "It is not " << piece_p->getColor() << "'s turn to move!\n";
     return;
   }
   
-  bool to_square_p_has_piece = !to_square_p->isEmpty();
-  PieceType to_square_p_piece_type;
-  Color to_square_p_piece_color;
-  if (to_square_p_has_piece){
-    to_square_p_piece_type = to_square_p->getPiece()->getType();
-    to_square_p_piece_color = to_square_p->getPiece()->getColor();
+  bool to_square_empty = to_square_p->isEmpty();
+  PieceType to_square_piece_type;
+  Color to_square_piece_color;
+  if (!to_square_empty){
+    to_square_piece_type = to_square_p->getPiece()->getType();
+    to_square_piece_color = to_square_p->getPiece()->getColor();
   }
-  
 
-  std::cout << piece_p->getColor() << "'s " << piece_p->getType();
+  std::cout << piece_p;
+  
   if (from_square_p->movePiece(to_square_p)){
     if (piece_p->getType() == KING)
-      kings_square_ps[piece_p->getColor()] = to_square_p;
+      kings_square_ptrs[piece_p->getColor()] = to_square_p;
 
     if (piece_p->getType() == PAWN){
       Pawn* pawn = static_cast<Pawn*>(piece_p);
       if (pawn->canEnPassant(to_square_p, true))
 	std::cout << " taking en passant ";
     }
-    std::cout << " moves from " << from_square_p_str << " to " << to_square_p_str;
+    std::cout << " moves from " << from_square << " to " << to_square;
 
-    if (to_square_p_has_piece)
-      std::cout << " taking " << to_square_p_piece_color << "'s " << to_square_p_piece_type;
-
-      prepareNextTurn();
-  }else{
-    std::cout << " cannot move to " << to_square_p_str << "!";
+    if (!to_square_empty)
+      std::cout << " taking " << to_square_piece_color << "'s " << to_square_piece_type;
+    prepareNextTurn();
+    std::cout << std::endl;
+    return;
   }
-  std::cout << std::endl;
+  std::cout << " cannot move to " << to_square << "!\n";
 }
+
 
 void ChessBoard::prepareNextTurn(){
   for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
@@ -134,9 +134,9 @@ void ChessBoard::prepareNextTurn(){
     std::cout << std::endl << color_to_play << " is in check";
     if (cannotMove(color_to_play))
 	std::cout << "mate";
-  }
-  
+  }  
 }
+
 
 Square* ChessBoard::getSquare(const char* sqr_str)const{
   int rank, file;
@@ -146,21 +146,24 @@ Square* ChessBoard::getSquare(const char* sqr_str)const{
 }
 
 
+Square* ChessBoard::getSquare(int i_rank, int i_file)const{
+  return square_ptrs[i_rank][i_file];
+}
+
+
 bool ChessBoard::kingIsInCheck(Color color){
   Square* current_square;
-  Piece* current_piece;
-  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-    for (int file = MIN_INDEX; file <= MAX_INDEX; file++){
-      current_square = square_ptrs[rank][file];
-      if (current_square->isEmpty())
-	continue;
-      
-      current_piece = current_square->getPiece();
-      if (current_piece->getColor() == color)
-	continue;
-      
-      if (current_piece->canMove(current_square, kings_square_ptrs[color]))
-	return true;	
+  
+  for (int i_rank = MIN_INDEX; i_rank <= MAX_INDEX; i_rank++)
+    for (int i_file = MIN_INDEX; i_file <= MAX_INDEX; i_file++){
+
+      current_square = square_ptrs[i_rank][i_file];
+
+      if (!current_square->isEmpty())
+	if (current_square->getPiece()->getColor() != color)
+	  if (current_square->getPiece()->
+	      canMove(current_square, kings_square_ptrs[color]))
+	    return true;
     }
   return false;
 }
@@ -168,33 +171,34 @@ bool ChessBoard::kingIsInCheck(Color color){
 
 bool ChessBoard::cannotMove(Color color)const{
   Square* current_square;
-  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-    for (int file = MIN_INDEX; file <= MIN_INDEX; file++){
-      current_square = square_ptrs[rank][file];
-      if (!current_square->isEmpty() &&
-	  current_square->getPiece()->getColor() == color &&
-	  current_square->pieceCanMove()){
-	std::cout << rank << " , " << file;
-	return false;
-      }
-	
+  
+  for (int i_rank = MIN_INDEX; i_rank <= MAX_INDEX; i_rank++)
+    for (int i_file = MIN_INDEX; i_file <= MIN_INDEX; i_file++){
+
+      current_square = square_ptrs[i_rank][i_file];
+      
+      if (!current_square->isEmpty())
+	if (current_square->getPiece()->getColor() == color)
+	  if (current_square->pieceCanMove())
+	    return false;
     }
   return true;
 }
 
-    
+
 void ChessBoard::printBoard()const{
-  for (int rank = MAX_INDEX; rank >= MIN_INDEX; rank--){
+  for (int i_rank = MAX_INDEX; i_rank >= MIN_INDEX; i_rank--){
     std::cout << HORIZONTAL_BAR  << std::endl;
-    for (int file = MIN_INDEX; file <= MAX_INDEX; file++){
+
+    for (int i_file = MIN_INDEX; i_file <= MAX_INDEX; i_file++){
       std::cout << VERTICAL_BAR;
-      Square* current_sqr = square_ptrs[rank][file];
+      
+      Square* current_sqr = square_ptrs[i_rank][i_file];
       if (current_sqr->isEmpty())
 	std::cout << ' ';
       else
 	std::cout << current_sqr->getPiece();
     }
-    
     std::cout << VERTICAL_BAR <<  std::endl;
   }
   std::cout << HORIZONTAL_BAR << std::endl;
