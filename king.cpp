@@ -4,15 +4,15 @@
 #include "utils.h"
 #include <cmath>
 
-bool King::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){
-  int abs_rank_shift = std::abs(sqr_source_ptr->ranksTo(sqr_dest_ptr));
-  int abs_file_shift = std::abs(sqr_source_ptr->filesTo(sqr_dest_ptr));
 
-  if (abs_rank_shift > KING_MAX_1D_SHIFT || abs_file_shift > KING_MAX_1D_SHIFT)
+bool King::canMove(Square* from_square_p, Square* to_square_p){
+  int abs_rank_diff = std::abs(from_square_p->rankDiff(to_square_p));
+  int abs_file_diff = std::abs(from_square_p->fileDiff(to_square_p));
+
+  if (abs_rank_diff > KING_MAX_1D_DIFF || abs_file_diff > KING_MAX_1D_DIFF)
     return false;
   
   return true;
-
 }
 
 

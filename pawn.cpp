@@ -6,86 +6,101 @@
 #include <iostream>
 
 
-
 /**
- * internal helper function that returns true if this move 
- * is a 2 squares pawn push
+ * internal helper function. Returns true if this move is a 2 squares
+ * pawn push
  */
-bool twoSquaresPush(int ranks_to_dest, int files_to_dest){
-  if (ranks_to_dest != PAWN_MAX_FIRST_FORWARD_MOVE ||
-      files_to_dest != NONE)
+bool twoSquarePawnPush(int rank_diff, int file_diff){
+  if (rank_diff != PAWN_MAX_FIRST_FORWARD_MOVE || file_diff != NONE)
     return false;
   
   return true;
 }
 
+
 /**
- * internal helper function that returns true if this move 
- * is a simple pawn push
+ * internal helper function. returns true if this move is a simple
+ * pawn push
  */
-bool simplePawnPush(int ranks_to_dest, int files_to_dest){
-   if (ranks_to_dest != PAWN_FORWARD_MOVE ||
-       files_to_dest != NONE)
+bool simplePawnPush(int rank_diff, int file_diff){
+   if (rank_diff != PAWN_FORWARD_MOVE || file_diff != NONE)
      return false;
+   
    return true;  
 }
  
 
 /*
- * internal helper function that returns true if this move is 
- * a pawn take
+ * internal helper function that returns true if this move is a pawn
+ * take
  */
-bool pawnTakes(int ranks_to_dest, int files_to_dest){
-   if (ranks_to_dest != PAWN_FORWARD_MOVE ||
-       files_to_dest != PAWN_LATERAL_MOVE)
+bool pawnTakes(int rank_diff, int file_diff){
+   if (rank_diff != PAWN_FORWARD_MOVE || file_diff != PAWN_LATERAL_MOVE)
      return false;
+   
    return true;
 }
 
-bool Pawn::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){
-  int ranks_to_dest = sqr_source_ptr->ranksTo(sqr_dest_ptr);
-  int files_to_dest = std::abs(sqr_source_ptr->filesTo(sqr_dest_ptr));
-  ranks_to_dest *= (color)? 1: -1; // switch to black perspective
-  bool dest_sqr_empty  = sqr_dest_ptr->isEmpty();
+bool Pawn::canMove(Square* from_square_p, Square* to_square_p){
+  int rank_diff = from_square_p->rankDiff(to_square_p);
+  int abs_file_diff = std::abs(from_square_p->fileDiff(to_square_p));
+  rank_diff *= (color)? 1: -1; // switch to black perspective
+  bool to_square_has_piece  = to_square_p->hasPiece();
+
+  bool pawn_takes = pawnTakes(rank_diff, abs_file_diff);
+  bool simple_pawn_push = simplePawnPush(rank_diff, abs_file_diff);
+  bool two_square_pawn_push = twoSquarePawnPush(rank_diff, abs_file_diff);
+
+  if (simple_pawn_push && !to_square_has_piece)
+    return true;
   
-  if (twoSquaresPush(ranks_to_dest, files_to_dest))
-    if (dest_sqr_empty){
-      en_passant = true;
-      return true;
-    }
+  if (pawn_takes && to_square_has_piece)
+    return true;
+ 
+  if (pawn_takes && canEnPassant(to_square_p))
+    return true;
 
-  if (simplePawnPush(ranks_to_dest, files_to_dest))
-    if (dest_sqr_empty)
-      return true;
+  if (two_square_pawn_push && !to_square_has_piece){
+    
+    Square* square_below = to_square_p->getSquareBelow(color); 
 
-  if (pawnTakes(ranks_to_dest, files_to_dest)){
-    if (!dest_sqr_empty) // no need to check for colors. this is done higher up
-      return true;
-
-    if (dest_sqr_empty && canEnPassant(sqr_dest_ptr))
-      return true;
+    if (square_below->hasPiece()) // cannot move past a piece
+      return false;
+    
+    en_passant = true; // this pawn can be taken en passant next turn
+    return true;
   }
 
   return false;
 }
- 
-bool Pawn::canEnPassant(Square* sqr_dest_ptr, bool destroy_piece){
-  int en_passant_offset = (color)? -1: 1;
-  Square* column[8];
-  Pawn* pawn;
-  sqr_dest_ptr->getColumn(column);
-  // must be a valid index since we're moving one square back after a pawn take
-  Square* en_passant_sqr = column[sqr_dest_ptr->getRank() + en_passant_offset];
-  if (en_passant_sqr->isEmpty() ||
-      en_passant_sqr->getPiece()->getType() != PAWN)
+
+
+bool Pawn::canEnPassant(Square* to_square_p, bool destroy_piece){
+  int en_passant_rank_offset = (color)? -1: 1;
+  Square* en_passant_file[8], *en_passant_square;
+  Piece* en_passant_piece;
+  Pawn* en_passant_pawn;
+  int en_passant_rank = to_square_p->getRankIndex() + en_passant_rank_offset;
+
+  to_square_p->getFile(en_passant_file);
+  
+  en_passant_square = en_passant_file[en_passant_rank]; // must be valid rank index
+  
+  if (!en_passant_square->hasPiece())
     return false;
 
-  pawn = static_cast<Pawn*>(en_passant_sqr->getPiece());
-  if (!(pawn->en_passant))
+  en_passant_piece = en_passant_square->getPiece();
+  if (en_passant_piece->getColor() == color ||
+      en_passant_piece->getType() != PAWN)
+    return false;
+  
+  en_passant_pawn = static_cast<Pawn*>(en_passant_piece);
+  
+  if (!en_passant_pawn->en_passant)
     return false;
 
   if (destroy_piece)
-    en_passant_sqr->destroyPiece();
+    en_passant_square->destroyPiece();
   
   return true;
 }

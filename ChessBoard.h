@@ -107,7 +107,7 @@ public:
    * Observer. Requires valid rank and file index in range [0,7], returns
    * pointer to square at the the given indices.
    */
-  Square* getSquare(int i_rank, int i_file)const;
+  Square* getSquare(int rank_i, int file_i)const;
 
   
   /**

@@ -21,8 +21,8 @@ class Square{
 
 private:
   ChessBoard* chessboard_p;
-  const int file_i;
   const int rank_i;
+  const int file_i;
   Piece* piece_p;
 
 public:
@@ -35,31 +35,29 @@ public:
    * Square belongs to. Initializes file_i & rank_i. sets piece_p to NULL.
    * Increments num_squares.
    */
-  Square(ChessBoard* chessboard, int file_i, int rank_i);
+  Square(ChessBoard* chessboard_p, int rank_i, int file_i);
 
   
   /**
-   * Destructor which:
-   *   - deletes piece_ptr if this square has a piece
-   *   - decrements num_squares
+   * Destructor. Calls destroyPiece, then decrements static num_squares
    */
   ~Square();
-
-  
-  /**
-   * Observer. Returns the difference between the file indices of the 
-   * Square at the given pointer and this Square.
-   */
-  const int filesTo(Square* dest_p) const;
 
   
   /**
    * Observer. Returns the difference between the index indices of the 
    * Square at the given pointer and this Square.
    */
-  const int ranksTo(Square* sqr_dest_p) const;
+  const int rankDiff(Square* sqr_dest_p) const;
 
   
+  /**
+   * Observer. Returns the difference between the file indices of the 
+   * Square at the given pointer and this Square.
+   */
+  const int fileDiff(Square* dest_p) const;
+
+
   /**
    * Observer. Returns this Square's rank index
    */
@@ -87,6 +85,7 @@ public:
    */
   void getRank(Square** rank);
 
+
   /**
    * Mutator. Requires file array size >= 8. Copies pointers to Squares
    * in this Square's file into file, in increasing rank index order.
@@ -94,6 +93,15 @@ public:
   void getFile(Square** file);
 
 
+  /**
+   * Observer. Requires this square to have 0 < rank < 7. Returns a pointer to
+   * the Square below this Square, from the perspective of the player with
+   * the given color.
+   */
+  Square* getSquareBelow(const Color color) const;
+
+
+  
   /**
    * Mutator. Requires diagonal array size >= 8. Copies pointers to Squares
    * in the chessboard diagonal that contains both this square and the one
@@ -146,7 +154,7 @@ public:
    * king of the player in check, as per chess rules. This method will undo
    *  any mutation it induces.
    */
-  Bool movePutsKingInCheck(Square* dest_p);
+  bool movePutsKingInCheck(Square* dest_p);
 
 
   /**

@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "square.h"
 #include <cmath>
 
 // definitions
@@ -60,3 +61,4 @@ int getMoveDimension(int rank_shift, int file_shift){
 int getMoveMagnitudeSquared(int rank_shift, int file_shift){
   return rank_shift*rank_shift + file_shift*file_shift;
 }
+

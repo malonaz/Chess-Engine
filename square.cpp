@@ -4,26 +4,31 @@
 #include "utils.h"
 #include <iostream>
 
+
 int Square::num_squares = 0;
 
-Square::Square(ChessBoard* chessboard, int file, int rank)
-  :chessboard(chessboard),file(file), rank(rank), piece_ptr(0){
+
+Square::Square(ChessBoard* chessboard_p, int rank_i, int file_i)
+  :chessboard_p(chessboard_p), rank_i(rank_i), file_i(file_i), piece_p(0){
   num_squares++;
 }
 
 
 Square::~Square(){
-  num_squares--;
   destroyPiece();
+  num_squares--;
 }
 
-const int Square::filesTo(Square* sqr_dest_ptr) const{
-  return sqr_dest_ptr->file - file;
+
+const int Square::rankDiff(Square* dest_p) const{
+  return dest_p->rank_i - rank_i;
 }
 
-const int Square::ranksTo(Square* sqr_dest_ptr) const{
-  return sqr_dest_ptr->rank - rank;
+
+const int Square::fileDiff(Square* dest_p) const{
+  return dest_p->file_i - file_i;
 }
+
 
 int getPointerIndex(Square** pointers, Square* pointer){
   int index = 0;
@@ -31,116 +36,130 @@ int getPointerIndex(Square** pointers, Square* pointer){
   return index;
 }
 
-bool Square::getPath(Square* sqr_dest_ptr, Square** path, PieceType piece_type){
-  int rank_shift = ranksTo(sqr_dest_ptr);
-  int file_shift = filesTo(sqr_dest_ptr);
-  int moveDimension = getMoveDimension(rank_shift, file_shift);
-  Square* raw_path[8]= {};
-  
-  if (moveDimension == HORIZONTAL && piece_type != BISHOP)
-    getRow(raw_path);
-  else if (moveDimension == VERTICAL && piece_type != BISHOP)
-    getColumn(raw_path);
-  else if (moveDimension == DIAGONAL && piece_type != ROOK)
-    getDiagonal(sqr_dest_ptr, raw_path);
-  else 
-    return false;
 
-  int current_index = getPointerIndex(raw_path, this);
-  int end_index = getPointerIndex(raw_path, sqr_dest_ptr);
-  int increment = (current_index < end_index)? 1: -1;
-  for (int i = 0; current_index != end_index + increment; current_index += increment, i++)
-    path[i] = raw_path[current_index];
+// ???????????????????????????????????????
+bool Square::getPath(Square* dest_p, Square** path, PieceType type){ // remove pieceType...
+  int rank_diff = rankDiff(dest_p);
+  int file_diff = fileDiff(dest_p);
+  int moveDimension = getMoveDimension(rank_diff, file_diff);
+  Square* raw_path[8]= {}; // set to null for getPointerIndex function
+  
+  if (moveDimension == HORIZONTAL && type != BISHOP)
+    getRank(raw_path);
+  
+  else if (moveDimension == VERTICAL && type != BISHOP)
+    getFile(raw_path);
+  
+  else if (moveDimension == DIAGONAL && type != ROOK)
+    getDiagonal(dest_p, raw_path);
+  
+  else 
+    return false; // no path
+
+  // get indices of this & dest_p in raw_path
+  int current_i = getPointerIndex(raw_path, this);
+  int end_i = getPointerIndex(raw_path, dest_p);
+  int incr = (current_i < end_i)? 1: -1;
+
+  for (int i = 0; current_i != end_i + incr; current_i += incr, i++)
+    path[i] = raw_path[current_i];
   
   return true;
 }
 
-void Square::getRow(Square** rank_arr){
-  for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
-    rank_arr[file] = chessboard->getSquare(rank, file);
+
+void Square::getRank(Square** rank){
+  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+    rank[file_i] = chessboard_p->getSquare(rank_i, file_i);
 }
 
-void Square::getColumn(Square** file_arr){
-  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-    file_arr[rank] = chessboard->getSquare(rank, file);
+
+void Square::getFile(Square** file){
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    file[rank_i] = chessboard_p->getSquare(rank_i, file_i);
 }
 
-void Square::getDiagonal(Square* sqr_dest_ptr, Square** diagonal_arr){
-  bool rank_increasing = ranksTo(sqr_dest_ptr)*filesTo(sqr_dest_ptr) > 0;
 
-  int current_rank = rank, current_file = file;
+Square* Square::getSquareBelow(const Color color) const{
+  int rank_offset = (color == WHITE)? -1 : 1;
+  return chessboard_p->getSquare(rank_i + rank_offset, file_i);
+}
+
+
+void Square::getDiagonal(Square* dest_p, Square** diagonal){
+  bool rank_increasing = rankDiff(dest_p)*fileDiff(dest_p) > 0;
+
+  int current_rank_i = rank_i, current_file_i = file_i;
   int rank_increment = (rank_increasing)? 1 : -1;
-  int start_rank_limit = (rank_increasing)? MIN_INDEX: MAX_INDEX;
+  int start_rank_i_limit = (rank_increasing)? MIN_INDEX: MAX_INDEX;
   
-  while (current_rank != start_rank_limit && current_file != MIN_INDEX){
-    current_rank -= rank_increment;
-    current_file--;
+  while (current_rank_i != start_rank_i_limit && current_file_i != MIN_INDEX){
+    current_rank_i -= rank_increment;
+    current_file_i--;
   }
   
-  int diagonal_arr_index = 0;
-  while (validIndex(current_rank) && validIndex(current_file)){
-    diagonal_arr[diagonal_arr_index] = chessboard->getSquare(current_rank, current_file);
-    diagonal_arr_index++;
-    current_rank += rank_increment;
-    current_file++;
+  int diagonal_i= 0;
+  while (validIndex(current_rank_i) && validIndex(current_file_i)){
+    diagonal[diagonal_i] = chessboard_p->getSquare(current_rank_i, current_file_i);
+    diagonal_i++;
+    current_rank_i += rank_increment;
+    current_file_i++;
   }
 }
 
-void Square::setPiece(Piece* piece_ptr){
+void Square::setPiece(Piece* piece_p){
   destroyPiece();
-  this->piece_ptr = piece_ptr;
+  this->piece_p = piece_p;
 }
 
 void Square::destroyPiece(){
-  if (!isEmpty()){
-    delete piece_ptr;
-    piece_ptr = 0; // set to NULL
+  if (hasPiece()){
+    delete piece_p;
+    piece_p = 0; // set to NULL
   }
 }
 
-bool Square::movePiece(Square* sqr_dest_ptr){
-  if (piece_ptr->canMove(this, sqr_dest_ptr)){
+bool Square::movePiece(Square* dest_p){
+  if (piece_p->canMove(this, dest_p)){
     
-    if (movePutsKingInCheck(sqr_dest_ptr))
+    if (movePutsKingInCheck(dest_p))
       return false;
     
-    piece_ptr->setToMoved();
-    sqr_dest_ptr->setPiece(piece_ptr);
-    piece_ptr = 0; // set to NULL
+    piece_p->setToMoved();
+    dest_p->setPiece(piece_p);
+    piece_p = 0; // set to NULL
     return true;
   }
   
   return false;
 }
 
-bool Square::movePutsKingInCheck(Square* sqr_dest_ptr){
-  Color player_color = piece_ptr->getColor();
-  Piece* taken_piece_ptr = sqr_dest_ptr->piece_ptr;
-  sqr_dest_ptr->piece_ptr = piece_ptr;
-  piece_ptr = 0; // set to NULL
+bool Square::movePutsKingInCheck(Square* dest_p){
+  Color player_color = piece_p->getColor();
+  Piece* taken_piece_p = dest_p->piece_p;
+  dest_p->piece_p = piece_p;
+  piece_p = 0; // set to NULL
 
-  bool kingIsInCheck = chessboard->kingIsInCheck(player_color);
+  bool kingIsInCheck = chessboard_p->kingIsInCheck(player_color);
 
-  piece_ptr = sqr_dest_ptr->piece_ptr;
-  sqr_dest_ptr->piece_ptr = taken_piece_ptr;
+  piece_p = dest_p->piece_p;
+  dest_p->piece_p = taken_piece_p;
 
-  
   return kingIsInCheck;
 }
 
-bool Square::isEmpty()const{
-  if (piece_ptr == 0)
-    return true;
-  return false;
+bool Square::hasPiece()const{
+  if (piece_p == 0)
+    return false;
+  return true;
 }
 
 
 bool Square::pieceCanMove(){
-  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++){
-    for (int file = MIN_INDEX; file <= MAX_INDEX; file++){
-      Square* to_square = chessboard->getSquare(rank, file);
-      if (piece_ptr->canMove(this, to_square) &&
-	  !movePutsKingInCheck(to_square))
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+      Square* dest_p = chessboard_p->getSquare(rank_i, file_i);
+      if (piece_p->canMove(this, dest_p) && !movePutsKingInCheck(dest_p))
 	return true;	   
     }
   }

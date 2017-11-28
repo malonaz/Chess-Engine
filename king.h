@@ -5,7 +5,7 @@
 #include "piece.h"
 
 // definitions
-#define KING_MAX_1D_SHIFT 1
+#define KING_MAX_1D_DIFF 1
 
 // forward declarations
 class Square;
@@ -15,19 +15,18 @@ class Square;
  */
 class King: public Piece{
 public:
-  /**
-   * Constructor which, given a color,
-   * calls its superclass constructor with
-   * the given color and the knight char representation
-   */
-  King(const Color color): Piece(color, KING){}
 
   /**
-   * Destructor. Empty
+   * Constructor. Passes color and type to superclass constructor.
    */
-  ~King(){}
+  King(const Color color): Piece(color, KING){}
   
-  bool canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr);
+
+  /**
+   * Observer. Returns true if this King can move from the Square at 
+   * from_square_p to the Square at to_square_p legally as per chess rules.
+   */
+  bool canMove(Square* from_square_p, Square* to_square_p);
   
   void update(){}
 

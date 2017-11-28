@@ -10,31 +10,35 @@ Piece::Piece(const Color color, const PieceType type)
 }
 
 
-bool Piece::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){  
+bool Piece::canMove(Square* from_square_p, Square* to_square_p){  
   Square* path[8];
-  
-  if (!sqr_source_ptr->getPath(sqr_dest_ptr, path, type))
+  if (!from_square_p->getPath(to_square_p, path, type))
      return false;
   
-  for (int i = 1; path[i] != sqr_dest_ptr; i++)
-    if (!path[i]->isEmpty())
+  for (int i = 1; path[i] != to_square_p; i++)
+    if (path[i]->hasPiece())
       return false;
 
   return true;
 }
-  
+
 
 std::ostream& operator<<(std::ostream& stream, Color color){
   if (color == WHITE)
-    stream << "White";
+    stream << "White's";
   else
-    stream << "Black";
-  
+    stream << "Black's";
   return stream;
 }
 
-std::ostream& operator<<(std::ostream& stream, PieceType type){
-  switch(type){
+
+std::ostream& operator<<(std::ostream& stream, Piece* piece_p){
+  if (piece_p->color == WHITE)
+    stream << "White 's ";
+  else
+    stream << "Black 's ";
+  
+  switch(piece_p->type){
   case PAWN:
     stream << "Pawn";
     break;
@@ -54,12 +58,6 @@ std::ostream& operator<<(std::ostream& stream, PieceType type){
     stream << "Knight";
     break;
   }
-  return stream;
-}
-
-
-std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr){
-  stream << piece_ptr->getColor() << "'s " << piece_ptr->getType() << " ";
   return stream;
 }
 

@@ -4,8 +4,6 @@
 
 #include "piece.h"
 
-// definitions
-
 // forward declarations
 class Square;
 
@@ -14,17 +12,11 @@ class Square;
  */
 class Queen: public Piece{
 public:
-  /**
-   * Constructor which, given a color,
-   * calls its superclass constructor with
-   * the given color and the knight char representation
-   */
-  Queen(const Color color): Piece(color, QUEEN){}
 
   /**
-   * Destructor. Empty
+   * Constructor. Passes color and type to superclass constructor.
    */
-  ~Queen(){}
+  Queen(const Color color): Piece(color, QUEEN){}
   
   void update(){}
 };

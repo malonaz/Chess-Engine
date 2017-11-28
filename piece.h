@@ -7,76 +7,75 @@
 // colors
 enum Color {BLACK, WHITE};
 std::ostream& operator<<(std::ostream& stream, Color color);
-
+  
 // pieces
 enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING};
-std::ostream& operator<<(std::ostream& stream, PieceType type);
-
 
 // forward declaration
 class Square;
 
 
 /**
- * Piece. This abstract superclass represents the shared
- * attributes of all chess pieces:
- * pawn, knights, bishops, rooks, queens and kings.
- * A piece is characterized by:
- *  - a color (black or white)
- *  - has_moved which indicates whether this piece has moved
- *    squares since the beginning of a chess game.
- *  - a constant character representing the type of piece it is 
+ * Piece. This abstract class represents the shared a chess piece. A
+ * chess piece is represented by a color, a type and a boolean variable
+ * indicating whether this piece has moved squares since its creation.
  */
 class Piece{
+  
 protected:
   const Color color;
-  bool has_moved;
+  bool has_moved; 
   const PieceType type;
 
 public:
     static int num_pieces;
   
   /**
-   * Constructor which, given a color and a character representation,
-   * instantiates both of these constant fields.
+   * Constructor. Initializes a piece's color and type.
    */
   Piece(const Color color, const PieceType type);
 
+  
   /**
-   * Virtual destructor so derived destructor is called when
-   * manipulating a derived Piece object.
+   * Destructor. Virtual so that derived class destructors are called
+   * when manipulating Piece objects. Decrements num_pieces.
    */
   virtual ~Piece(){num_pieces--;}
 
   
   /**
-   * Pure virtual observer method, which all 
-   * derived pieces will need to implement
+   * Observer. Returns true if the move from the Square at from_square_p
+   * to the Square at to_square_p is legal as per chess rules.
    */
-  virtual bool canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr);
+  virtual bool canMove(Square* from_square_p, Square* to_square_p);
 
+
+  // ?????????????????????????????????????
   virtual void update() = 0;
+
   
   /**
-   * Observer method which sets has_moved to true
+   * Mutator. Sets has_moved to true.
    */
   void setToMoved(){has_moved = true;};
+
   
   /**
-   * Observer method, which returns the character 
-   * representation of this piece
+   * Observer. Returns the type of this piece
    */
   const PieceType getType()const{return type;}
 
+  
   /**
-   * Observer method, which returns the color 
-   * of this piece
+   * Observer. Returns the color of this piece
    */
   const Color getColor() const{return color;}
 
-  void print()const;
-  
-  friend std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr);
+  /**
+   * Friend. Overloads << Operator to stream information about this
+   * piece's color and type.
+   */
+  friend std::ostream& operator<<(std::ostream& stream, Piece* piece_p);
 };
 
 #endif
