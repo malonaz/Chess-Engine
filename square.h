@@ -137,9 +137,11 @@ public:
    */
   bool movePiece(Square* sqr_dest_ptr);
 
-
-
+  
   bool movePutsKingInCheck(Square* sqr_dest_ptr);
+
+
+  bool pieceCanMove();
 };
 
 

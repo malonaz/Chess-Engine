@@ -121,7 +121,8 @@ public:
 
 
   bool kingIsInCheck(Color color);
-  
+
+  bool noPieceCanMove(Color color);
   /**
    * Reader debugging method which prints the chessboard
    * to the standard output stream.

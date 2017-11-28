@@ -130,8 +130,12 @@ void ChessBoard::prepareNextTurn(){
 
   color_to_play = (color_to_play == WHITE)? BLACK: WHITE;
   
-  if (kingIsInCheck(color_to_play))
+  if (kingIsInCheck(color_to_play)){
     std::cout << std::endl << color_to_play << " is in check";
+    if (noPieceCanMove(color_to_play))
+	std::cout << "mate";
+  }
+  
 }
 
 Square* ChessBoard::getSquare(const char* sqr_str)const{
@@ -192,9 +196,25 @@ bool ChessBoard::kingIsInCheck(Color color){
     }
   return false;
 }
-				 
 
 
+bool ChessBoard::noPieceCanMove(Color color){
+  Square* current_square;
+  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
+    for (int file = MIN_INDEX; file <= MIN_INDEX; file++){
+      current_square = square_ptrs[rank][file];
+      if (!current_square->isEmpty() &&
+	  current_square->getPiece()->getColor() == color &&
+	  current_square->pieceCanMove()){
+	std::cout << rank << " , " << file;
+	return false;
+      }
+	
+    }
+  return true;
+}
+
+    
 void ChessBoard::printBoard(){
   for (int rank = MAX_INDEX; rank >= MIN_INDEX; rank--){
     std::cout << HORIZONTAL_BAR  << std::endl;

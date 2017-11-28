@@ -110,8 +110,8 @@ bool Square::movePutsKingInCheck(Square* sqr_dest_ptr){
 
   piece_ptr = sqr_dest_ptr->piece_ptr;
   sqr_dest_ptr->piece_ptr = taken_piece_ptr;
-  if (kingIsInCheck)
-    std::cout << "King is in check!" << std::endl;
+
+  
   return kingIsInCheck;
 }
 
@@ -121,3 +121,16 @@ bool Square::isEmpty()const{
   return false;
 }
 
+
+bool Square::pieceCanMove(){
+  Square* row[SQUARES_PER_SIDE];
+  for (int rank_index = MIN_INDEX; rank_index <= MAX_INDEX; rank_index++){
+    chessboard->getRow(rank_index, row);
+    for (int file_index = MIN_INDEX; file_index <= MAX_INDEX; file_index++){
+      if (piece_ptr->canMove(this, row[file_index]) &&
+	  !movePutsKingInCheck(row[file_index]))
+	return true;	   
+    }
+  }
+  return false;
+}
