@@ -31,16 +31,17 @@
 #define ROOK2_FILE   7
 
 
-// forward declarations
+// forward declaration
 class square;
 
 /**
- * Chessboard. This class represents a chessboard,
- * as an array of pointers to squares, and 
- * a boolean variable to keep track of which player's
- * turn is it next.
+ * Chessboard. This class represents a chessboard as:
+ *   - 8 rows of 8 pointers to Squares
+ *   - a boolean variable to keep track of turns 
+ *   - an array of 2 pointers to square which hold the two Kings
  */
 class ChessBoard{
+  
 private:
   Square* square_ptrs[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
   Square* kings_square_ptrs[NUMBER_OF_COLORS];
@@ -48,59 +49,69 @@ private:
   
 public:
   /**
-   *  Constructor which simply calls init method
+   * Constructor. Creates 64 Squares and 32 Pieces and sets them up on 
+   * the board. These Squares and Pieces are allocated memory which the 
+   * desctructor will free. 
    */
   ChessBoard(){init();}
+
   
   /**
-   * Destructor which calls destroySquares
+   * Destructor. Frees memory allocated to Squares. Square's destructor 
+   * frees memory allocated to its Piece if it has one.
    */
   ~ChessBoard(){destroySquares();}
 
   /**
-   * Method which:
-   *  - initializes white_turn to true;
-   *  - creates 64 Square objects on the heap
-   *    and assigns their pointers to the square_ptrs array.
+   * Mutator. Creates 64 chessboard Squares and copes their pointers to the
+   * square_ptrs array. Creates 32 Pieces and sets them on the appropriate
+   * squares as chess rules dicate it. Copies Kings pointers to 
+   * kings_square_ptrs. Sets the color to play next to white.
    */
   void init();
 
   /**
-   * helper method which:
-   *  - deletes all 64 square objects on the heap
+   * Mutator. Frees memory allocated to ChessBoard Squares.
    */
   void destroySquares();
 
-  /*
-   * Method which, given two strings: 
-   *  - if one of the string does not represents a square as 
-   *    a letter in [A-H] and a number in [1-8], ???
-   *  -  
-   */
-  void submitMove(const char* source_sqr_str,
-		  const char* dest_sqr_str);
+
   /**
-   * Method which:
-   *  - deletes all Squares???
+   * Mutator. Frees memory allocated to Squares and Pieces, then calls init.
    */
   void resetBoard();
+  
+  
+  /**
+   * Mutator. If both inputs are valid (see utils.h) and from_square has
+   * a piece, moves the piece to to_square if it is possible and legal
+   * according to the rules of chess.
+   */
+  void submitMove(const char* from_square,
+		  const char* to_square);
+
+  /**
+   * Mutator. Requires rank array size >= 8. Copies pointers to Squares 
+   * with given rank_index into rank, in increasing file index order.
+   */
+  void getRow(int rank_index, Square** rank);
 
 
   /**
-   * Method which, given a rank and an array of 8 Square pointers:
-   *   - copies all pointers to Squares in that rank in order 
-   *      starting with file 0 and ending with file 7
+   * Mutator. Requires file array size >= 8. Copies pointers to Squares 
+   * with given file_index into file, in increasing file index order.
    */
-  void getRow(int rank, Square** row);
+  void getColumn(int file_index, Square** file);
+
+
 
   /**
-   * Method which, given a file and an array of 8 Square pointers:
-   *   - copies all pointers to Squares in that file in order
-   *     starting with rank 0 and ending with rank 7
+   * Mutator. Requires diagonal array size >= 8. Looks at rank index 
+   * increasing Copies pointers to 
+   * Squares on the diagonal that contains Square with given rank_index and
+   * file index, in increasing file index order.
    */
-  void getColumn(int file, Square** column);
-
-
+  
   /**
    * Method which, given a file, a rank and an array of 8 square pointers:
    *   - looks at the rank increasing diagonal (/) if rank_increasing is true
