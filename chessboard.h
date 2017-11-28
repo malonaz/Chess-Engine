@@ -120,7 +120,7 @@ public:
   void prepareNextTurn();
 
 
-  bool isKingInCheck(Color color);
+  bool kingIsInCheck(Color color);
   
   /**
    * Reader debugging method which prints the chessboard

@@ -6,9 +6,12 @@
 
 // colors
 enum Color {BLACK, WHITE};
-  
+std::ostream& operator<<(std::ostream& stream, Color color);
+
 // pieces
 enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING};
+std::ostream& operator<<(std::ostream& stream, PieceType type);
+
 
 // forward declaration
 class Square;
@@ -63,7 +66,7 @@ public:
    * Observer method, which returns the character 
    * representation of this piece
    */
-  const int getType()const{return type;}
+  const PieceType getType()const{return type;}
 
   /**
    * Observer method, which returns the color 

@@ -98,7 +98,7 @@ public:
   void getColumn(Square** column);
 
   
-  void getDiagonal(Square* sqr_dst_ptr, Square** diagonal);
+  void getDiagonal(Square* sqr_dest_ptr, Square** diagonal);
 
   // PIECE RELATED METHODS //
   
@@ -137,6 +137,9 @@ public:
    */
   bool movePiece(Square* sqr_dest_ptr);
 
+
+
+  bool movePutsKingInCheck(Square* sqr_dest_ptr);
 };
 
 

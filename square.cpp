@@ -63,8 +63,10 @@ void Square::getColumn(Square** column){
   chessboard->getColumn(file, column);
 }
 
-void Square::getDiagonal(Square* sqr_dst_ptr, Square** diagonal){
-  chessboard->getDiagonal(rank, file, diagonal, sqr_dst_ptr->rank > rank);
+void Square::getDiagonal(Square* sqr_dest_ptr, Square** diagonal){
+  int rank_shift = ranksTo(sqr_dest_ptr);
+  int file_shift = filesTo(sqr_dest_ptr);
+  chessboard->getDiagonal(rank, file, diagonal, rank_shift*file_shift > 0);
 }
 
 void Square::setPiece(Piece* piece_ptr){
@@ -84,6 +86,9 @@ bool Square::movePiece(Square* sqr_dest_ptr){
   if (!sqr_dest_ptr-> isEmpty() &&
       sqr_dest_ptr->getPiece()->getColor() == getPiece()->getColor())
     return false;
+
+  if (movePutsKingInCheck(sqr_dest_ptr))
+    return false;
   
   if (piece_ptr->canMove(this, sqr_dest_ptr)){
     piece_ptr->setToMoved();
@@ -91,9 +96,24 @@ bool Square::movePiece(Square* sqr_dest_ptr){
     piece_ptr = 0; // set to NULL
     return true;
   }
+  
   return false;
 }
 
+bool Square::movePutsKingInCheck(Square* sqr_dest_ptr){
+  Color player_color = piece_ptr->getColor();
+  Piece* taken_piece_ptr = sqr_dest_ptr->piece_ptr;
+  sqr_dest_ptr->piece_ptr = piece_ptr;
+  piece_ptr = 0; // set to NULL
+
+  bool kingIsInCheck = chessboard->kingIsInCheck(player_color);
+
+  piece_ptr = sqr_dest_ptr->piece_ptr;
+  sqr_dest_ptr->piece_ptr = taken_piece_ptr;
+  if (kingIsInCheck)
+    std::cout << "King is in check!" << std::endl;
+  return kingIsInCheck;
+}
 
 bool Square::isEmpty()const{
   if (piece_ptr == 0)

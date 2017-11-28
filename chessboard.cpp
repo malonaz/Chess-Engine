@@ -22,6 +22,8 @@ void ChessBoard::destroySquares(){
 void ChessBoard::init(){ // try to pass class to generic set piece ...
   color_to_play = WHITE;
   int file, rank;
+
+  std::cout << "A New chess game is started!" << std::endl;
   
   // create Squares
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
@@ -78,18 +80,26 @@ void ChessBoard::submitMove(const char* source_sqr_str,
   Piece* piece_ptr = source_sqr->getPiece();
   
   // make sure it is the correct color to play
-  if (source_sqr->isEmpty() ||
-      piece_ptr->getColor() != color_to_play)
+  if (source_sqr->isEmpty()){
+    std::cout << "There is no piece at position " << source_sqr_str << "!" << std::endl;
     return;
-  
+  }
+
+  if (piece_ptr->getColor() != color_to_play){
+    std::cout << "It is not " << piece_ptr->getColor() << "'s turn to move!" << std::endl; 
+    return;
+  }
+
+  std::cout << piece_ptr->getColor() << "'s " << piece_ptr->getType();
   if (source_sqr->movePiece(dest_sqr)){
     if (piece_ptr->getType() == KING)
       kings_square_ptrs[piece_ptr->getColor()] = dest_sqr;
     prepareNextTurn();
+    std::cout << " moves from " << source_sqr_str << " to " << dest_sqr_str;
+  }else{
+    std::cout << " cannot move to " << dest_sqr_str << "!";
   }
-  else
-    std::cout << "invalid move: " << source_sqr_str <<  " to " << dest_sqr_str << std::endl;
-      
+  std::cout << std::endl;
 }
 
 void ChessBoard::prepareNextTurn(){
@@ -124,14 +134,15 @@ void ChessBoard::getDiagonal(int rank, int file, Square** diagonal,
 			     bool rank_increasing){
   int current_rank = rank, current_file = file;
   int rank_increment = (rank_increasing)? 1 : -1;
-    
-  while (current_rank != MIN_INDEX && current_file != MIN_INDEX){
+  int start_rank_limit = (rank_increasing)? MIN_INDEX: MAX_INDEX;
+  
+  while (current_rank != start_rank_limit && current_file != MIN_INDEX){
     current_rank -= rank_increment;
     current_file--;
   }
   
   int diagonal_index = 0;
-  while (current_rank != MAX_INDEX && current_file != MAX_INDEX){
+  while (validIndex(current_rank) && validIndex(current_file)){
     diagonal[diagonal_index] = square_ptrs[current_rank][current_file];
     diagonal_index++;
     current_rank += rank_increment;
@@ -140,8 +151,7 @@ void ChessBoard::getDiagonal(int rank, int file, Square** diagonal,
     
 }
 
-
-bool ChessBoard::isKingInCheck(Color color){
+bool ChessBoard::kingIsInCheck(Color color){
   Square* current_square;
   Piece* current_piece;
   for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)

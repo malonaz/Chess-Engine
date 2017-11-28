@@ -13,7 +13,7 @@ bool Knight::canMove(Square* sqr_source_ptr, Square* sqr_dest_ptr){
   
   if (moveMagnitudeSquared != KNIGHT_MOVE_MAGNITUDE_SQUARED)
     return false;
-
+  
   return true;
 
 }

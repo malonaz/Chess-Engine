@@ -40,6 +40,7 @@ for i in "${!files[@]}";do
 
 	if [ $i == 0 ];then
 	    xdotool key super+Right # snap right
+	    sleep 0.1
 	else
 	    #maximize window
 	    wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz

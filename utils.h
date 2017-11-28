@@ -1,7 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-
 // definitions
 #define MIN_INDEX 0
 #define MAX_INDEX 7

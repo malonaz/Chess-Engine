@@ -1,4 +1,4 @@
-chess: ChessMain.o chessboard.o square.o piece.o pawn.o knight.o rook.o bishop.o queen.o king.o utils.o
+chess: ChessMain.o chessboard.o square.o piece.o pawn.o knight.o rook.o bishop.o queen.o king.o utils.o test.o
 	g++ -Wall -g -o chess $^
 
 ChessMain.o: ChessMain.cpp chessboard.h
@@ -34,5 +34,13 @@ king.o: king.cpp king.h piece.h square.h
 utils.o: utils.cpp utils.h
 	g++ -Wall -g -c utils.cpp
 
+
+test.o: test.cpp test.h chessboard.h
+	g++ -Wall -g -c test.cpp
+
 clean:
 	rm *.o chess
+test:
+	make
+	clear
+	./chess
