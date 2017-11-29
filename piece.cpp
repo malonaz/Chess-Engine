@@ -26,9 +26,9 @@ bool Piece::canMove(Square* from_square_p, Square* to_square_p){
 
 std::ostream& operator<<(std::ostream& stream, Color color){
   if (color == WHITE)
-    stream << "White's ";
+    stream << "White";
   else
-    stream << "Black's ";
+    stream << "Black";
   return stream;
 }
 
@@ -51,7 +51,7 @@ std::ostream& operator<<(std::ostream& stream, PieceType type){
     stream << "Queen";
     break;
   case KING:
-    stream << "Knight";
+    stream << "King";
     break;
   }
   return stream;

@@ -99,7 +99,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
     to_square_piece_color = to_square_p->getPiece()->getColor();
   }
 
-  std::cout << piece_p->getColor() << piece_p->getType();
+  std::cout << piece_p->getColor() << "'s " << piece_p->getType();
   
   if (from_square_p->movePiece(to_square_p)){
     if (piece_p->getType() == KING)
@@ -113,7 +113,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
     std::cout << " moves from " << from_square << " to " << to_square;
 
     if (to_square_has_piece)
-      std::cout << " taking " << to_square_piece_color << to_square_piece_type;
+      std::cout << " taking " << to_square_piece_color << "'s " << to_square_piece_type;
     prepareNextTurn();
     std::cout << std::endl;
     return;
@@ -148,6 +148,14 @@ Square* ChessBoard::getSquare(const char* sqr_str)const{
 }
 
 
+
+void ChessBoard::setKingSquareP(Color king_color, Square* king_square_p){
+  kings_square_ptrs[king_color] = king_square_p;
+}
+
+
+
+
 Square* ChessBoard::getSquare(int rank_i, int file_i)const{
   return square_ptrs[rank_i][file_i];
 }
@@ -173,18 +181,20 @@ bool ChessBoard::kingIsInCheck(Color color){
 
 bool ChessBoard::cannotMove(Color color) const{
   Square* current_square;
-  
-  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
-    for (int file_i = MIN_INDEX; file_i <= MIN_INDEX; file_i++){
-
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+      
       current_square = square_ptrs[rank_i][file_i];
       
       if (current_square->hasPiece())
 	if (current_square->getPiece()->getColor() == color)
-	  if (current_square->pieceCanMove())
+	  if (current_square->pieceCanMove()){
+	    //Piece* p = current_square->getPiece();
+	    //	    std::cout << '\n' << p->getColor() << p->getType() << " can move!\n";
 	    return false;
-      
+	  }
     }
+  }
   
   return true;
 }

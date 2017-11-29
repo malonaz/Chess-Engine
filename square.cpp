@@ -137,14 +137,23 @@ bool Square::movePiece(Square* dest_p){
 bool Square::movePutsKingInCheck(Square* dest_p){
   Color player_color = piece_p->getColor();
   Piece* taken_piece_p = dest_p->piece_p;
+  bool piece_is_king = chessboard_p->getKingSquareP(player_color) == this;
+  
+  if (piece_is_king)
+    chessboard_p->setKingSquareP(player_color, dest_p);
+  
   dest_p->piece_p = piece_p;
   piece_p = 0; // set to NULL
 
+  
   bool kingIsInCheck = chessboard_p->kingIsInCheck(player_color);
-
+  
   piece_p = dest_p->piece_p;
   dest_p->piece_p = taken_piece_p;
 
+  if (piece_is_king)
+    chessboard_p->setKingSquareP(player_color, this);
+  
   return kingIsInCheck;
 }
 
@@ -157,13 +166,18 @@ bool Square::hasPiece()const{
 
 bool Square::pieceCanMove(){
   Square* dest_p;
+  
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
-
       dest_p = chessboard_p->getSquare(rank_i, file_i);
-      
-      if (piece_p->canMove(this, dest_p) && !movePutsKingInCheck(dest_p))
-	return true;	   
+      //  if (piece_p->getType() == KING && dest_p->rank_i == 6 && dest_p->file_i == 5)
+      //	std::cout << "here";
+      if (piece_p->canMove(this, dest_p) && !movePutsKingInCheck(dest_p)){
+	//	if (piece_p->getType() == KNIGHT && piece_p->getColor() == BLACK)
+	//	Piece* p = piece_p;
+	//	std::cout << '\n' << p->getColor() << p->getType() << " can move!\n";
+	return true;
+      }
     }
   }
   return false;

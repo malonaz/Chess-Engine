@@ -109,6 +109,10 @@ public:
    */
   Square* getSquare(int rank_i, int file_i)const;
 
+  Square* getKingSquareP(Color color){return kings_square_ptrs[color];}
+
+  void setKingSquareP(Color king_color, Square* king_square_p);
+  
   
   /**
    * Observer. returns true if king is in check.
