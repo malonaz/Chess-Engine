@@ -73,16 +73,6 @@ public:
    */
   const Color getColor() const{return color;}
 
-
-  /**
-   * friend. Used for debugging. Overload stream << operator s.t.
-   * the first letter of each type is streamed (except Knight which
-   * maps to N). Black pieces are streamed in Bold font.
-   */
-  friend std::ostream& operator<<(std::ostream& stream, Piece* piece_p);
-  
 };
-
-
 
 #endif

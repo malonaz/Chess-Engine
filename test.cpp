@@ -12,7 +12,6 @@ void testPins(){
     cout << endl;
 
     ChessBoard cb;
-
     cout << endl;
     // testing white pinned pieces
     cb.submitMove("D2", "D4");

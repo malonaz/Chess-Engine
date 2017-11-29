@@ -1,7 +1,9 @@
-#include "ChessBoard.h"
 #include <iostream>
+#include "ChessBoard.h"
 
 using namespace std;
+
+#include "test.h"
 
 int main() {
 

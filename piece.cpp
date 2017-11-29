@@ -58,34 +58,3 @@ std::ostream& operator<<(std::ostream& stream, PieceType type){
 }
 
 
-
-
-std::ostream& operator<<(std::ostream& stream, Piece* piece_p){
-  if (piece_p->getColor() == BLACK)
-    stream << "\e[1m";
-  switch(piece_p->getType()){
-  case PAWN:
-    stream << 'P';
-    break;
-  case KNIGHT:
-    stream << 'N';
-    break;
-  case ROOK:
-    stream << 'R';
-    break;
-  case BISHOP:
-    stream << 'B';
-    break;
-  case QUEEN:
-    stream << 'Q';
-    break;
-  case KING:
-    stream << 'K';
-    break;
-  }
-
-  if (piece_p->getColor() == BLACK)
-    stream << "\e[0m";
-  return stream;
-}
-
