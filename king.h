@@ -5,7 +5,9 @@
 #include "piece.h"
 
 // definitions
-#define KING_MAX_1D_DIFF 1
+#define KING_MAX_1D_MOVE 1
+
+enum Castle{QUEEN_SIDE = -2, KING_SIDE = 2};
 
 // forward declarations
 class Square;
@@ -28,8 +30,21 @@ public:
    */
   bool canMove(Square* from_square_p, Square* to_square_p);
   
+
+  /** 
+   * Observer. Requires Method which returns true this King can castle by moving to
+   * the square at to_square_p;
+   */
+  bool canCastle(Square* from_square_p, Castle castle);
+
+
+
+
+
   void update(){}
 
+
+  
   
 };
 

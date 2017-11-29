@@ -43,13 +43,13 @@ int getMoveDimension(int rank_shift, int file_shift){
   int abs_rank_shift = std::abs(rank_shift);
   int abs_file_shift = std::abs(file_shift);
 
-  if (rank_shift == NONE){
-    if (file_shift == NONE)
-      return NONE;
+  if (rank_shift == NO_CHANGE){
+    if (file_shift == NO_CHANGE)
+      return NO_CHANGE;
     else
       return HORIZONTAL;
   }else{
-    if (file_shift == NONE)
+    if (file_shift == NO_CHANGE)
       return VERTICAL;
     if (abs_rank_shift == abs_file_shift)
       return DIAGONAL;

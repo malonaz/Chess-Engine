@@ -14,7 +14,7 @@
 
 // dimensions
 #define INCORRECT -1
-#define NONE 0
+#define NO_CHANGE 0
 #define DIAGONAL 1
 #define HORIZONTAL 2
 #define VERTICAL 3

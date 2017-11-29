@@ -11,7 +11,7 @@
  * pawn push
  */
 bool twoSquarePawnPush(int rank_diff, int file_diff){
-  if (rank_diff != PAWN_MAX_FIRST_FORWARD_MOVE || file_diff != NONE)
+  if (rank_diff != PAWN_MAX_FIRST_FORWARD_MOVE || file_diff != NO_CHANGE)
     return false;
   
   return true;
@@ -23,7 +23,7 @@ bool twoSquarePawnPush(int rank_diff, int file_diff){
  * pawn push
  */
 bool simplePawnPush(int rank_diff, int file_diff){
-   if (rank_diff != PAWN_FORWARD_MOVE || file_diff != NONE)
+   if (rank_diff != PAWN_FORWARD_MOVE || file_diff != NO_CHANGE)
      return false;
    
    return true;  
