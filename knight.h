@@ -31,7 +31,7 @@ public:
    * Observer. Returns true if this Knight can move from the Square at 
    * from_square_p to the Square at to_square_p legally as per chess rules.
    */
-  bool canMove(Square* from_square_p, Square* to_square_p);
+  bool canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
 };
 

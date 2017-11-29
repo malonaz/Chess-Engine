@@ -37,17 +37,18 @@ class square;
 /**
  * Chessboard. This class represents a chessboard as:
  *   - 8 rows of 8 pointers to Squares
- *   - a boolean variable to keep track of turns 
  *   - an array of 2 pointers to square which hold the two Kings
+ *   - a boolean variable to keep track of turns 
  */
 class ChessBoard{
   
 private:
-  Square* square_ptrs[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
-  Square* kings_square_ptrs[NUMBER_OF_COLORS];
+  Square* square_ps[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
+  Square* kings_square_ps[NUMBER_OF_COLORS];
   Color color_to_play;
   
 public:
+  
   /**
    * Constructor. Calls init method.
    */			 
@@ -62,9 +63,9 @@ public:
 
   /**
    * Mutator. Creates 64 chessboard Squares and copies their pointers into
-   * square_ptrs array. Creates 32 Pieces and sets them on the appropriate
+   * square_ps array. Creates 32 Pieces and sets them on the appropriate
    * squares as standard chess rules would have it. Copies Kings pointers
-   * to kings_square_ptrs. Sets the color to play next to white.
+   * to kings_square_ps. Sets the color to play next to white.
    */
   void init();
   
@@ -82,8 +83,8 @@ public:
 
   
   /**
-   * Mutator. Requires both inputs be valid (see utils.h) and from_square
-   * has a piece. Moves the piece to to_square if it is possible and legal
+   * Mutator. Requires both inputs be valid (see utils.h). If there is a piece
+   * at from_square, moves it to_square if it is possible and legal
    * according to the rules of chess.
    */
   void submitMove(const char* from_square, const char* to_square);
@@ -108,10 +109,21 @@ public:
    * pointer to square at the the given indices.
    */
   Square* getSquare(int rank_i, int file_i)const;
+  
 
-  Square* getKingSquareP(Color color){return kings_square_ptrs[color];}
+  /**
+   * Observer. Returns the pointer to the square the king of the given color
+   * is currently on.
+   */
+  Square* getKingSquareP(Color color)const{return kings_square_ps[color];}
 
-  void setKingSquareP(Color king_color, Square* king_square_p);
+  
+  /**
+   * Mutator. Requires the king of the correct color to be placed on the
+   * square at the given pointer. Updates the chessboard's king square
+   * pointer to the given pointer.
+   */
+  void setKingSquareP(Square* king_square_p);
   
   
   /**
@@ -121,9 +133,9 @@ public:
 
   
   /**
-   * Observer. Returns true if player of given color cannot move any piece.
+   * Observer. Returns true if player of given color can move a piece.
    */
-  bool cannotMove(Color color)const;
+  bool playerCanMove(Color color)const;
 
   
   /**

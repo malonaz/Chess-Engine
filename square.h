@@ -162,6 +162,12 @@ public:
    * Square's piece can move to a square.
    */
   bool pieceCanMove();
+
+
+  /**
+   * Observer.  Returns true if an opponent can attack this square.
+   */
+  bool isUnderAttack(Color player_color);
 };
 
 

@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-bool Knight::canMove(Square* from_square_p, Square* to_square_p){
+bool Knight::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   int rank_diff = from_square_p->rankDiff(to_square_p);
   int file_diff = from_square_p->fileDiff(to_square_p);
   
@@ -15,6 +15,12 @@ bool Knight::canMove(Square* from_square_p, Square* to_square_p){
   
   if (moveMagnitudeSquared != KNIGHT_MOVE_MAGNITUDE_SQUARED)
     return false;
+
+  if (move_piece){
+    to_square_p->destroyPiece();
+    to_square_p->setPiece(this);
+    from_square_p->setPiece(0);
+  }
   
   return true;
 

@@ -41,7 +41,7 @@ bool pawnTakes(int rank_diff, int file_diff){
    return true;
 }
 
-bool Pawn::canMove(Square* from_square_p, Square* to_square_p){
+bool Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   int rank_diff = from_square_p->rankDiff(to_square_p);
   int abs_file_diff = std::abs(from_square_p->fileDiff(to_square_p));
   rank_diff *= (color == WHITE)? 1: -1; // switch to black perspective
@@ -51,27 +51,36 @@ bool Pawn::canMove(Square* from_square_p, Square* to_square_p){
   bool simple_pawn_push = simplePawnPush(rank_diff, abs_file_diff);
   bool two_square_pawn_push = twoSquarePawnPush(rank_diff, abs_file_diff);
 
+  bool can_move = false;
+  
   if (simple_pawn_push && !to_square_has_piece)
-    return true;
+    can_move = true;
   
   if (pawn_takes && to_square_has_piece)
-    return true;
+    can_move = true;
  
-  if (pawn_takes && !to_square_has_piece && canEnPassant(to_square_p))
-    return true;
+  if (pawn_takes && !to_square_has_piece && canEnPassant(to_square_p, move_piece))
+    can_move = true;
 
   if (two_square_pawn_push && !to_square_has_piece){
-
     Square* square_below = to_square_p->getSquareBelow(color); 
 
     if (square_below->hasPiece()) // cannot move past a piece
       return false;
 
-    en_passant = true; // this pawn can be taken en passant next turn
-    return true;
+    if (move_piece)
+      en_passant = true; // this pawn can be taken en passant next turn
+    
+    can_move = true;
   }
 
-  return false;
+  if (can_move && move_piece){
+    to_square_p->destroyPiece();
+    to_square_p->setPiece(this);
+    from_square_p->setPiece(0);
+  }
+
+  return can_move;
 }
 
 

@@ -49,7 +49,7 @@ public:
    * Observer. Returns true if the move from the Square at from_square_p
    * to the Square at to_square_p is legal as per chess rules.
    */
-  virtual bool canMove(Square* from_square_p, Square* to_square_p);
+  virtual bool canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
 
   // ?????????????????????????????????????
@@ -72,6 +72,11 @@ public:
    * Observer. Returns the color of this piece
    */
   const Color getColor() const{return color;}
+
+  /**
+   * Observer. Returns true if this piece has not been moved since setting the baord
+   */
+  bool hasMoved()const{return has_moved;}
 
 
   friend std::ostream& operator<<(std::ostream& stream, Piece* piece_p);

@@ -2,6 +2,7 @@
 #include "square.h"
 #include "ChessBoard.h"
 #include "utils.h"
+#include "knight.h"
 #include <iostream>
 
 
@@ -108,7 +109,6 @@ void Square::getDiagonal(Square* dest_p, Square** diagonal){
 }
 
 void Square::setPiece(Piece* piece_p){
-  destroyPiece();
   this->piece_p = piece_p;
 }
 
@@ -120,17 +120,8 @@ void Square::destroyPiece(){
 }
 
 bool Square::movePiece(Square* dest_p){
-  if (piece_p->canMove(this, dest_p)){
-    
-    if (movePutsKingInCheck(dest_p))
-      return false;
-    
-    piece_p->setToMoved();
-    dest_p->setPiece(piece_p);
-    piece_p = 0; // set to NULL
-    return true;
-  }
-  
+  if (piece_p->canMove(this, dest_p))
+    return piece_p->canMove(this, dest_p, true); // true because we want to move pieces
   return false;
 }
 
@@ -140,7 +131,7 @@ bool Square::movePutsKingInCheck(Square* dest_p){
   bool piece_is_king = chessboard_p->getKingSquareP(player_color) == this;
   
   if (piece_is_king)
-    chessboard_p->setKingSquareP(player_color, dest_p);
+    chessboard_p->setKingSquareP(dest_p);
   
   dest_p->piece_p = piece_p;
   piece_p = 0; // set to NULL
@@ -152,7 +143,7 @@ bool Square::movePutsKingInCheck(Square* dest_p){
   dest_p->piece_p = taken_piece_p;
 
   if (piece_is_king)
-    chessboard_p->setKingSquareP(player_color, this);
+    chessboard_p->setKingSquareP(this);
   
   return kingIsInCheck;
 }
@@ -170,15 +161,41 @@ bool Square::pieceCanMove(){
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
       dest_p = chessboard_p->getSquare(rank_i, file_i);
-      //  if (piece_p->getType() == KING && dest_p->rank_i == 6 && dest_p->file_i == 5)
-      //	std::cout << "here";
+  
       if (piece_p->canMove(this, dest_p) && !movePutsKingInCheck(dest_p)){
-	//	if (piece_p->getType() == KNIGHT && piece_p->getColor() == BLACK)
-	//	Piece* p = piece_p;
-	//	std::cout << '\n' << p->getColor() << p->getType() << " can move!\n";
+
 	return true;
       }
     }
   }
+  return false;
+}
+
+
+bool Square::isUnderAttack(Color player_color){
+  bool this_square_has_a_piece = hasPiece();
+  Square* current_square;
+  
+  if (!this_square_has_a_piece) // set a dummy piece here to check if under attack
+    setPiece(new Knight(player_color));
+
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+
+      current_square = chessboard_p->getSquare(rank_i, file_i);
+
+      if (current_square->hasPiece())
+	if (current_square->getPiece()->getColor() != player_color)
+	  if (current_square->getPiece()->
+	      canMove(current_square, this)){
+	    if (!this_square_has_a_piece)
+	      destroyPiece();
+	    return true;
+	  }
+    }
+  
+  if (!this_square_has_a_piece)
+    destroyPiece();
+  
   return false;
 }
