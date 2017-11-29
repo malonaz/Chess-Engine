@@ -1,46 +1,25 @@
-chess: ChessMain.o ChessBoard.o square.o piece.o pawn.o knight.o rook.o bishop.o queen.o king.o utils.o test.o
-	g++ -Wall -g -o chess $^
+EXE = chess
+OBJECTS_SOURCES = $(wildcard src/*.cpp)
+OBJECTS = $(patsubst %.cpp, %.o, $(OBJECTS_SOURCES))
 
-ChessMain.o: ChessMain.cpp ChessBoard.h
-	g++ -Wall -g -c ChessMain.cpp
+PIECES_SOURCES = $(wildcard src/pieces/*.cpp)
+PIECES = $(patsubst %.cpp, %.o, $(PIECES_SOURCES))
 
-ChessBoard.o: ChessBoard.cpp ChessBoard.h square.h piece.h
-	g++ -Wall -g -c ChessBoard.cpp
+CXX = g++
+CXXGFLAGS = -Wall -g - MMD
 
-square.o: square.cpp square.h piece.h
-	g++ -Wall -g -c square.cpp
+$(EXE): $(OBJECTS) $(PIECES)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-piece.o: piece.cpp piece.h square.h
-	g++ -Wall -g -c piece.cpp
+$(OBJECTS): src/%.o : src/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-pawn.o: pawn.cpp pawn.h piece.h square.h
-	g++ -Wall -g -c pawn.cpp
-
-knight.o: knight.cpp knight.h piece.h square.h
-	g++ -Wall -g -c knight.cpp
-
-rook.o: rook.cpp rook.h  piece.h square.h
-	g++ -Wall -g -c rook.cpp
-
-bishop.o: bishop.cpp bishop.h piece.h square.h
-	g++ -Wall -g -c bishop.cpp
-
-queen.o: queen.cpp queen.h piece.h square.h
-	g++ -Wall -g -c queen.cpp
-
-king.o: king.cpp king.h piece.h square.h
-	g++ -Wall -g -c king.cpp
-
-utils.o: utils.cpp utils.h
-	g++ -Wall -g -c utils.cpp
+$(PIECES): src/%.o : src/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-test.o: test.cpp test.h ChessBoard.h
-	g++ -Wall -g -c test.cpp
+
+.PHONE: clean, test
 
 clean:
-	rm *.o chess
-test:
-	make
-	clear
-	./chess
+	rm $(OBJECTS) $(EXE)
