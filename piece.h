@@ -73,6 +73,10 @@ public:
    */
   const Color getColor() const{return color;}
 
+
+  friend std::ostream& operator<<(std::ostream& stream, Piece* piece_p);
+  
+
 };
 
 #endif
