@@ -10,7 +10,7 @@ enum Color {BLACK, WHITE};
 std::ostream& operator<<(std::ostream& stream, Color color);
   
 // pieces
-enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING};
+enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING, DUMMY};
 /* overlaods PieceType's operator */
 std::ostream& operator<<(std::ostream& stream, PieceType type);
 

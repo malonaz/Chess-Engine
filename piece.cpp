@@ -65,6 +65,8 @@ std::ostream& operator<<(std::ostream& stream, PieceType type){
   case KING:
     stream << "King";
     break;
+  default:
+    break;
   }
   return stream;
 }
@@ -92,6 +94,8 @@ std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr){
     break;
   case KING:
     stream << 'K';
+    break;
+  default:
     break;
   }
 

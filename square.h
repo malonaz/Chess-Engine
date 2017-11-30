@@ -172,7 +172,7 @@ public:
 
 
   /**
-   * Observer. Returns true if an opponent can attack this square.
+   * Observer. Returns true if opponent is attacking this square.
    */
   bool isUnderAttack(Color player_color);
 };
