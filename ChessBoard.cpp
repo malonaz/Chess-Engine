@@ -15,11 +15,12 @@
 void ChessBoard::init(){
   // initialize members
   color_to_play = WHITE;
-  int file, rank;
 
   // output new game start to std stream
   std::cout << "A new chess game is started!" << std::endl;
-  
+
+
+  int file, rank;
   // create Squares
   for (file = MIN_INDEX; file <= MAX_INDEX; file++)
     for (rank = MIN_INDEX; rank <= MAX_INDEX; rank++)

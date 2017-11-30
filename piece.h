@@ -11,12 +11,31 @@ std::ostream& operator<<(std::ostream& stream, Color color);
   
 // pieces
 enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING, DUMMY};
-/* overlaods PieceType's operator */
+/* overloads PieceType's operator */
 std::ostream& operator<<(std::ostream& stream, PieceType type);
 
 
 // forward declaration
 class Square;
+class Piece;
+
+
+/**
+ * Struct. this structure is used to represent a move.
+ */ 
+struct Move{
+  int num_of_square_ps;
+  Square* pairs_to_move_square_ps[4];
+  Square* piece_taken_square_p;
+  Piece* piece_taken_p;
+  // initialize members
+  Move():num_of_square_ps(0){}
+  void addPairToMove(Square* from_square_p, Square* to_square_p);
+  void makeMove();
+  void reverseMove();
+  void deletePiece();
+  
+};
 
 
 /**
@@ -85,6 +104,13 @@ public:
   bool hasMoved()const{return has_moved;}
 
 
+  void makeMove(Move &move);
+
+
+  void reverseMove(Move &move);
+
+  
+  
   /**
    * Friend. overloads operator for piece pointers. Used by printBoard()
    */

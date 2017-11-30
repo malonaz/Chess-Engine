@@ -53,8 +53,8 @@ public:
    * Constructor. Calls init method.
    */			 
   ChessBoard(){init();}
-  
 
+  
   /**
    * Destructor. Calls destroySquares method.
    */
