@@ -25,15 +25,16 @@ public:
   
 
   /**
-   * Observer. Returns true if this King can move from the Square at 
+   * Mutator. Returns true if this King can move from the Square at 
    * from_square_p to the Square at to_square_p legally as per chess rules.
+   * Moves the king to the appropriate square. Handles castling.
    */
   bool canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
   
 
   /** 
-   * Observer.  Method which returns true this King can castle by moving to
-   * the square at to_square_p;
+   * Mutator. Method which returns true this King can castle by moving to
+   * the square at to_square_p and carries out the castling if move_piece is true.
    */
   bool canCastle(Square* from_square_p, Square* to_square_p, Castle castle, bool move_piece = false);
 

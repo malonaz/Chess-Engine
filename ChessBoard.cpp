@@ -114,12 +114,10 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
   // output move info to std stream
   std::cout << color_to_play  << "'s " << moving_piece_p->getType();
 
-  // check if piece can move
-  if (moving_piece_p->canMove(from_square_p, to_square_p)){
+  
+  if (from_square_p->movePiece(to_square_p)){
+    // move succeeded
     
-    // move piece
-    from_square_p->movePiece(to_square_p);
-
     // update king square pointer if needed
     if (moving_piece_p->getType() == KING) 
       kings_square_ps[color_to_play] = to_square_p;
@@ -176,8 +174,7 @@ Square* ChessBoard::getSquare(int rank_i, int file_i) const{
 }
 
 
-void ChessBoard::setKingSquareP(Square* king_square_p){
-  Color king_color = king_square_p->getPiece()->getColor();
+void ChessBoard::setKingSquareP(Color king_color, Square* king_square_p){
   kings_square_ps[king_color] = king_square_p;
 }
 

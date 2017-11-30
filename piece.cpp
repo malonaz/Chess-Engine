@@ -13,8 +13,11 @@ Piece::Piece(const Color color, const PieceType type)
 
 
 bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){  
+  // create move
+  Move move;
+
+  // create square array for getPath method
   Square* path[8];
-  
   if (!from_square_p->getPath(to_square_p, path, type))
     // there is no such path for this piece
      return false;
@@ -23,9 +26,9 @@ bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
     if (path[i]->hasPiece())
       // this piece cannot go through another piece on its path
       return false;
-
+  
   if (move_piece){
-    // we move the pieces
+    // move the pieces
     to_square_p->destroyPiece();
     to_square_p->setPiece(this);
     from_square_p->setPiece(0);
@@ -108,11 +111,14 @@ std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr){
 void Move::makeMove(){
   Square* from_square_p;
   Square* to_square_p;
-  for (int i = 0; i < num_of_square_ps; i += 2){
+  for (int i = 0; i < num_of_square_ps; i++){
     from_square_p = pairs_to_move_square_ps[i];
     to_square_p = pairs_to_move_square_ps[i + 1];
+
+    // save to_square_pointer
     piece_taken_p = to_square_p->getPiece();
 
+    // move pieces
     to_square_p->setPiece(from_square_p->getPiece());
     from_square_p->setPiece(0);
   }
@@ -122,10 +128,11 @@ void Move::makeMove(){
 void Move::reverseMove(){
   Square* from_square_p;
   Square* to_square_p;
-  for (int i = num_of_square_ps -1; i >= 0; i += 2){
+  for (int i = num_of_square_ps -1; i >= 0; i--){
     from_square_p = pairs_to_move_square_ps[i + 1];
     to_square_p = pairs_to_move_square_ps[i];
-    
+
+    // return pieces to their original squares
     from_square_p->setPiece(to_square_p->getPiece());
     to_square_p->setPiece(piece_taken_p);
   }

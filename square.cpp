@@ -147,16 +147,18 @@ void Square::destroyPiece(){
  
 }
 
+
 bool Square::movePiece(Square* to_square_p){
   // default call to canMove does not move pieces, simply checks
   // whether move is possible and legal
-  if (piece_p->canMove(this, to_square_p))
-    
+  if (piece_p->canMove(this, to_square_p) && !movePutsKingInCheck(to_square_p))
+  
     // we call canMove with true because we want to move pieces
     return piece_p->canMove(this, to_square_p, true);
-  
+
   return false;
 }
+
 
 bool Square::movePutsKingInCheck(Square* to_square_p){
   // gather player information
@@ -170,7 +172,7 @@ bool Square::movePutsKingInCheck(Square* to_square_p){
   // if we are moving the king, we must update our chessboard's kings
   // square pointers.
   if (moving_piece_is_king)
-    chessboard_p->setKingSquareP(to_square_p);
+    chessboard_p->setKingSquareP(player_color, to_square_p);
 
   // manually move the piece
   to_square_p->piece_p = piece_p;
@@ -186,7 +188,7 @@ bool Square::movePutsKingInCheck(Square* to_square_p){
   // if we moved the king earlier, we must restore the chessboard's kings
   // square pointers 
   if (moving_piece_is_king)
-    chessboard_p->setKingSquareP(this);
+    chessboard_p->setKingSquareP(player_color, this);
   
   return kingIsInCheck;
 }

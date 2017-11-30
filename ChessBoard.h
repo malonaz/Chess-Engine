@@ -119,11 +119,10 @@ public:
 
   
   /**
-   * Mutator. Requires the king of the correct color to be placed on the
-   * square at the given pointer. Updates the chessboard's king square
-   * pointer to the given pointer.
+   * Mutator. Updates the chessboard's pointer to the square where the
+   * king of given color is.
    */
-  void setKingSquareP(Square* king_square_p);
+  void setKingSquareP(Color king_color, Square* king_square_p);
   
   
   /**

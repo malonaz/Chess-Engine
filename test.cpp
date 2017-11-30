@@ -7,8 +7,8 @@ using namespace std;
 
 void test(){
 
-  //testPins();
-  testCastling();
+  testPins();
+  //  testCastling();
 }
 
 void testPins(){
