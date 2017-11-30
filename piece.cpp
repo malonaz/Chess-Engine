@@ -1,6 +1,5 @@
 // -*- C++ -*-
 #include "piece.h"
-#include "ChessBoard.h"
 #include "square.h"
 
 
@@ -26,32 +25,15 @@ bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
       // this piece cannot go through another piece on its path
       return false;
 
-  // save pointer to the piece of the square we are moving to
-  Piece* to_square_piece_p = to_square_p->getPiece();
-
-  // move pieces
-  to_square_p->setPiece(this);
-  from_square_p->setPiece(0);
-
-  // Get pointer to chessboard 
-  ChessBoard* chessboard_p = from_square_p->getChessBoard();
-  // check if new position discovers a check
-  bool king_in_check = chessboard_p->kingIsInCheck(color);
-
   if (move_piece){
-    // delete captured piece
-    delete to_square_piece_p;
-    
-  }else{
-    // return pieces to their prior squares
-    from_square_p->setPiece(to_square_p->getPiece());
-    to_square_p->setPiece(to_square_piece_p);
+    // we move the pieces
+    to_square_p->destroyPiece();
+    to_square_p->setPiece(this);
+    from_square_p->setPiece(0);
   }
-
-  // return true if king is not in check
-  return (!king_in_check);;
+  
+  return true;
 }
-
 
 
 std::ostream& operator<<(std::ostream& stream, Color color){
@@ -83,8 +65,6 @@ std::ostream& operator<<(std::ostream& stream, PieceType type){
   case KING:
     stream << "King";
     break;
-  default:
-    break;
   }
   return stream;
 }
@@ -112,9 +92,6 @@ std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr){
     break;
   case KING:
     stream << 'K';
-    break;
-
-  default:
     break;
   }
 

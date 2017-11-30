@@ -215,7 +215,7 @@ bool Square::isUnderAttack(Color player_color){
   
   if (!this_square_has_a_piece)
     // set a dummy piece here to check if under attack
-    setPiece(new Piece(player_color, DUMMY));
+    setPiece(new Knight(player_color));
 
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){

@@ -70,12 +70,6 @@ public:
    */
   int getFileIndex(){return file_i;}
 
-
-  /**
-   * Observer. Returns this Square's chessboard pointer
-   */
-  ChessBoard* getChessBoard(){return chessboard_p;}
-
   
   /**
    * Mutator. Requires path array size >= 8. Requires this != to_square_p.
@@ -137,8 +131,7 @@ public:
    * Mutator. Caller must make sure that if called while this square has
    * a piece, its pointer is saved or its  memory allocated freed prior the
    * to the call to avoid a memory leak. Sets this square's piece pointer
-   * equal to the given pointer, and sets the piece's chessboard to this 
-   * square's chessboard.
+   * equal to the given pointer.
    */ 
   void setPiece(Piece* piece_p){this->piece_p = piece_p;}
 
@@ -166,7 +159,7 @@ public:
    * Mutator. Requires this Square to have a piece. Returns true if moving
    * this Square's piece to the Square at the given pointer would put the 
    * king of the player in check, as per chess rules. This method will undo
-   * any mutation it induces. 
+   *  any mutation it induces.
    */
   bool movePutsKingInCheck(Square* to_square_p);
 
@@ -179,7 +172,7 @@ public:
 
 
   /**
-   * Observer. Returns true if an opponent is attacking this square.
+   * Observer. Returns true if an opponent can attack this square.
    */
   bool isUnderAttack(Color player_color);
 };
