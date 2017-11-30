@@ -7,8 +7,8 @@
 
 
 /**
- * internal helper function. Returns true if this move is a 2 squares
- * pawn push
+ * Internal helper function. Returns true if the given components of a
+ * move's vector corresponds to a two squares pawn push.
  */
 bool twoSquarePawnPush(int rank_diff, int file_diff){
   if (rank_diff != PAWN_MAX_FIRST_FORWARD_MOVE || file_diff != NO_CHANGE)
@@ -19,8 +19,8 @@ bool twoSquarePawnPush(int rank_diff, int file_diff){
 
 
 /**
- * internal helper function. returns true if this move is a simple
- * pawn push
+ * Internal helper function. Returns true if the given components of a
+ * move's vector correspond to a simple pawn push.
  */
 bool simplePawnPush(int rank_diff, int file_diff){
    if (rank_diff != PAWN_FORWARD_MOVE || file_diff != NO_CHANGE)
@@ -31,8 +31,8 @@ bool simplePawnPush(int rank_diff, int file_diff){
  
 
 /*
- * internal helper function that returns true if this move is a pawn
- * take
+ * Internal helper function. Returns true if the given components of a
+ * move's vector correspond to a pawn take.
  */
 bool pawnTakes(int rank_diff, int file_diff){
    if (rank_diff != PAWN_FORWARD_MOVE || file_diff != PAWN_LATERAL_MOVE)

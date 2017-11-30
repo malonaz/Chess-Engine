@@ -18,10 +18,11 @@ class Square;
  */
 class Pawn: public Piece{
 
-private:
-  bool en_passant; // true if this pawn can be taken en passant
+private:  
+  // true if this pawn can be taken en passant
+  bool en_passant;
+  
 public:
-
   
   /**
    * Constructor. Passes color and type to superclass constructor, then

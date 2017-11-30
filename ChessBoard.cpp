@@ -1,6 +1,7 @@
 // -*- C++ -*-
 #include "ChessBoard.h"
 #include "square.h"
+#include "piece.h"
 #include "pawn.h"
 #include "knight.h"
 #include "rook.h"
@@ -37,21 +38,21 @@ void ChessBoard::init(){
   square_ps[BLACK_RANK1][KNIGHT2_FILE]->setPiece(new Knight(BLACK));
 
   // create and set Rooks
-  square_ps[WHITE_RANK1][ROOK1_FILE]->setPiece(new Rook(WHITE));
-  square_ps[WHITE_RANK1][ROOK2_FILE]->setPiece(new Rook(WHITE));
-  square_ps[BLACK_RANK1][ROOK1_FILE]->setPiece(new Rook(BLACK));
-  square_ps[BLACK_RANK1][ROOK2_FILE]->setPiece(new Rook(BLACK));
+  square_ps[WHITE_RANK1][ROOK1_FILE]->setPiece(new Piece(WHITE, ROOK));
+  square_ps[WHITE_RANK1][ROOK2_FILE]->setPiece(new Piece(WHITE, ROOK));
+  square_ps[BLACK_RANK1][ROOK1_FILE]->setPiece(new Piece(BLACK, ROOK));
+  square_ps[BLACK_RANK1][ROOK2_FILE]->setPiece(new Piece(BLACK, ROOK));
 
   // create and set Bishops
-  square_ps[WHITE_RANK1][BISHOP1_FILE]->setPiece(new Bishop(WHITE));
-  square_ps[WHITE_RANK1][BISHOP2_FILE]->setPiece(new Bishop(WHITE));
-  square_ps[BLACK_RANK1][BISHOP1_FILE]->setPiece(new Bishop(BLACK));
-  square_ps[BLACK_RANK1][BISHOP2_FILE]->setPiece(new Bishop(BLACK));
+  square_ps[WHITE_RANK1][BISHOP1_FILE]->setPiece(new Piece(WHITE, BISHOP));
+  square_ps[WHITE_RANK1][BISHOP2_FILE]->setPiece(new Piece(WHITE, BISHOP));
+  square_ps[BLACK_RANK1][BISHOP1_FILE]->setPiece(new Piece(BLACK, BISHOP));
+  square_ps[BLACK_RANK1][BISHOP2_FILE]->setPiece(new Piece(BLACK, BISHOP));
 
   // create and set Queens & Kings
-  square_ps[WHITE_RANK1][QUEEN_FILE]->setPiece(new Queen(WHITE));
+  square_ps[WHITE_RANK1][QUEEN_FILE]->setPiece(new Piece(WHITE, QUEEN));
   square_ps[WHITE_RANK1][KING_FILE]->setPiece(new King(WHITE));
-  square_ps[BLACK_RANK1][QUEEN_FILE]->setPiece(new Queen(BLACK));
+  square_ps[BLACK_RANK1][QUEEN_FILE]->setPiece(new Piece(BLACK, QUEEN));
   square_ps[BLACK_RANK1][KING_FILE]->setPiece(new King(BLACK));
 
   // copie pointers to kings into kings_square_ps

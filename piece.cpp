@@ -2,7 +2,10 @@
 #include "piece.h"
 #include "square.h"
 
+
+// initializes static variable
 int Piece::num_pieces = 0;
+
 
 Piece::Piece(const Color color, const PieceType type)
   :color(color), has_moved(false), type(type){
@@ -14,13 +17,16 @@ bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   Square* path[8];
   
   if (!from_square_p->getPath(to_square_p, path, type))
+    // there is no such path for this piece
      return false;
   
   for (int i = 1; path[i] != to_square_p; i++)
     if (path[i]->hasPiece())
+      // this piece cannot go through another piece on its path
       return false;
 
   if (move_piece){
+    // we move the pieces
     to_square_p->destroyPiece();
     to_square_p->setPiece(this);
     from_square_p->setPiece(0);
@@ -64,9 +70,9 @@ std::ostream& operator<<(std::ostream& stream, PieceType type){
 }
 
 
-
 std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr){
   if (piece_ptr->getColor() == BLACK)
+    // start bold font
     stream << "\e[1m";
   switch(piece_ptr->getType()){
   case PAWN:
@@ -90,6 +96,8 @@ std::ostream& operator<<(std::ostream& stream, Piece* piece_ptr){
   }
 
   if (piece_ptr->getColor() == BLACK)
+    // end bold font
     stream << "\e[0m";
+  
   return stream;
 }

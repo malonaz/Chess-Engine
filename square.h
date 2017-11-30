@@ -107,9 +107,9 @@ public:
 
 
   /**
-   * Observer. Requires this square to have 0 < rank < 7. Returns a pointer to
-   * the Square below this Square, from the perspective of the player with
-   * the given color.
+   * Observer. Requires this square to have 0 < rank index < 7. Returns a 
+   * pointer to the Square below this Square, from the perspective of the 
+   *  player with the given color.
    */
   Square* getSquareBelow(const Color color) const;
 
@@ -118,7 +118,7 @@ public:
   /**
    *  Observer. Returns true if this square has a piece.
    */
-  bool hasPiece() const;
+  bool hasPiece() const{ return piece_p != 0;}
 
 
   /**
@@ -128,15 +128,17 @@ public:
 
   
   /**
-   * Mutator. calls destroyPiece method then sets its piece pointer 
-   * equal to the given piece pointer.
+   * Mutator. Caller must make sure that if called while this square has
+   * a piece, its pointer is saved or its  memory allocated freed prior the
+   * to the call to avoid a memory leak. Sets this square's piece pointer
+   * equal to the given pointer.
    */ 
-  void setPiece(Piece* piece_p);
+  void setPiece(Piece* piece_p){this->piece_p = piece_p;}
 
   
   /**
    * Mutator. Frees memory allocated to this square's piece if it has one
-   * then sets its pointer to NULL.
+   * then sets its pointer to null.
    */
   void destroyPiece();
   
@@ -170,7 +172,7 @@ public:
 
 
   /**
-   * Observer.  Returns true if an opponent can attack this square.
+   * Observer. Returns true if an opponent can attack this square.
    */
   bool isUnderAttack(Color player_color);
 };

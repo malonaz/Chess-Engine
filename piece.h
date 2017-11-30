@@ -6,10 +6,12 @@
 
 // colors
 enum Color {BLACK, WHITE};
+/* overloads Color's << operator */
 std::ostream& operator<<(std::ostream& stream, Color color);
   
 // pieces
 enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING};
+/* overlaods PieceType's operator */
 std::ostream& operator<<(std::ostream& stream, PieceType type);
 
 
@@ -18,9 +20,9 @@ class Square;
 
 
 /**
- * Piece. This abstract class represents the shared a chess piece. A
+ * Piece. This abstract class represents a chess piece. A
  * chess piece is represented by a color, a type and a boolean variable
- * indicating whether this piece has moved squares since its creation.
+ * indicating whether this piece has moved since its creation.
  */
 class Piece{
   
@@ -33,7 +35,7 @@ public:
     static int num_pieces;
   
   /**
-   * Constructor. Initializes a piece's color and type.
+   * Constructor. Initializes a piece's color, type & has_moved to false
    */
   Piece(const Color color, const PieceType type);
 
@@ -46,14 +48,16 @@ public:
 
   
   /**
-   * Observer. Returns true if the move from the Square at from_square_p
-   * to the Square at to_square_p is legal as per chess rules.
+   * Observer. Virtual so that derived classes implementation is called
+   * when manipulating Piece objects. Returns true if the move from the 
+   * Square at from_square_p to the Square at to_square_p is legal for 
+   * this piece as per chess rules.
    */
   virtual bool canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
 
   // ?????????????????????????????????????
-  virtual void update() = 0;
+  virtual void update(){}
 
   
   /**
@@ -73,12 +77,17 @@ public:
    */
   const Color getColor() const{return color;}
 
+
   /**
-   * Observer. Returns true if this piece has not been moved since setting the baord
+   * Observer. Returns true if this piece has not been moved since
+   * the chessboard was initialized or reset.
    */
   bool hasMoved()const{return has_moved;}
 
 
+  /**
+   * Friend. overloads operator for piece pointers. Used by printBoard()
+   */
   friend std::ostream& operator<<(std::ostream& stream, Piece* piece_p);
   
 
