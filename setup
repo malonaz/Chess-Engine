@@ -8,9 +8,9 @@ declare -a files=("ChessMain.cpp"
 		  "piece.cpp piece.h"
 		  "pawn.cpp pawn.h"
 		  "knight.cpp knight.h"
-		  "rook.cpp rook.h"
-		  "bishop.cpp bishop.h"
-		  "queen.cpp queen.h"
+		  #"rook.cpp rook.h"
+		  #"bishop.cpp bishop.h"
+		  #"queen.cpp queen.h"
 		  "king.cpp king.h"
 		  "utils.cpp utils.h")
 

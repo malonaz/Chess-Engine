@@ -8,7 +8,7 @@ using namespace std;
 void test(){
 
   testPins();
-  //  testCastling();
+  testCastling();
 }
 
 void testPins(){

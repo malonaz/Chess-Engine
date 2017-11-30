@@ -2,7 +2,7 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include <iostream>
+#include <ostream>
 
 // colors
 enum Color {BLACK, WHITE};
@@ -18,24 +18,6 @@ std::ostream& operator<<(std::ostream& stream, PieceType type);
 // forward declaration
 class Square;
 class Piece;
-
-
-/**
- * Struct. this structure is used to represent a move.
- */ 
-struct Move{
-  int num_of_square_ps;
-  Square* pairs_to_move_square_ps[4];
-  Square* piece_taken_square_p;
-  Piece* piece_taken_p;
-  // initialize members
-  Move():num_of_square_ps(0){}
-  void addPairToMove(Square* from_square_p, Square* to_square_p);
-  void makeMove();
-  void reverseMove();
-  void deletePiece();
-  
-};
 
 
 /**
@@ -101,15 +83,7 @@ public:
    * Observer. Returns true if this piece has not been moved since
    * the chessboard was initialized or reset.
    */
-  bool hasMoved()const{return has_moved;}
-
-
-  void makeMove(Move &move);
-
-
-  void reverseMove(Move &move);
-
-  
+  bool hasMoved()const{return has_moved;}  
   
   /**
    * Friend. overloads operator for piece pointers. Used by printBoard()

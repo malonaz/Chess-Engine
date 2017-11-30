@@ -3,8 +3,6 @@
 #include "ChessBoard.h"
 #include "piece.h"
 #include "utils.h"
-#include "knight.h"
-#include <iostream>
 
 // initialize static variable
 int Square::num_squares = 0;

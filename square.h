@@ -8,7 +8,6 @@
 class ChessBoard;
 
 
-
 /**
  * Square. This class represents a square on a chessboard as:
  *   - a pointer to the chessboard it belongs to
@@ -30,6 +29,7 @@ public:
   // keeps track of number of square objects. used for testing & debugging
   static int num_squares;
 
+
   
   /**
    * Constructor. Initializes chessboard_p to point to the chessboard this
@@ -39,12 +39,14 @@ public:
   Square(ChessBoard* chessboard_p, int rank_i, int file_i);
 
   
+
   /**
    * Destructor. Calls destroyPiece, then decrements static num_squares
    */
   ~Square();
 
   
+
   /**
    * Observer. Returns the difference between the index indices of the 
    * Square at the given pointer and this Square.
@@ -52,6 +54,7 @@ public:
   const int rankDiff(Square* sqr_to_square_p) const;
 
   
+
   /**
    * Observer. Returns the difference between the file indices of the 
    * Square at the given pointer and this Square.
@@ -59,16 +62,19 @@ public:
   const int fileDiff(Square* to_square_p) const;
 
 
+  
   /**
    * Observer. Returns this Square's rank index
    */
   int getRankIndex(){return rank_i;}
 
 
+  
   /**
    * Observer. Returns this Square's file index.
    */
   int getFileIndex(){return file_i;}
+
 
   
   /**
@@ -81,12 +87,14 @@ public:
   bool getPath(Square* to_square_p, Square** path, PieceType type);
 
 
+  
   /**
    * Mutator. Requires rank array size >= 8. Copies pointers to Squares 
    * in this Square's rank into rank, in increasing file index order.
    */
   void getRank(Square** rank);
 
+  
 
   /**
    * Mutator. Requires file array size >= 8. Copies pointers to Squares
@@ -120,12 +128,14 @@ public:
    */
   bool hasPiece() const{ return piece_p != 0;}
 
+  
 
   /**
    * Observer. Returns a pointer to this square's piece.
    */
   Piece* getPiece() const {return piece_p;}
 
+  
   
   /**
    * Mutator. Caller must make sure that if called while this square has
@@ -136,11 +146,13 @@ public:
   void setPiece(Piece* piece_p){this->piece_p = piece_p;}
 
   
+  
   /**
    * Mutator. Frees memory allocated to this square's piece if it has one
    * then sets its pointer to null.
    */
   void destroyPiece();
+
   
 
   /**
@@ -154,6 +166,7 @@ public:
    */
   bool movePiece(Square* to_square_p);
 
+  
 
   /**
    * Mutator. Requires this Square to have a piece. Returns true if moving
@@ -163,6 +176,7 @@ public:
    */
   bool movePutsKingInCheck(Square* to_square_p);
 
+  
 
   /**
    * Mutator. Requires this Square to have a piece. Returns true if this 
@@ -170,11 +184,13 @@ public:
    */
   bool pieceCanMove();
 
+  
 
   /**
    * Observer. Returns true if opponent is attacking this square.
    */
   bool isUnderAttack(Color player_color);
+  
 };
 
 
