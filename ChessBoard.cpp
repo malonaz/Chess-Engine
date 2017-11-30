@@ -40,7 +40,7 @@ void ChessBoard::init(){
   // create and set Rooks
   square_ps[WHITE_RANK1][ROOK1_FILE]->setPiece(new Piece(WHITE, ROOK));
   square_ps[WHITE_RANK1][ROOK2_FILE]->setPiece(new Piece(WHITE, ROOK));
-  square_ps[BLACK_RANK1][ROOK1_FILE]->setPiece(new Piece(BLACK, ROOK));
+  square_ps[BLACK_RANK1][ROOK1_FILE]->setPiece(new Piece( BLACK, ROOK));
   square_ps[BLACK_RANK1][ROOK2_FILE]->setPiece(new Piece(BLACK, ROOK));
 
   // create and set Bishops
