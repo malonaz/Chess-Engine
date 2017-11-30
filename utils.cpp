@@ -62,3 +62,9 @@ int getMoveMagnitudeSquared(int rank_shift, int file_shift){
   return rank_shift*rank_shift + file_shift*file_shift;
 }
 
+
+int getPointerIndex(Square** pointers, Square* pointer){
+  int index = 0;
+  for (; pointers[index] != pointer; index++);
+  return index;
+}

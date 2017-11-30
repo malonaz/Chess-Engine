@@ -1,6 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+// forward declaration
+class Square;
+
+
 // definitions
 #define MIN_INDEX 0
 #define MAX_INDEX 7
@@ -31,4 +35,6 @@ int getMoveDimension(int rank_shift, int file_shift);
 
 int getMoveMagnitudeSquared(int rank_shift, int file_shift);
 
+
+int getPointerIndex(Square** pointers, Square* pointer);
 #endif

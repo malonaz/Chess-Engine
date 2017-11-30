@@ -26,7 +26,8 @@ private:
   Piece* piece_p;
 
 public:
-  // keeps track of number of squares. used for testing & debugging
+  
+  // keeps track of number of square objects. used for testing & debugging
   static int num_squares;
 
   
@@ -48,14 +49,14 @@ public:
    * Observer. Returns the difference between the index indices of the 
    * Square at the given pointer and this Square.
    */
-  const int rankDiff(Square* sqr_dest_p) const;
+  const int rankDiff(Square* sqr_to_square_p) const;
 
   
   /**
    * Observer. Returns the difference between the file indices of the 
    * Square at the given pointer and this Square.
    */
-  const int fileDiff(Square* dest_p) const;
+  const int fileDiff(Square* to_square_p) const;
 
 
   /**
@@ -71,12 +72,13 @@ public:
 
   
   /**
-   * Mutator. Requires path array size >= 8. Copies all squares on the 
-   * diagonal, horizontal or vertical path starting at this Square 
-   * & ending with the Square at the given pointer, into the given
-   * path array, then returns true. Returns false if there is no such path.
+   * Mutator. Requires path array size >= 8. Requires this != to_square_p.
+   * Copies all squares on the diagonal, horizontal or vertical path  
+   * starting at this Square & ending with the Square at the given 
+   * pointer, into the given path array, then returns true. Returns 
+   * false if there is no such path.
    */
-  bool getPath(Square* dest_p, Square** path, PieceType type);
+  bool getPath(Square* to_square_p, Square** path, PieceType type);
 
 
   /**
@@ -93,6 +95,17 @@ public:
   void getFile(Square** file);
 
 
+  
+  /**
+   * Mutator. Requires diagonal array size >= 8 & this != to_square_p. 
+   * Copies pointers to Squares in the chessboard diagonal that contains 
+   * both this square and the one at the given pointer, in increasing 
+   * file index order.
+   */
+  void getDiagonal(Square* to_square_p, Square** diagonal);
+
+
+
   /**
    * Observer. Requires this square to have 0 < rank < 7. Returns a pointer to
    * the Square below this Square, from the perspective of the player with
@@ -100,14 +113,6 @@ public:
    */
   Square* getSquareBelow(const Color color) const;
 
-
-  
-  /**
-   * Mutator. Requires diagonal array size >= 8. Copies pointers to Squares
-   * in the chessboard diagonal that contains both this square and the one
-   * at the given pointer, in increasing file order.
-   */
-  void getDiagonal(Square* dest_p, Square** diagonal);
 
   
   /**
@@ -145,7 +150,7 @@ public:
    * then sets this square's piece pointer to NULL. Returns true if piece 
    * what moved. Returns false otherwise.
    */
-  bool movePiece(Square* dest_p);
+  bool movePiece(Square* to_square_p);
 
 
   /**
@@ -154,7 +159,7 @@ public:
    * king of the player in check, as per chess rules. This method will undo
    *  any mutation it induces.
    */
-  bool movePutsKingInCheck(Square* dest_p);
+  bool movePutsKingInCheck(Square* to_square_p);
 
 
   /**
