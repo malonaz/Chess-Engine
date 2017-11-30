@@ -33,15 +33,19 @@ bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
     if (path[i]->hasPiece())
       // this piece cannot go through another piece on its path
       return false;
+
   
-  if (move_piece){
-    // move the pieces
+  if (move_piece)
+    // move pieces and delete piece at to_square if there is one
+    movePiece(from_square_p, to_square_p);
+  
+  return true;
+}
+
+void Piece::movePiece(Square* from_square_p, Square* to_square_p){
     to_square_p->destroyPiece();
     to_square_p->setPiece(this);
     from_square_p->setPiece(0);
-  }
-  
-  return true;
 }
 
 std::ostream& operator<<(std::ostream& stream, Color color){

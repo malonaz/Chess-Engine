@@ -44,10 +44,18 @@ public:
   /**
    * Mutator. Returns true if this pawn can taken en passant while moving
    * to the square at to_square_p and calls destroy on the piece taken on
-   * passant if destroy_piece is true.
+   * passant if destroy_piece is true. note: this method returns false if
+   * taking en passant would discover a check on its king.
    */
-  bool canEnPassant(Square* to_square_p, bool destroy_piece = false);
+  bool canEnPassant(Square* to_square_p, bool move_piece = false);
 
+
+  /**
+   * Observer. Returns true if removing the piece at en_passant_square
+   * would discover a check on its king. This method only checks 
+   * one scenario. Please read my readme.txt file for more info!
+   */
+  bool enPassantDiscoversCheck(Square* en_passant_square_p)const;
   
 };
 

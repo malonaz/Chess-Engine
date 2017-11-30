@@ -20,12 +20,8 @@ bool Knight::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
   if (moveMagnitudeSquared != KNIGHT_MOVE_MAGNITUDE_SQUARED)
     return false;
 
-  if (move_piece){
-    to_square_p->destroyPiece();
-    to_square_p->setPiece(this);
-    from_square_p->setPiece(0);
-  }
-  
+  if (move_piece)
+        movePiece(from_square_p, to_square_p);
   return true;
 
 }

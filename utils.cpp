@@ -68,3 +68,9 @@ int getPointerIndex(Square** pointers, Square* pointer){
   for (; pointers[index] != pointer; index++);
   return index;
 }
+
+
+
+bool isInBetween(int num, int a, int b){
+  return ((num < a && num > b) || (num < b && num > a));
+}

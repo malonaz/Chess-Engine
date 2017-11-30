@@ -92,44 +92,98 @@ bool Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
     can_move = true;
   }
 
-
-  if (can_move && move_piece){
-    // can move
-    to_square_p->destroyPiece();
-    to_square_p->setPiece(this);
-    from_square_p->setPiece(0);
-  }
+  if (can_move && move_piece)
+    movePiece(from_square_p, to_square_p);
+  
 
   return can_move;
 }
 
 
-bool Pawn::canEnPassant(Square* to_square_p, bool destroy_piece){
-  int en_passant_rank_offset = (color)? -1: 1;
-  Square* en_passant_file[8], *en_passant_square;
-  Piece* en_passant_piece;
+bool Pawn::canEnPassant(Square* to_square_p, bool move_piece){
+  // get square below the square at to_square_p
+  Square* en_passant_square_p = to_square_p->getSquareBelow(color); 
+
+  // en passant square must contain a piece
+  if (!en_passant_square_p->hasPiece())
+    return false;
+
+  // get piece
+  Piece* en_passant_piece = en_passant_square_p->getPiece();
   Pawn* en_passant_pawn;
-  int en_passant_rank_i = to_square_p->getRankIndex() + en_passant_rank_offset;
 
-  to_square_p->getFile(en_passant_file);
-  
-  en_passant_square = en_passant_file[en_passant_rank_i]; // must be valid rank index
-  
-  if (!en_passant_square->hasPiece())
-    return false;
-
-  en_passant_piece = en_passant_square->getPiece();
+  // piece must be an opponent's pawn
   if (en_passant_piece->getColor() == color ||
-      en_passant_piece->getType() != PAWN)
+      en_passant_piece->getType() == type)
     return false;
-  
+
+  // recast piece as a pawn
   en_passant_pawn = static_cast<Pawn*>(en_passant_piece);
-  
+
+  // pawn must have moved past this pawn's ability to take it on the
+  // previous turn. If so, it's en passant attribute is true
   if (!en_passant_pawn->en_passant)
     return false;
 
-  if (destroy_piece)
-    en_passant_square->destroyPiece();
+  // checks if taking en passant discovers a check on its king
+  if (enPassantDiscoversCheck(en_passant_square_p))
+      return false;
+  
+  if (move_piece)
+    en_passant_square_p->destroyPiece();
+  
+  return true;
+}
+
+
+bool Pawn::enPassantDiscoversCheck(Square* en_passant_square_p)const{
+  Square* rank[8];
+  // get rank of en_passant_square
+  en_passant_square_p->getRank(rank);
+
+  bool enemy_queen_present = false, king_present = false;
+  int enemy_queen_file_i, king_file_i;
+  int en_passant_file_i = en_passant_square_p->getFileIndex();
+  
+  for ( int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+
+    if (rank[file_i]->hasPiece()){
+      
+      if (rank[file_i]->getPiece()->getType() == QUEEN &&
+	  rank[file_i]->getPiece()->getColor() != color){
+	// found enemy queen
+	enemy_queen_present = true;
+	enemy_queen_file_i = file_i;
+      }
+
+      if (rank[file_i]->getPiece()->getType() == KING &&
+	  rank[file_i]->getPiece()->getColor() == color){
+	// found king
+	king_present = true;
+	king_file_i = file_i;
+      }
+    }
+  }
+
+  // no discovered check. please read readme.txt file for more info
+  if (!enemy_queen_present  || !king_present)
+    return false;
+    
+  // check if en_passant pawn is in between enemy queen and king
+  if (!isInBetween(en_passant_file_i, enemy_queen_file_i, king_file_i))
+    return false;
+
+  // check that there are only two pieces between enemy queen and king
+  int num_pieces_between_queen_and_king = 0;
+  int file_i_step = (enemy_queen_file_i < king_file_i)? 1 : -1;
+  int current_file_i = enemy_queen_file_i + file_i_step;
+  for (; current_file_i != king_file_i; current_file_i += file_i_step)
+    num_pieces_between_queen_and_king++;
+
+  // if en_passant pawn is in between, then so must this pawn. if there
+  // are any other piece, then removing both will not discover check
+  if (num_pieces_between_queen_and_king != 2)
+    return false;
   
   return true;
 }

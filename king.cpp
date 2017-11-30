@@ -33,14 +33,9 @@ bool King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
     if (canCastle(from_square_p, to_square_p, KING_SIDE, move_piece))
       // king is castling king side
       can_move = true;
-  
-  
-  if (move_piece){
-    // move pieces
-    to_square_p->destroyPiece();
-    to_square_p->setPiece(this);
-    from_square_p->setPiece(0);
-  }
+    
+  if (move_piece)
+    movePiece(from_square_p, to_square_p);
   
   return can_move;
 }

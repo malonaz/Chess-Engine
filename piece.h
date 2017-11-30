@@ -74,6 +74,13 @@ public:
    */
   const PieceType getType()const{return type;}
 
+
+  /**
+   * Mutator. Moves this piece from the square at from_square_p to 
+   * the square at to_square_p. note: this method deletes the piece
+   * at to_square_p if there is one.
+   */
+  void movePiece(Square* from_square_p, Square* to_square_p);
   
   /**
    * Observer. Returns the color of this piece

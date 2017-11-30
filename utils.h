@@ -37,4 +37,9 @@ int getMoveMagnitudeSquared(int rank_shift, int file_shift);
 
 
 int getPointerIndex(Square** pointers, Square* pointer);
+
+
+bool isInBetween(int num, int a, int b);
+
+
 #endif
