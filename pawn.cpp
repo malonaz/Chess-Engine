@@ -42,6 +42,10 @@ bool pawnTakes(int rank_diff, int file_diff){
 }
 
 bool Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
+  // check we are not moving to a square occupied by a piece of the same color
+  if (squareOccupiedByFriendlyPiece(to_square_p))
+      return false;
+  
   // get component of move's vector. notice we don't care about the sign
   // of the file diff component.
   int rank_diff = from_square_p->rankDiff(to_square_p);

@@ -7,7 +7,10 @@
 #include <iostream>
 
 bool King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
-  
+  // check we are not moving to a square occupied by a piece of the same color
+  if (squareOccupiedByFriendlyPiece(to_square_p))
+      return false;
+
   int rank_diff = from_square_p->rankDiff(to_square_p);
   int file_diff = from_square_p->fileDiff(to_square_p);
 

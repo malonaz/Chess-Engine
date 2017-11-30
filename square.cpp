@@ -198,6 +198,7 @@ bool Square::pieceCanMove(){
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
       to_square_p = chessboard_p->getSquare(rank_i, file_i);
+      
       // check if this square's piece can move to the current to_square_p
       // without putting its king in check.
       if (piece_p->canMove(this, to_square_p) &&

@@ -11,7 +11,18 @@ Piece::Piece(const Color color, const PieceType type)
 }
 
 
-bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){  
+bool Piece::squareOccupiedByFriendlyPiece(Square* square_p){
+  if (square_p->hasPiece() && square_p->getPiece()->color == color)
+    return true;
+  return false;
+}
+
+
+bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
+  // check we are not moving to a square occupied by a piece of the same color
+  if (squareOccupiedByFriendlyPiece(to_square_p))
+      return false;
+  
   // create square array for getPath method
   Square* path[8];
   if (!from_square_p->getPath(to_square_p, path, type))

@@ -47,7 +47,9 @@ public:
    */
   virtual ~Piece(){num_pieces--;}
 
-  
+  bool squareOccupiedByFriendlyPiece(Square* square_p);
+
+    
   /**
    * Observer. Virtual so that derived classes implementation is called
    * when manipulating Piece objects. Returns true if the move from the 

@@ -94,7 +94,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
   // check piece moving is of the color to play 
   if (moving_piece_p->getColor() != color_to_play){ 
     std::cout << "It is not " << moving_piece_p->getColor();
-    std::cout << "turn to move!\n";
+    std::cout << "'s turn to move!\n";
     return;
   }
 
@@ -129,13 +129,12 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
       std::cout << captured_piece_type;
     }
     
-    std::cout << std::endl;
     prepareNextTurn();
     return;
   }
 
   // move is illegal or impossible. output to std stream
-  std::cout << " cannot move to " << to_square << std::endl;
+  std::cout << " cannot move to " << to_square;;
 }
 
 
@@ -147,13 +146,23 @@ void ChessBoard::prepareNextTurn(){
 	  square_ps[rank][file]->getPiece()->update();
 
   color_to_play = (color_to_play == WHITE)? BLACK: WHITE;
+
+  bool player_can_move = playerCanMove(color_to_play);
   
   if (kingIsInCheck(color_to_play)){
     std::cout << std::endl << color_to_play << " is in check";
-
-    if (!playerCanMove(color_to_play))
+    if (playerCanMove(color_to_play)){
+      playerCanMove(color_to_play);
+    }
+	
+    if (!player_can_move)
 	std::cout << "mate";
-  }  
+  }else{
+    if (!playerCanMove(color_to_play))
+      std::cout <<  "stalemate!";
+  }
+  
+  std::cout << std::endl;
 }
 
 
@@ -195,7 +204,8 @@ bool ChessBoard::playerCanMove(Color color) const{
       if (current_square->hasPiece())
 	if (current_square->getPiece()->getColor() == color)
 	  if (current_square->pieceCanMove())
-	    return true;	  
+	    return true;
+	
     }
   }
 
