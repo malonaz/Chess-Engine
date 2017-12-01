@@ -5,7 +5,7 @@
 
 void testSquare();
 
-void testMovePutsKingInCheck()
+void testMovePutsKingInCheck();
 
 
 

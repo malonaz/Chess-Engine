@@ -2,18 +2,28 @@
 # Sets up my coding environment
 
 # declare file arrays
-declare -a files=("ChessMain.cpp"
-		  "ChessBoard.cpp ChessBoard.h"
-		  "square.cpp square.h"
-		  "piece.cpp piece.h"
-		  "pawn.cpp pawn.h"
-		  "knight.cpp knight.h"
-		  #"rook.cpp rook.h"
-		  #"bishop.cpp bishop.h"
-		  #"queen.cpp queen.h"
-		  "king.cpp king.h"
-		  "utils.cpp utils.h")
 
+if  [ $2 = "all" ];then
+    declare -a files=("ChessMain.cpp"
+		      "ChessBoard.cpp ChessBoard.h"
+		      "square.cpp square.h"
+		      "piece.cpp piece.h"
+		      "pawn.cpp pawn.h"
+		      "knight.cpp knight.h"
+		      #"rook.cpp rook.h"
+		      #"bishop.cpp bishop.h"
+		      #"queen.cpp queen.h"
+		      "king.cpp king.h"
+		      "utils.cpp utils.h")
+
+elif [ $2 = "test" ];then
+    declare -a files=("TestMain.cpp"
+		      "square.cpp square.h"
+		      "squareTest.cpp squareTest.h"
+		      "utils.cpp utils.h"
+		      "utilsTest.cpp utilsTest.h")		      
+fi
+    
 declare -i NUM_FILES=5
 NUM_FILES=${#files[@]}
 NUM_FILES=$NUM_FILES+2

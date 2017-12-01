@@ -178,7 +178,8 @@ bool Pawn::enPassantDiscoversCheck(Square* en_passant_square_p)const{
   int file_i_step = (enemy_queen_file_i < king_file_i)? 1 : -1;
   int current_file_i = enemy_queen_file_i + file_i_step;
   for (; current_file_i != king_file_i; current_file_i += file_i_step)
-    num_pieces_between_queen_and_king++;
+    if (rank[current_file_i]->hasPiece())
+      num_pieces_between_queen_and_king++;
 
   // if en_passant pawn is in between, then so must this pawn. if there
   // are any other piece, then removing both will not discover check

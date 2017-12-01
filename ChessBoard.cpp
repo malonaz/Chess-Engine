@@ -134,7 +134,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
   }
 
   // move is illegal or impossible. output to std stream
-  std::cout << " cannot move to " << to_square;;
+  std::cout << " cannot move to " << to_square << std::endl;
 }
 
 

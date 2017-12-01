@@ -1,16 +1,14 @@
 #include "squareTest.h"
+#include "ChessBoard.h"
 #include <iostream>
-
-using namespace std;
 
 
 void testSquare(){
+  std::cout << " Starting tests for Square\n";
 
-  cout << "===========================" << endl;
-  cout << "Testing MovePutsKingInCheck" << endl;
-  cout << "===========================" << endl;
-  cout << endl;
-
+  //  testMovePutsKingInCheck();
+  
+  std::cout << " finished tests for Square\n\n";
   
 }
 
@@ -18,13 +16,8 @@ void testSquare(){
 
 void testMovePutsKingInCheck(){
   
-  cout << "===========================" << endl;
-  cout << "Testing MovePutsKingInCheck" << endl;
-  cout << "===========================" << endl;
-  cout << endl;
-  
   ChessBoard cb;
-  cout << endl;
+  std::cout << std::endl;
   
   // testing white pinned pieces
   cb.submitMove("D2", "D4");
@@ -86,6 +79,7 @@ void testMovePutsKingInCheck(){
   cb.submitMove("E4", "D5"); // this pawn is pinned
   cb.printBoard();
   
+  std::cout << std::endl << std::endl;  
+  std::cout << "   Tests for MovePutsKingInCheck passed!\n";
 
-  cout << endl << endl;
 }

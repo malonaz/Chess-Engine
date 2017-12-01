@@ -38,7 +38,7 @@ class square;
  * Chessboard. This class represents a chessboard as:
  *   - 8 rows of 8 pointers to Squares
  *   - an array of 2 pointers to square which hold the two Kings
- *   - a boolean variable to keep track of turns 
+ *   - a binary Color variable to keep track of turns 
  */
 class ChessBoard{
   
