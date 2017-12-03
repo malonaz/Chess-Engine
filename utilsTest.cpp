@@ -85,6 +85,7 @@ std::cout << "   Tests for GetMoveDimension passed!" << std::endl;
 
 
 void testGetPointerIndex(){
+  // dummy chessboard_pointer for square initialization
   ChessBoard* chessboard_p = 0;
   Square* squares[64];
   int index = 0;
@@ -98,8 +99,8 @@ void testGetPointerIndex(){
     assert(getPointerIndex(squares, squares[index]) == index);
   
 
-
   for (int index = 0; index < 64; index++)
+    // free memory
     delete squares[index];
   
   std::cout << "   Tests for getPointerIndex passed!" << std::endl;

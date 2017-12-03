@@ -7,7 +7,4 @@ void testSquare();
 
 void testMovePutsKingInCheck();
 
-
-
-
 #endif

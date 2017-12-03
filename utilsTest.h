@@ -6,19 +6,28 @@ void testUtils();
 
 
 /**
- * Tests isValidSquare method. this also tests parseRank a
+ * Tests isValidSquare function. This also tests parseRank a
  * and parseFile & isValidIndex implicitely.
  */
 void testIsValidSquare();
 
 
-
+/**
+ * Tests getMoveDimension function.
+ */
 void testGetMoveDimension();
 
+
+/**
+ * Tests getPointerIndex function.
+ */
 void testGetPointerIndex();
 
-void testIsInBetween();
 
+/**
+ * Tests isInBetween function.
+ */
+void testIsInBetween();
 
 
 #endif

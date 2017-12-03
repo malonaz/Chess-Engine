@@ -39,27 +39,31 @@ bool validIndex(int index){
 }
 
 
-int getMoveDimension(int rank_shift, int file_shift){
-  int abs_rank_shift = std::abs(rank_shift);
-  int abs_file_shift = std::abs(file_shift);
+int getMoveDimension(int rank_diff, int file_diff){
+  int abs_rank_diff = std::abs(rank_diff);
+  int abs_file_diff = std::abs(file_diff);
 
-  if (rank_shift == NO_CHANGE){
-    if (file_shift == NO_CHANGE)
+  if (rank_diff == NO_CHANGE){
+    if (file_diff == NO_CHANGE)
       return NO_CHANGE;
+    
     else
       return HORIZONTAL;
+    
   }else{
-    if (file_shift == NO_CHANGE)
+    if (file_diff == NO_CHANGE)
       return VERTICAL;
-    if (abs_rank_shift == abs_file_shift)
+    
+    if (abs_rank_diff == abs_file_diff)
       return DIAGONAL;
   }
+  
   return INCORRECT;
 }
 
 
-int getMoveMagnitudeSquared(int rank_shift, int file_shift){
-  return rank_shift*rank_shift + file_shift*file_shift;
+int getMoveMagnitudeSquared(int rank_diff, int file_diff){
+  return rank_diff*rank_diff + file_diff*file_diff;
 }
 
 
@@ -68,8 +72,6 @@ int getPointerIndex(Square** pointers, Square* pointer){
   for (; pointers[index] != pointer; index++);
   return index;
 }
-
-
 
 bool isInBetween(int num, int a, int b){
   return ((num < a && num > b) || (num < b && num > a));
