@@ -23,6 +23,9 @@ class Square;
 #define HORIZONTAL 2
 #define VERTICAL 3
 
+// error codes
+enum Error{ VALID, INVALID_SQUARE, EMPTY_SQUARE, WRONG_COLOR, DISCOVERS_CHECK, TAKEN_OWN_PIECE, PATH_OBSTRUCTED};
+
 bool isValidSquare(const char* square_string);
 
 const int parseRank(const char* square_string);

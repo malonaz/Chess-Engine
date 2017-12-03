@@ -74,11 +74,11 @@ void ChessBoard::resetBoard(){
 }
 
 
-void ChessBoard::submitMove(const char* from_square, const char* to_square){
+Error ChessBoard::submitMove(const char* from_square, const char* to_square){
 
-  // check inputs correspon to valid squares
+  // check inputs correspond to valid squares
   if (!isValidSquare(from_square) || !isValidSquare(to_square))
-    return;
+    return INVALID_SQUARE;
   
   // parse squares
   Square* from_square_p = getSquare(from_square); 
@@ -88,14 +88,14 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
   // check piece present
   if (!from_square_p->hasPiece()){
     std::cout << "There is no piece at position " << from_square << "!\n";
-    return;
+    return EMPTY_SQUARE;
   }
   
   // check piece moving is of the color to play 
   if (moving_piece_p->getColor() != color_to_play){ 
     std::cout << "It is not " << moving_piece_p->getColor();
     std::cout << "'s turn to move!\n";
-    return;
+    return WRONG_COLOR;
   }
 
   // get destination square piece information
@@ -111,7 +111,6 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
   // output move info to std stream
   std::cout << color_to_play  << "'s " << moving_piece_p->getType();
 
-  
   if (from_square_p->movePiece(to_square_p)){
     // move succeeded
     
@@ -130,7 +129,7 @@ void ChessBoard::submitMove(const char* from_square, const char* to_square){
     }
     
     prepareNextTurn();
-    return;
+    return VALID;
   }
 
   // move is illegal or impossible. output to std stream

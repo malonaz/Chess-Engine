@@ -3,6 +3,7 @@
 #define CHESSBOARD_H
 
 #include "piece.h"
+#include "utils.h"
 
 // GUI
 #define HORIZONTAL_BAR " ---------------------------------"
@@ -87,7 +88,7 @@ public:
    * at from_square, moves it to_square if it is possible and legal
    * according to the rules of chess.
    */
-  void submitMove(const char* from_square, const char* to_square);
+  Error submitMove(const char* from_square, const char* to_square);
 
 
   /**
