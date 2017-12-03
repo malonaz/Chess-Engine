@@ -48,7 +48,7 @@ public:
    * passant if destroy_piece is true. note: this method returns false if
    * taking en passant would discover a check on its king.
    */
-  bool canEnPassant(Square* to_square_p, bool move_piece = false);
+  Error canEnPassant(Square* to_square_p, bool move_piece = false);
 
 
   /**

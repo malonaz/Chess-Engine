@@ -47,11 +47,13 @@ utilsTest.o: utilsTest.cpp utilsTest.h utils.h
 
 
 ######### PHONY ##############
+.PHONY: clean
+.PHONY: test
 
 clean:
 	rm *.o chess tester
 
-test:
-	make tester
+test: tester
 	clear
 	./tester
+

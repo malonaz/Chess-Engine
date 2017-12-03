@@ -24,18 +24,21 @@ elif [ $2 = "test" ];then
 		      "utilsTest.cpp utilsTest.h")		      
 fi
     
-declare -i NUM_FILES=5
-NUM_FILES=${#files[@]}
-NUM_FILES=$NUM_FILES+2
+# get current workspace
+declare -i INITIAL_WORKSPACE;
+INITIAL_WORKSPACE=$(wmctrl -d | grep '*' | cut -d ' ' -f1)
 
-#set number of workspaces equal to number of files
-#wmctrl -n $NUM_FILES
+declare -i CURRENT_WORKSPACE=$INITIAL_WORKSPACE
 
 # loop through files by reference
 for i in "${!files[@]}";do
     
     # switch to desk i
-    wmctrl -s $i      
+    wmctrl -s $CURRENT_WORKSPACE
+
+    # increment current workspace
+    CURRENT_WORKSPACE=$CURRENT_WORKSPACE+1
+ 
     sleep 0.1
 
     if [ $1 = "close" ] && [[ $i != 0 ]];then 
@@ -60,10 +63,11 @@ for i in "${!files[@]}";do
 	
     fi
     
+    
 done
 
-# return to desktop 0
-wmctrl -s 0
+# return to initial workspace
+wmctrl -s $INITIAL_WORKSPACE
 
 #	    xdotool key alt+Tab
 

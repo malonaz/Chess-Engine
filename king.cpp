@@ -23,14 +23,10 @@ Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
 
   
   if (rank_diff == NO_CHANGE && file_diff == QUEEN_SIDE)
-    if (canCastle(from_square_p, to_square_p, QUEEN_SIDE, move_piece))
-      // king is castling queen side
-      move = VALID;
+    move = canCastle(from_square_p, to_square_p, QUEEN_SIDE, move_piece); 
     
   if (rank_diff == NO_CHANGE && file_diff == KING_SIDE)
-    if (canCastle(from_square_p, to_square_p, KING_SIDE, move_piece))
-      // king is castling king side
-      move = VALID;
+    move = canCastle(from_square_p, to_square_p, KING_SIDE, move_piece);
     
   if (move == VALID && move_piece)
     movePiece(from_square_p, to_square_p);
@@ -40,16 +36,16 @@ Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
 
 
 
-bool King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle, bool move_piece){
+Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle, bool move_piece){
   // a king that has moved, loses its castling privileges. This takes
   // care of checking king is in the right square. If it has not moved
   // it must be in the e file & its color's first rank.
   if (has_moved)
-    return false;
+    return PIECE_DOES_NOT_MOVE_THIS_WAY;
 
   // king cannot castle while in check
   if (from_square_p->isUnderAttack(color)) 
-    return false;
+    return DISCOVERS_CHECK;
 
   
   Square* rank[8];
@@ -67,7 +63,7 @@ bool King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle, 
   
   // there must be a piece on this square
   if (!rook_square_p->hasPiece()) 
-    return false;
+    return PIECE_DOES_NOT_MOVE_THIS_WAY;
   
   Piece* rook_square_piece_p = rook_square_p->getPiece();
 
@@ -75,7 +71,7 @@ bool King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle, 
   if (rook_square_piece_p->getType() != ROOK || 
       rook_square_piece_p->getColor() != color ||
       rook_square_piece_p->hasMoved()) 
-    return false;
+    return PIECE_DOES_NOT_MOVE_THIS_WAY;
   
   Square* path[8];
   // get path from the king to the rook it is castling with
@@ -85,13 +81,13 @@ bool King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle, 
   for (int i = 1; path[i] != rook_square_p; i++){
     // there cannot be a piece on that path
     if (path[i]->hasPiece()) 
-      return false; 
+      return PATH_OBSTRUCTED; 
 
     // this pathway is activated only for the squares that the king will
     // move through and the square it stops on.
     if (i <= 2 && path[i]->isUnderAttack(color))
       // these squares cannot be under attack
-      return false; 
+      return DISCOVERS_CHECK; 
   }
   
   if (move_piece){
@@ -101,7 +97,7 @@ bool King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle, 
     rook_square_p->setPiece(0);
   }
     
-  return true;
+  return VALID;
 
 }
 

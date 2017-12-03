@@ -103,13 +103,13 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
 }
 
 
-bool Pawn::canEnPassant(Square* to_square_p, bool move_piece){
+Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   // get square below the square at to_square_p
   Square* en_passant_square_p = to_square_p->getSquareBelow(color); 
 
   // en passant square must contain a piece
   if (!en_passant_square_p->hasPiece())
-    return false;
+    return PIECE_DOES_NOT_MOVE_THIS_WAY;
 
   // get piece
   Piece* en_passant_piece = en_passant_square_p->getPiece();
@@ -118,7 +118,7 @@ bool Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   // piece must be an opponent's pawn
   if (en_passant_piece->getColor() == color ||
       en_passant_piece->getType() == type)
-    return false;
+    return PIECE_DOES_NOT_MOVE_THIS_WAY;
 
   // recast piece as a pawn
   en_passant_pawn = static_cast<Pawn*>(en_passant_piece);
@@ -126,16 +126,16 @@ bool Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   // pawn must have moved past this pawn's ability to take it on the
   // previous turn. If so, it's en passant attribute is true
   if (!en_passant_pawn->en_passant)
-    return false;
+    return PIECE_DOES_NOT_MOVE_THIS_WAY;
 
   // checks if taking en passant discovers a check on its king
   if (enPassantDiscoversCheck(en_passant_square_p))
-      return false;
+    return DISCOVERS_CHECK;
   
   if (move_piece)
     en_passant_square_p->destroyPiece();
   
-  return true;
+  return VALID;
 }
 
 
