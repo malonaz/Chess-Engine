@@ -13,6 +13,7 @@ void testSquare(){
 
   testRankFileDiff();
   testMovePutsKingInCheck();
+  testGetRankGetFile();
   
   std::cout << " finished tests for Square\n\n";
   
@@ -41,6 +42,40 @@ void testRankFileDiff(){
 }
 
 
+void testGetRankGetFile(){
+  // redirecting cout to suppress new game started msg
+  CoutRedirect cr;
+  
+  ChessBoard cb;
+
+  // restore cout
+  cr.restoreCout();
+
+  Square* rank[8];
+  Square* file[8];
+  Square* current_square_p;
+  for (int rank_i = MIN_INDEX; rank_i < MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i < MAX_INDEX; file_i++){
+      current_square_p = cb.getSquare(rank_i, file_i);
+      current_square_p->getRank(rank);
+      current_square_p->getFile(file);
+      for (int i = MIN_INDEX; i < MAX_INDEX; i++){
+	assert(rank[i]->getRankIndex() == rank_i);
+	assert(rank[i]->getFileIndex() == i);
+	assert(file[i]->getRankIndex() == i);
+	assert(file[i]->getFileIndex() == file_i);
+      }
+    }
+  std::cout << "   Tests for getRank passed!\n";
+  std::cout << "   Tests for getFile passed!\n";
+}
+
+
+
+
+
+
+
 void testMovePutsKingInCheck(){
   // redirecting cout
   CoutRedirect cr;
@@ -48,7 +83,6 @@ void testMovePutsKingInCheck(){
   ChessBoard cb;
   
   // testing white pieces
-  cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == VALID);
   assert(cb.submitMove("E7", "E5") == VALID);
   assert(cb.submitMove("E1", "E2") == VALID);

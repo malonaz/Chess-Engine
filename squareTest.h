@@ -9,10 +9,14 @@ void testSquare();
 
 
 /**
- * test the rankDiff and fileDiff methods
+ * Test the rankDiff and fileDiff methods
  */
 void testRankFileDiff();
 
+/**
+ * Test the getRank & getFile method
+ */
+void testGetRankGetFile();
 
 /**
  * Tests movePutsKingInCheck method by pinning each type of black piece
