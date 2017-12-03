@@ -3,6 +3,7 @@
 #define PAWN_H
 
 #include "piece.h"
+#include "utils.h"
 
 // definitions
 #define PAWN_LATERAL_MOVE 1
@@ -38,7 +39,7 @@ public:
    * Observer. Returns true if this Pawn can move from the Square at 
    * from_square_p to the Square at to_square_p legally as per chess rules.
    */
-  bool canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
+  Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
   
 
   /**

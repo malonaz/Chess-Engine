@@ -2,7 +2,9 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include "utils.h"
 #include <ostream>
+
 
 // colors
 enum Color {BLACK, WHITE};
@@ -56,7 +58,7 @@ public:
    * Square at from_square_p to the Square at to_square_p is legal for 
    * this piece as per chess rules.
    */
-  virtual bool canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
+  virtual Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
 
   // ?????????????????????????????????????

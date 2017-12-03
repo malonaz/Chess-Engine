@@ -18,28 +18,28 @@ bool Piece::squareOccupiedByFriendlyPiece(Square* square_p){
 }
 
 
-bool Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
+Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   // check we are not moving to a square occupied by a piece of the same color
   if (squareOccupiedByFriendlyPiece(to_square_p))
-      return false;
+    return TAKES_PIECE_OF_SAME_COLOR;
   
   // create square array for getPath method
   Square* path[8];
   if (!from_square_p->getPath(to_square_p, path, type))
     // there is no such path for this piece
-     return false;
+    return PIECE_DOES_NOT_MOVE_THIS_WAY;
   
   for (int i = 1; path[i] != to_square_p; i++)
     if (path[i]->hasPiece())
       // this piece cannot go through another piece on its path
-      return false;
+      return PATH_OBSTRUCTED;
 
   
   if (move_piece)
     // move pieces and delete piece at to_square if there is one
     movePiece(from_square_p, to_square_p);
   
-  return true;
+  return VALID;
 }
 
 void Piece::movePiece(Square* from_square_p, Square* to_square_p){

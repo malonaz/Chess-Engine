@@ -1,7 +1,6 @@
 // -*- C++ -*-
 #include "pawn.h"
 #include "square.h"
-#include "utils.h"
 #include <cmath>
 #include <iostream>
 
@@ -41,10 +40,10 @@ bool pawnTakes(int rank_diff, int file_diff){
    return true;
 }
 
-bool Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
+Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   // check we are not moving to a square occupied by a piece of the same color
   if (squareOccupiedByFriendlyPiece(to_square_p))
-      return false;
+      return TAKES_PIECE_OF_SAME_COLOR;
   
   // get component of move's vector. notice we don't care about the sign
   // of the file diff component.
@@ -59,44 +58,48 @@ bool Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   bool simple_pawn_push = simplePawnPush(rank_diff, abs_file_diff);
   bool two_square_pawn_push = twoSquarePawnPush(rank_diff, abs_file_diff);
   
-// gather information about piece
+  // gather information about destination square
   bool to_square_has_piece  = to_square_p->hasPiece();
 
-  bool can_move = false;
-
-  // there cannot be a piece on the square a simple pawn push moves to
-  if (simple_pawn_push && !to_square_has_piece)
-    can_move = true;
-
+  // assume piece cannot move this way until proven otherwise
+  Error move = PIECE_DOES_NOT_MOVE_THIS_WAY;
+  
+  // there cannot be a piece on the square a simple pawn push moves to    
+  if (simple_pawn_push){
+    if (to_square_has_piece)
+      return PATH_OBSTRUCTED;
+    else
+      move = VALID;
+  }
+  
   // if pawn takes regularly, there must be a piece on to_square_p
   if (pawn_takes && to_square_has_piece)
-    can_move = true;
+    move = VALID;
 
   // notice that we pass @param move_piece to canEnPassant.
   if (pawn_takes && !to_square_has_piece && canEnPassant(to_square_p, move_piece))
-    can_move = true;
+    move = VALID;
 
   // there cannot be a piece on the square a two square pawn push moves to
   if (two_square_pawn_push && !to_square_has_piece){
     // get square below the square at to_square_p
     Square* square_below = to_square_p->getSquareBelow(color); 
-
+    
     if (square_below->hasPiece())
       // pawn cannot move through a piece !
-      return false;
+      return PATH_OBSTRUCTED;
 
     if (move_piece)
       // this pawn can be taken en passant next turn
       en_passant = true;  
     
-    can_move = true;
+    move = VALID;
   }
 
-  if (can_move && move_piece)
+  if (move == VALID && move_piece)
     movePiece(from_square_p, to_square_p);
   
-
-  return can_move;
+  return move;
 }
 
 

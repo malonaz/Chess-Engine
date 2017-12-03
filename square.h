@@ -3,7 +3,7 @@
 #define SQUARE_H
 
 #include "piece.h"
-
+#include "utils.h"
 // forward declarations
 class ChessBoard;
 
@@ -30,7 +30,6 @@ public:
   static int num_squares;
 
 
-  
   /**
    * Constructor. Initializes chessboard_p to point to the chessboard this
    * Square belongs to. Initializes file_i & rank_i. sets piece_p to NULL.
@@ -39,20 +38,17 @@ public:
   Square(ChessBoard* chessboard_p, int rank_i, int file_i);
 
   
-
   /**
    * Destructor. Calls destroyPiece, then decrements static num_squares
    */
   ~Square();
 
-  
 
   /**
    * Observer. Returns the difference between the index indices of the 
    * Square at the given pointer and this Square.
    */
   const int rankDiff(Square* sqr_to_square_p) const;
-
   
 
   /**
@@ -61,13 +57,11 @@ public:
    */
   const int fileDiff(Square* to_square_p) const;
 
-
   
   /**
    * Observer. Returns this Square's rank index
    */
   int getRankIndex(){return rank_i;}
-
 
   
   /**
@@ -76,7 +70,6 @@ public:
   int getFileIndex(){return file_i;}
 
 
-  
   /**
    * Mutator. Requires path array size >= 8. Requires this != to_square_p.
    * Copies all squares on the diagonal, horizontal or vertical path  
@@ -86,14 +79,12 @@ public:
    */
   bool getPath(Square* to_square_p, Square** path, PieceType type);
 
-
   
   /**
    * Mutator. Requires rank array size >= 8. Copies pointers to Squares 
    * in this Square's rank into rank, in increasing file index order.
    */
   void getRank(Square** rank);
-
   
 
   /**
@@ -101,7 +92,6 @@ public:
    * in this Square's file into file, in increasing rank index order.
    */
   void getFile(Square** file);
-
 
   
   /**
@@ -113,7 +103,6 @@ public:
   void getDiagonal(Square* to_square_p, Square** diagonal);
 
 
-
   /**
    * Observer. Requires this square to have 0 < rank index < 7. Returns a 
    * pointer to the Square below this Square, from the perspective of the 
@@ -121,13 +110,11 @@ public:
    */
   Square* getSquareBelow(const Color color) const;
 
-
   
   /**
    *  Observer. Returns true if this square has a piece.
    */
   bool hasPiece() const{ return piece_p != 0;}
-
   
 
   /**
@@ -135,7 +122,6 @@ public:
    */
   Piece* getPiece() const {return piece_p;}
 
-  
   
   /**
    * Mutator. Caller must make sure that if called while this square has
@@ -146,7 +132,6 @@ public:
   void setPiece(Piece* piece_p){this->piece_p = piece_p;}
 
   
-  
   /**
    * Mutator. Frees memory allocated to this square's piece if it has one
    * then sets its pointer to null.
@@ -154,7 +139,6 @@ public:
   void destroyPiece();
 
   
-
   /**
    * Mutator. Requires this Square has a piece, which is of the color that
    * is play next. If moving the piece from this square to the square at
@@ -164,10 +148,9 @@ public:
    * then sets this square's piece pointer to NULL. Returns true if piece 
    * what moved. Returns false otherwise.
    */
-  bool movePiece(Square* to_square_p);
+  Error movePiece(Square* to_square_p);
 
   
-
   /**
    * Mutator. Requires this Square to have a piece. Returns true if moving
    * this Square's piece to the Square at the given pointer would put the 
@@ -177,7 +160,6 @@ public:
   bool movePutsKingInCheck(Square* to_square_p);
 
   
-
   /**
    * Mutator. Requires this Square to have a piece. Returns true if this 
    * Square's piece can move to a square.
@@ -185,7 +167,6 @@ public:
   bool pieceCanMove();
 
   
-
   /**
    * Observer. Returns true if opponent is attacking this square.
    */

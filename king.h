@@ -3,6 +3,7 @@
 #define KING_H
 
 #include "piece.h"
+#include "utils.h"
 
 // definitions
 #define KING_MAX_1D_MOVE 1
@@ -29,7 +30,7 @@ public:
    * from_square_p to the Square at to_square_p legally as per chess rules.
    * Moves the king to the appropriate square. Handles castling.
    */
-  bool canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
+  Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
   
 
   /** 

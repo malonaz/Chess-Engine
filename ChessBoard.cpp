@@ -111,7 +111,8 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
   // output move info to std stream
   std::cout << color_to_play  << "'s " << moving_piece_p->getType();
 
-  if (from_square_p->movePiece(to_square_p)){
+  Error move = from_square_p->movePiece(to_square_p);
+  if (move == VALID){
     // move succeeded
     
     // update king square pointer if needed
@@ -129,11 +130,14 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
     }
     
     prepareNextTurn();
-    return VALID;
-  }
-
+    
+  }else{    
   // move is illegal or impossible. output to std stream
   std::cout << " cannot move to " << to_square << std::endl;
+  }
+  
+  return move;
+
 }
 
 
@@ -158,7 +162,7 @@ void ChessBoard::prepareNextTurn(){
 	std::cout << "mate";
   }else{
     if (!playerCanMove(color_to_play))
-      std::cout <<  "stalemate!";
+      std::cout <<  "\nstalemate";
   }
   
   std::cout << std::endl;

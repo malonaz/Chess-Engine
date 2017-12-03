@@ -146,15 +146,17 @@ void Square::destroyPiece(){
 }
 
 
-bool Square::movePiece(Square* to_square_p){
+Error Square::movePiece(Square* to_square_p){
   // default call to canMove does not move pieces, simply checks
   // whether move is possible and legal
-  if (piece_p->canMove(this, to_square_p) && !movePutsKingInCheck(to_square_p))
-  
-    // we call canMove with true because we want to move pieces
-    return piece_p->canMove(this, to_square_p, true);
-
-  return false;
+  Error move = piece_p->canMove(this, to_square_p);
+  if (move == VALID){
+    if (movePutsKingInCheck(to_square_p))
+      return DISCOVERS_CHECK;
+    else
+      piece_p->canMove(this, to_square_p, true);
+  }
+  return move;
 }
 
 
@@ -201,7 +203,7 @@ bool Square::pieceCanMove(){
       
       // check if this square's piece can move to the current to_square_p
       // without putting its king in check.
-      if (piece_p->canMove(this, to_square_p) &&
+      if (piece_p->canMove(this, to_square_p) == VALID &&
 	  !movePutsKingInCheck(to_square_p))
 	return true;
     }
@@ -213,6 +215,9 @@ bool Square::pieceCanMove(){
 bool Square::isUnderAttack(Color player_color){
   bool this_square_has_a_piece = hasPiece();
   Square* from_square_p;
+  
+  // assume square is not under attack until proven otherwise
+  bool is_under_attack = false;
   
   if (!this_square_has_a_piece)
     // set a dummy piece here to check if under attack
@@ -227,19 +232,13 @@ bool Square::isUnderAttack(Color player_color){
 	if (from_square_p->getPiece()->getColor() != player_color)
 	  // here we don't check if this piece moving would induce a
 	  // a check on its king because we only care about threat
-	  if (from_square_p->getPiece()->canMove(from_square_p, this)){
-	    
-	    if (!this_square_has_a_piece)
-	      // delete dummy piece
-	      destroyPiece();
-	    
-	    return true;
-	  }
+	  if (from_square_p->getPiece()->canMove(from_square_p, this) == VALID)
+	    is_under_attack = true;
     }
   
   if (!this_square_has_a_piece)
     // delete dummy piece
     destroyPiece();
   
-  return false;
+  return is_under_attack;
 }

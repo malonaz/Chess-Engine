@@ -2,42 +2,40 @@
 #include "king.h"
 #include "ChessBoard.h"
 #include "square.h"
-#include "utils.h"
 #include <cmath>
 #include <iostream>
 
-bool King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
+Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   // check we are not moving to a square occupied by a piece of the same color
   if (squareOccupiedByFriendlyPiece(to_square_p))
-      return false;
+    return TAKES_PIECE_OF_SAME_COLOR;
 
   int rank_diff = from_square_p->rankDiff(to_square_p);
   int file_diff = from_square_p->fileDiff(to_square_p);
 
-  // assumes king cannot move until proven otherwise
-  bool can_move = false;
-
+  // assumes king cannot move this way until proven otherwise
+  Error move = PIECE_DOES_NOT_MOVE_THIS_WAY;
 
   if (std::abs(rank_diff) <= KING_MAX_1D_MOVE &&
       std::abs(file_diff) <= KING_MAX_1D_MOVE)
     // regular king move
-    can_move = true;
+    move = VALID;
 
   
   if (rank_diff == NO_CHANGE && file_diff == QUEEN_SIDE)
     if (canCastle(from_square_p, to_square_p, QUEEN_SIDE, move_piece))
       // king is castling queen side
-      can_move = true;
+      move = VALID;
     
   if (rank_diff == NO_CHANGE && file_diff == KING_SIDE)
     if (canCastle(from_square_p, to_square_p, KING_SIDE, move_piece))
       // king is castling king side
-      can_move = true;
+      move = VALID;
     
-  if (move_piece)
+  if (move == VALID && move_piece)
     movePiece(from_square_p, to_square_p);
   
-  return can_move;
+  return move;
 }
 
 
