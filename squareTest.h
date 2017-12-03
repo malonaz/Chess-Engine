@@ -8,13 +8,35 @@
 void testSquare();
 
 
+
 /**
- * Test the rankDiff and fileDiff methods
+ * Tests static member num squares.
+ */
+void testStaticNumSquares();
+
+/**
+ * Tests square destructor.
+ */ 
+void testSquareDestructor();
+
+/**
+ * Test getSquareBelow method.
+ */
+void testGetSquareBelow();
+
+
+/**
+ * Tests GetPath method. all cases.
+ */
+void testGetPath();
+
+/**
+ * Tests the rankDiff and fileDiff methods. all cases.
  */
 void testRankFileDiff();
 
 /**
- * Test the getRank & getFile method
+ * Tests the getRank & getFile method. all cases.
  */
 void testGetRankGetFile();
 
@@ -26,6 +48,14 @@ void testGetRankGetFile();
  */
 void testMovePutsKingInCheck();
 
+
+/**
+ * Tests the getDiagonal method. tests following cases:
+ * - A7-B8 diagonal && B8-A7 diagonals
+ * - A1-H8 diagonal
+ * - A8-H1 diagonal
+ */
+void testGetDiagonal();
 
 
 #endif

@@ -22,11 +22,7 @@ class Square;
 /**
  * Definitions used to describe dimensions of moves 
  */
-#define INCORRECT -1
-#define NO_CHANGE 0
-#define DIAGONAL 1
-#define HORIZONTAL 2
-#define VERTICAL 3
+enum Dimension{NO_CHANGE, DIAGONAL, HORIZONTAL, VERTICAL, INCORRECT};
 
 /**
  * Error. Enum used to describe move results
@@ -67,7 +63,7 @@ bool validIndex(int index);
  * Returns dimension (see definitions above) of the move vector with
  * the given rank_diff and file_diff component.
  */
-int getMoveDimension(int rank_diff, int file_diff);
+Dimension getMoveDimension(int rank_diff, int file_diff);
 
 /**
  * Returns the square of the move vector with the given rank_diff and 

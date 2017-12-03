@@ -34,8 +34,8 @@ const int Square::fileDiff(Square* to_square_p) const{
 bool Square::getPath(Square* to_square_p, Square** path, PieceType type){
   int rank_diff = rankDiff(to_square_p);
   int file_diff = fileDiff(to_square_p);
-  int moveDimension = getMoveDimension(rank_diff, file_diff);
-  // set raw_path pointers to null for getPointerIndex function
+  Dimension moveDimension = getMoveDimension(rank_diff, file_diff);
+  // set raw_path pointers to null for getPointerIndex function requirement
   Square* raw_path[8] = {};
   
   if (moveDimension == HORIZONTAL && type != BISHOP)

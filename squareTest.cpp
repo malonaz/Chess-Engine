@@ -1,24 +1,146 @@
 #include "squareTest.h"
 #include "ChessBoard.h"
 #include "square.h"
+#include "piece.h"
+#include "utils.h"
 #include "coutRedirect.h"
 
 #include <iostream>
 #include <assert.h>
+#include <cmath>
 
 
 void testSquare(){
   std::cout << " Starting tests for Square\n";
 
-
+  testStaticNumSquares();
+  testSquareDestructor();
+  testGetSquareBelow();
   testRankFileDiff();
   testMovePutsKingInCheck();
+  testGetPath();
   testGetRankGetFile();
+  testGetDiagonal();
   
   std::cout << " finished tests for Square\n\n";
   
 }
 
+
+void testStaticNumSquares(){
+  // dummy chessboard pointer
+  ChessBoard* chessboard_p = 0;
+
+  Square* square_ps[100];
+  for (int i = 0; i < 100; i++){
+    assert (Square::num_squares == i);
+    square_ps[i] = new Square(chessboard_p, 0, 0);
+  }
+    
+  for (int i = 99; i >= 0; i--){
+    delete square_ps[i];
+    assert (Square::num_squares == i);
+  }
+  
+  std::cout << "   Tests for static member num_squares passed!\n";
+}
+
+void testSquareDestructor(){
+  assert(Piece::num_pieces == 0);
+  // create dummy piece and dummy chessboard
+  Piece* piece_p = new Piece(WHITE, DUMMY);
+  ChessBoard* chessboard_p = 0;
+ 
+  // create square
+  Square* square_p = new Square(chessboard_p, 0, 0);
+  square_p->setPiece(piece_p);
+
+  // static num_piece should be at one now
+  assert(Piece::num_pieces == 1);
+
+  // delete square
+  delete square_p;
+  // static num_piece should be at 0 now
+  assert(Piece::num_pieces == 0);
+
+  std::cout << "   Tests for Square destructor passed!\n";
+}
+
+void testGetSquareBelow(){
+  // redirecting cout to suppress new game started msg
+  CoutRedirect cr;
+  
+  ChessBoard cb;
+  
+  // restore cout
+  cr.restoreCout();
+  
+  Square* current_square_p;
+  Square* square_below_p;
+
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+      current_square_p = cb.getSquare(rank_i, file_i);
+      // no square below rank 0 for white
+      if (rank_i != MIN_INDEX){
+	square_below_p = current_square_p->getSquareBelow(WHITE);
+	assert(square_below_p->getRankIndex() == current_square_p->getRankIndex() - 1);
+	assert(square_below_p->getFileIndex() == current_square_p->getFileIndex());
+      }
+
+      //no square below rank 7 for black
+      if (rank_i != MAX_INDEX){
+	square_below_p = current_square_p->getSquareBelow(BLACK);
+	assert(square_below_p->getRankIndex() == current_square_p->getRankIndex() + 1);
+	assert(square_below_p->getFileIndex() == current_square_p->getFileIndex());
+      }
+    }
+
+  std::cout << "   Tests for getSquareBelow passed!\n";
+}
+
+void testGetPath(){
+  // redirecting cout to suppress new game started msg
+  CoutRedirect cr;
+  
+  ChessBoard cb;
+  
+  // restore cout
+  cr.restoreCout();
+  
+  Square* path[8];
+  Square* from_square_p;
+  Square* to_square_p;
+  int rank_diff, file_diff;
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+      for (int rank_i2 = MIN_INDEX; rank_i2 <= MAX_INDEX; rank_i2++)
+	for (int file_i2 = MIN_INDEX; file_i2 <= MAX_INDEX; file_i2++){
+	  from_square_p = cb.getSquare(rank_i, file_i);
+	  to_square_p = cb.getSquare(rank_i2, file_i2);
+	  rank_diff = from_square_p->rankDiff(to_square_p);
+	  file_diff = from_square_p->fileDiff(to_square_p);
+	  Dimension dim = getMoveDimension(rank_diff, file_diff);
+	  
+	  if (dim == INCORRECT || dim == NO_CHANGE)
+	    assert(from_square_p->getPath(to_square_p, path, QUEEN) == false);
+	  
+	  else{
+	    assert(from_square_p->getPath(to_square_p, path, QUEEN) == true);
+	    assert(path[0] == from_square_p);
+	    int abs_file_diff = std::abs(file_diff);
+	    int abs_rank_diff = std::abs(rank_diff);
+	    if (dim == VERTICAL)
+	      assert(path[abs_rank_diff] == to_square_p);
+	    else
+	      assert(path[abs_file_diff] == to_square_p);
+	      
+	  }
+	}
+									
+  std::cout << "   Tests for getDiagonal passed!\n";
+
+}
 
 void testRankFileDiff(){
   // dummy chessboard_pointer for square initialization
@@ -54,12 +176,12 @@ void testGetRankGetFile(){
   Square* rank[8];
   Square* file[8];
   Square* current_square_p;
-  for (int rank_i = MIN_INDEX; rank_i < MAX_INDEX; rank_i++)
-    for (int file_i = MIN_INDEX; file_i < MAX_INDEX; file_i++){
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
       current_square_p = cb.getSquare(rank_i, file_i);
       current_square_p->getRank(rank);
       current_square_p->getFile(file);
-      for (int i = MIN_INDEX; i < MAX_INDEX; i++){
+      for (int i = MIN_INDEX; i <= MAX_INDEX; i++){
 	assert(rank[i]->getRankIndex() == rank_i);
 	assert(rank[i]->getFileIndex() == i);
 	assert(file[i]->getRankIndex() == i);
@@ -71,9 +193,96 @@ void testGetRankGetFile(){
 }
 
 
+void testGetDiagonal(){
+  // redirecting cout to suppress new game started msg
+  CoutRedirect cr;
+  
+  ChessBoard cb;
+
+  // restore cout
+  cr.restoreCout();
+
+  Square* diagonal[8];
+  Square* from_square_p;
+  Square* to_square_p;
+  // rank increasing diagonals
+  // test 1 
+  from_square_p = cb.getSquare(6, 0);
+  to_square_p = cb.getSquare(7, 1);
+
+  from_square_p->getDiagonal(to_square_p, diagonal);
+  assert(diagonal[0] == from_square_p);
+  assert(diagonal[1] == to_square_p);
+
+  to_square_p->getDiagonal(from_square_p, diagonal);
+  assert(diagonal[0] == from_square_p); // same order as before
+  assert(diagonal[1] == to_square_p);
+
+  // test 2
+  from_square_p = cb.getSquare(0, 6);
+  to_square_p = cb.getSquare(1, 7);
+
+  from_square_p->getDiagonal(to_square_p, diagonal);
+  assert(diagonal[0] == from_square_p);
+  assert(diagonal[1] == to_square_p);
+
+  to_square_p->getDiagonal(from_square_p, diagonal);
+  assert(diagonal[0] == from_square_p);
+  assert(diagonal[1] == to_square_p);
 
 
+  // test 3
+  from_square_p = cb.getSquare(1,1);
+  to_square_p = cb.getSquare(6,6);
+  
+  from_square_p->getDiagonal(to_square_p, diagonal);
+  assert(diagonal[1] == from_square_p);
+  assert(diagonal[6] == to_square_p);
+  
+  to_square_p->getDiagonal(from_square_p, diagonal);
+  assert(diagonal[1] == from_square_p);
+  assert(diagonal[6] == to_square_p);
+  
+  // rank decreasing diagonals
+  // test 1 
+  from_square_p = cb.getSquare(7, 6);
+  to_square_p = cb.getSquare(6, 7);
 
+  from_square_p->getDiagonal(to_square_p, diagonal);
+  assert(diagonal[0] == from_square_p);
+  assert(diagonal[1] == to_square_p);
+
+  to_square_p->getDiagonal(from_square_p, diagonal);
+  assert(diagonal[0] == from_square_p); // same order as before
+  assert(diagonal[1] == to_square_p);
+
+  // test 2
+  from_square_p = cb.getSquare(1, 0);
+  to_square_p = cb.getSquare(0, 1);
+
+  from_square_p->getDiagonal(to_square_p, diagonal);
+  assert(diagonal[0] == from_square_p);
+  assert(diagonal[1] == to_square_p);
+
+  to_square_p->getDiagonal(from_square_p, diagonal);
+  assert(diagonal[0] == from_square_p);
+  assert(diagonal[1] == to_square_p);
+
+
+  // test 3
+  from_square_p = cb.getSquare(6,1);
+  to_square_p = cb.getSquare(1,6);
+  
+  from_square_p->getDiagonal(to_square_p, diagonal);
+  assert(diagonal[1] == from_square_p);
+  assert(diagonal[6] == to_square_p);
+  
+  to_square_p->getDiagonal(from_square_p, diagonal);
+  assert(diagonal[1] == from_square_p);
+  assert(diagonal[6] == to_square_p);
+  
+  std::cout << "   Tests for getDiagonal passed!\n";
+}
 
 
 void testMovePutsKingInCheck(){

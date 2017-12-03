@@ -39,7 +39,7 @@ bool validIndex(int index){
 }
 
 
-int getMoveDimension(int rank_diff, int file_diff){
+Dimension getMoveDimension(int rank_diff, int file_diff){
   int abs_rank_diff = std::abs(rank_diff);
   int abs_file_diff = std::abs(file_diff);
 
