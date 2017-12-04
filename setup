@@ -18,8 +18,12 @@ if  [ $2 = "all" ];then
 
 elif [ $2 = "test" ];then
     declare -a files=("TestMain.cpp"
+		      "ChessBoard.cpp ChessBoard.h"
+		      "ChessBoardTest.cpp ChessBoardTest.h"
 		      "square.cpp square.h"
 		      "squareTest.cpp squareTest.h"
+		      "piece.cpp piece.h"
+		      "pieceTest.cpp pieceTest.h"
 		      "utils.cpp utils.h"
 		      "utilsTest.cpp utilsTest.h")		      
 fi

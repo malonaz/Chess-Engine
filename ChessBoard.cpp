@@ -60,10 +60,13 @@ void ChessBoard::init(){
 
 
 void ChessBoard::destroySquares(){
-  for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
-    for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
+  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+    for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
       // square destructor handle deallocating Pieces memory
-      delete square_ps[rank][file]; 
+      delete square_ps[rank_i][file_i];
+      // nulls pointers
+      square_ps[rank_i][file_i] = 0;
+    }
 }
 
 
