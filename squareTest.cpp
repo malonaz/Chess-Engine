@@ -2,6 +2,7 @@
 #include "ChessBoard.h"
 #include "square.h"
 #include "piece.h"
+#include "pawn.h"
 #include "utils.h"
 #include "coutRedirect.h"
 
@@ -21,7 +22,7 @@ void testSquare(){
   testGetPath();
   testGetRankGetFile();
   testGetDiagonal();
-  
+  testIsUnderAttack();
   std::cout << " finished tests for Square\n\n";
   
 }
@@ -284,6 +285,78 @@ void testGetDiagonal(){
   std::cout << "   Tests for getDiagonal passed!\n";
 }
 
+
+void testIsUnderAttack(){
+  // redirecting cout
+  CoutRedirect cr;
+  
+  ChessBoard cb;
+  
+  // delete all pieces
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+      cb.getSquare(rank_i, file_i)->destroyPiece();
+
+  // add a white bishop on D6, cb destructor will free it
+  cb.getSquare("D4")->setPiece(new Piece(WHITE, BISHOP));
+  
+  Square* square_ps[8];
+  // get rank increasing diagonal
+  cb.getSquare("D4")->getDiagonal(cb.getSquare("E5"), square_ps);
+  
+  // all squares in the diagonals threated by bishop should be under attack
+  for (int file_i = MIN_INDEX; file_i < MAX_INDEX; file_i++){
+    if (square_ps[file_i] != cb.getSquare("D4"))
+      assert(square_ps[file_i]->isUnderAttack(BLACK));
+    else
+      assert(!square_ps[file_i]->isUnderAttack(BLACK));
+  }
+  // get other diagonal
+  cb.getSquare("D4")->getDiagonal(cb.getSquare("E3"), square_ps);
+  for (int file_i = MIN_INDEX; file_i < MAX_INDEX; file_i++){
+    if (square_ps[file_i] != cb.getSquare("D4"))
+      assert(square_ps[file_i]->isUnderAttack(BLACK));
+    else
+      assert(!square_ps[file_i]->isUnderAttack(BLACK));
+  }
+
+  // now place a white rook on E5
+  cb.getSquare("E5")->setPiece(new Piece(WHITE, ROOK));
+  
+  // get rank increasing diagonal
+  cb.getSquare("D4")->getDiagonal(cb.getSquare("E5"), square_ps);
+
+  // all squares from A1 to C3 are under attack, but white rook shields the rest
+  for (int file_i = MIN_INDEX; file_i < MAX_INDEX; file_i++){
+    if (square_ps[file_i]->getFileIndex() < cb.getSquare("D4")->getFileIndex())
+      assert(square_ps[file_i]->isUnderAttack(BLACK));
+    else
+      assert(!square_ps[file_i]->isUnderAttack(BLACK));
+  }
+
+  // corner a case. a pawn can move to the square directly above him but does not
+  // threaten in as it threatens diagonally not vertically
+
+  // place a black pawn on C7 and get rank "above" C7 (black perspective)
+  cb.getSquare("C7")->setPiece(new Pawn(BLACK));
+  cb.getSquare("C6")->getRank(square_ps);
+
+  // check all all squares are not under attack except square B6 and D6
+  for (int file_i = MIN_INDEX; file_i < MIN_INDEX; file_i++){
+    if (square_ps[file_i] == cb.getSquare("B6") ||
+	square_ps[file_i] == cb.getSquare("D6"))
+      assert(square_ps[file_i]->isUnderAttack(BLACK));
+    else
+      assert(!square_ps[file_i]->isUnderAttack(BLACK));
+    
+  }
+
+  
+  // restore cout
+  cr.restoreCout();
+  
+  std::cout << "   Tests for isUnderAttack passed!\n";
+}
 
 void testMovePutsKingInCheck(){
   // redirecting cout

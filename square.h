@@ -24,7 +24,7 @@ private:
   const int file_i;
   Piece* piece_p;
 
-public:
+ public:
   
   // keeps track of number of square objects. used for testing & debugging
   static int num_squares;
@@ -168,7 +168,8 @@ public:
 
   
   /**
-   * Observer. Returns true if opponent is attacking this square.
+   * Observer. Returns true if opponent of given player_color is attacking
+   * this square.
    */
   bool isUnderAttack(Color player_color);
   

@@ -57,5 +57,10 @@ void testMovePutsKingInCheck();
  */
 void testGetDiagonal();
 
+/**
+ * Tests isUnderAttack method.
+ */
+void testIsUnderAttack();
+
 
 #endif
