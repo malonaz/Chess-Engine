@@ -63,4 +63,10 @@ void testGetDiagonal();
 void testIsUnderAttack();
 
 
+/**
+ * Tests PieceCanMove method.
+ */
+void testPieceCanMove();
+
+
 #endif

@@ -3,6 +3,8 @@
 #include "square.h"
 #include "piece.h"
 #include "pawn.h"
+#include "king.h"
+#include "knight.h"
 #include "utils.h"
 #include "coutRedirect.h"
 
@@ -23,6 +25,7 @@ void testSquare(){
   testGetRankGetFile();
   testGetDiagonal();
   testIsUnderAttack();
+  testPieceCanMove();
   std::cout << " finished tests for Square\n\n";
   
 }
@@ -139,7 +142,7 @@ void testGetPath(){
 	  }
 	}
 									
-  std::cout << "   Tests for getDiagonal passed!\n";
+  std::cout << "   Tests for getPath passed!\n";
 
 }
 
@@ -310,7 +313,11 @@ void testIsUnderAttack(){
       assert(square_ps[file_i]->isUnderAttack(BLACK));
     else
       assert(!square_ps[file_i]->isUnderAttack(BLACK));
+    
+    // there are no black pieces so no black piece can threaten these squares
+    assert(!square_ps[file_i]->isUnderAttack(WHITE));
   }
+  
   // get other diagonal
   cb.getSquare("D4")->getDiagonal(cb.getSquare("E3"), square_ps);
   for (int file_i = MIN_INDEX; file_i < MAX_INDEX; file_i++){
@@ -318,6 +325,9 @@ void testIsUnderAttack(){
       assert(square_ps[file_i]->isUnderAttack(BLACK));
     else
       assert(!square_ps[file_i]->isUnderAttack(BLACK));
+
+    // there are no black pieces so no black piece can threaten these squares
+    assert(!square_ps[file_i]->isUnderAttack(WHITE));
   }
 
   // now place a white rook on E5
@@ -332,6 +342,9 @@ void testIsUnderAttack(){
       assert(square_ps[file_i]->isUnderAttack(BLACK));
     else
       assert(!square_ps[file_i]->isUnderAttack(BLACK));
+
+    // there are no black pieces so no black piece can threaten these squares
+    assert(!square_ps[file_i]->isUnderAttack(WHITE));
   }
 
   // corner a case. a pawn can move to the square directly above him but does not
@@ -342,20 +355,78 @@ void testIsUnderAttack(){
   cb.getSquare("C6")->getRank(square_ps);
 
   // check all all squares are not under attack except square B6 and D6
-  for (int file_i = MIN_INDEX; file_i < MIN_INDEX; file_i++){
+  for (int file_i = MIN_INDEX; file_i < MAX_INDEX; file_i++){
     if (square_ps[file_i] == cb.getSquare("B6") ||
 	square_ps[file_i] == cb.getSquare("D6"))
-      assert(square_ps[file_i]->isUnderAttack(BLACK));
+      assert(square_ps[file_i]->isUnderAttack(WHITE));
     else
-      assert(!square_ps[file_i]->isUnderAttack(BLACK));
-    
+      assert(!square_ps[file_i]->isUnderAttack(WHITE));  
   }
-
+  
+  // add a black king on A1 and check A2, B2 and B1 are under attack
+  cb.getSquare("A1")->setPiece(new King(BLACK));
+  assert(cb.getSquare("A2")->isUnderAttack(WHITE));
+  assert(cb.getSquare("B2")->isUnderAttack(WHITE));
+  assert(cb.getSquare("B1")->isUnderAttack(WHITE));
   
   // restore cout
   cr.restoreCout();
   
   std::cout << "   Tests for isUnderAttack passed!\n";
+}
+
+
+void testPieceCanMove(){
+  // redirecting cout
+  CoutRedirect cr;
+  
+  ChessBoard cb;
+  
+  // delete all pieces
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+      cb.getSquare(rank_i, file_i)->destroyPiece();
+  
+  // add white pawns on B2 & B3
+  cb.getSquare("B2")->setPiece(new Pawn(WHITE));
+  cb.getSquare("B3")->setPiece(new Pawn(WHITE));
+  
+  // check pawn B2 cannot move but pawn B3 can
+  assert(!cb.getSquare("B2")->pieceCanMove());
+  assert(cb.getSquare("B3")->pieceCanMove());
+
+  // put a bishop on square D5 and add same color piece on E6, E4, C4 & C6
+  cb.getSquare("D5")->setPiece(new Piece(BLACK, BISHOP));
+  cb.getSquare("E6")->setPiece(new Piece(BLACK, ROOK));
+  cb.getSquare("E4")->setPiece(new Piece(BLACK, ROOK));
+  cb.getSquare("C4")->setPiece(new Piece(BLACK, ROOK));
+  cb.getSquare("C6")->setPiece(new Piece(BLACK, ROOK));
+
+  // bishop cannot move but the rooks can
+  assert(!cb.getSquare("D5")->pieceCanMove());
+  assert(cb.getSquare("E6")->pieceCanMove());
+  assert(cb.getSquare("E4")->pieceCanMove());
+  assert(cb.getSquare("C4")->pieceCanMove());
+  assert(cb.getSquare("C6")->pieceCanMove());
+    
+  // put a black king on H1, a black knight on G1 and a white queen on G3
+  cb.getSquare("H1")->setPiece(new King(BLACK));
+  cb.getSquare("G1")->setPiece(new Knight(BLACK));
+  cb.getSquare("G3")->setPiece(new Piece(WHITE, QUEEN));
+  // update chessboard king pointer
+  cb.setKingSquareP(BLACK, cb.getSquare("H1"));
+
+  // king cannot move without placing itself in check
+  assert(!cb.getSquare("H1")->pieceCanMove());
+  assert(cb.getSquare("G1")->pieceCanMove());
+  assert(cb.getSquare("G3")->pieceCanMove());
+
+  
+  // restore cout
+  cr.restoreCout();
+  
+  std::cout << "   Tests for PieceCanMove passed!\n";
+
 }
 
 void testMovePutsKingInCheck(){
@@ -501,7 +572,6 @@ void testMovePutsKingInCheck(){
   // square on white king's path to kingside castled position is under attack.
   assert(cb.submitMove("E1", "G1") == DISCOVERS_CHECK);
 
-  
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == VALID);

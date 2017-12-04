@@ -77,8 +77,8 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
     move = VALID;
 
   // notice that we pass @param move_piece to canEnPassant.
-  if (pawn_takes && !to_square_has_piece && canEnPassant(to_square_p, move_piece))
-    move = VALID;
+  if (pawn_takes && !to_square_has_piece)
+    move = canEnPassant(to_square_p, move_piece);
 
   // there cannot be a piece on the square a two square pawn push moves to
   if (two_square_pawn_push && !to_square_has_piece){
