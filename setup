@@ -24,6 +24,10 @@ elif [ $2 = "test" ];then
 		      "squareTest.cpp squareTest.h"
 		      "piece.cpp piece.h"
 		      "pieceTest.cpp pieceTest.h"
+		      "pawn.cpp pawn.h"	      
+		      "knight.cpp knight.h"
+		      "king.cpp king.h"
+		      "otherPiecesTest.cpp otherPiecesTest.h"
 		      "utils.cpp utils.h"
 		      "utilsTest.cpp utilsTest.h")		      
 fi

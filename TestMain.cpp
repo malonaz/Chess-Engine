@@ -1,6 +1,7 @@
 #include "ChessBoardTest.h"
 #include "squareTest.h"
 #include "pieceTest.h"
+#include "otherPiecesTest.h"
 #include "utilsTest.h"
 #include <iostream>
 
@@ -13,6 +14,9 @@ int main(){
   testChessBoard();
   testSquare();
   testPiece();
+  testKnight();
+  testKing();
+  testPawn();
   testUtils();
   return 0;
 }
