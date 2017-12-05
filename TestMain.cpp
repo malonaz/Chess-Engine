@@ -1,5 +1,6 @@
 #include "ChessBoardTest.h"
 #include "squareTest.h"
+#include "pieceTest.h"
 #include "utilsTest.h"
 #include <iostream>
 
@@ -11,6 +12,7 @@ int main(){
   std::cout << "Starting tests for Chess\n\n";
   testChessBoard();
   testSquare();
+  testPiece();
   testUtils();
   return 0;
 }
