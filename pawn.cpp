@@ -81,7 +81,7 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
     move = canEnPassant(to_square_p, move_piece);
 
   // there cannot be a piece on the square a two square pawn push moves to
-  if (two_square_pawn_push && !to_square_has_piece){
+  if (two_square_pawn_push && !to_square_has_piece & !has_moved){
     // get square below the square at to_square_p
     Square* square_below = to_square_p->getSquareBelow(color); 
     

@@ -36,4 +36,11 @@ void testKingCanMove();
  */
 void testKingCanCastle();
 
+
+
+/**
+ * Tests Pawn's canMove method
+ */
+
+void testPawnCanMove();
 #endif

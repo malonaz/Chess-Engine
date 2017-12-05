@@ -19,10 +19,12 @@ void testKnight(){
   testKnightCanMove();
   testKingCanMove();
   testKingCanCastle();
+  testPawnCanMove();
   
   std::cout << " finished tests for Knight\n\n";
   
 }
+
 
 void testKing(){
   std::cout << " Starting tests for King\n";
@@ -32,6 +34,7 @@ void testKing(){
   
 }
 
+
 void testPawn(){
   std::cout << " Starting tests for Pawn\n";
 
@@ -39,8 +42,6 @@ void testPawn(){
   std::cout << " finished tests for Pawn\n\n";
   
 }
-
-
 
 
 void testKnightCanMove(){
@@ -207,4 +208,71 @@ void testKingCanCastle(){
   cr.restoreCout();
   
   std::cout << "   Tests for king's canCastle passed!\n";
+}
+
+void testPawnCanMove(){
+  // redirecting cout to suppress new game started msg
+  CoutRedirect cr;
+  
+  ChessBoard cb;
+
+  // check that all pawns can initially move by two squares
+  
+  int white_pawn_rank = 1; 
+  int black_pawn_rank = 6;
+  Square *from_square_p, *to_square_p;
+  Piece *moving_piece_p;
+  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+    // check white pawn can move up two squares
+    from_square_p = cb.getSquare(white_pawn_rank, file_i);
+    to_square_p = cb.getSquare(white_pawn_rank + 2, file_i);
+    moving_piece_p = from_square_p->getPiece();
+    assert(moving_piece_p->canMove(from_square_p, to_square_p) == VALID);
+
+    // check black pawn can move up two squares
+    from_square_p = cb.getSquare(black_pawn_rank, file_i);
+    to_square_p = cb.getSquare(black_pawn_rank - 2, file_i);
+    moving_piece_p = from_square_p->getPiece();
+    assert(moving_piece_p->canMove(from_square_p, to_square_p) == VALID);
+  }
+
+  // now set pawn on B2 to moved
+  from_square_p = cb.getSquare("B2");
+  to_square_p = cb.getSquare("B4");
+  moving_piece_p = from_square_p->getPiece();
+  moving_piece_p->setToMoved();
+  // check pawn cannot move up two squares
+  assert(moving_piece_p->canMove(from_square_p, to_square_p)
+	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+
+
+  // test pawn cannot move diagonally to empty square
+  to_square_p = cb.getSquare("C3");
+  assert(moving_piece_p->canMove(from_square_p, to_square_p)
+	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+
+  // test pawn cannot take a piece by moving vertically
+  to_square_p = cb.getSquare("B3");
+  to_square_p->setPiece(new Piece(BLACK, DUMMY));
+  // check pawn cannot take by moving up one
+  assert(moving_piece_p->canMove(from_square_p, to_square_p)
+	 == PATH_OBSTRUCTED);
+  // check pawn can take diagonally
+  from_square_p = cb.getSquare("A2");
+  assert(moving_piece_p->canMove(from_square_p, to_square_p)
+	 == VALID);
+
+  // check pawns cannot take their own piece
+  from_square_p = cb.getSquare("B7");
+  to_square_p = cb.getSquare("C6");
+  to_square_p->setPiece(new Piece(BLACK, DUMMY));
+  moving_piece_p = from_square_p->getPiece();
+  // check pawn cannot take a friendly piece
+  assert(moving_piece_p->canMove(from_square_p, to_square_p)
+	 == TAKES_PIECE_OF_SAME_COLOR);
+
+  // restore cout
+  cr.restoreCout();
+
+  std::cout << "   Tests for pawn's canMove passed!\n";
 }
