@@ -12,6 +12,7 @@
 void ChessBoard::init(){
   // initialize members
   color_to_play = WHITE;
+  state = PLAYING_GAME;
 
   // output new game start to std stream
   std::cout << "A new chess game is started!" << std::endl;
@@ -78,7 +79,11 @@ void ChessBoard::resetBoard(){
 
 
 Error ChessBoard::submitMove(const char* from_square, const char* to_square){
-
+  if (state != PLAYING_GAME){
+    std::cout << "Game is over!\n";
+    return GAME_IS_OVER;
+  }
+  
   // check inputs correspond to valid squares
   if (!isValidSquare(from_square) || !isValidSquare(to_square))
     return INVALID_SQUARE;
@@ -157,15 +162,18 @@ void ChessBoard::prepareNextTurn(){
   
   if (kingIsInCheck(color_to_play)){
     std::cout << std::endl << color_to_play << " is in check";
-    if (playerCanMove(color_to_play)){
-      playerCanMove(color_to_play);
-    }
 	
-    if (!player_can_move)
+    if (!player_can_move){
 	std::cout << "mate";
+	// update game state
+	state = CHECKMATE;
+    }
   }else{
-    if (!playerCanMove(color_to_play))
+    if (!playerCanMove(color_to_play)){
       std::cout <<  "\nstalemate";
+      // update game state
+      state = STALEMATE;
+    }
   }
   
   std::cout << std::endl;

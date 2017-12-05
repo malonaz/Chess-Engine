@@ -31,5 +31,18 @@ void testSubmitMove();
 void testPrepareNextTurn();
 
 
+/**
+ * Tests both getSquare methods
+ */
+void testGetSquare();
+
+
+
+/**
+ * Tests playerCanMoveMethod
+ */ 
+void testPlayerCanMove();
+
+
 
 #endif

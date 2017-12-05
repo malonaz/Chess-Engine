@@ -31,6 +31,7 @@
 #define KNIGHT2_FILE 6
 #define ROOK2_FILE   7
 
+enum State{PLAYING_GAME, CHECKMATE, STALEMATE};
 
 // forward declaration
 class square;
@@ -40,6 +41,7 @@ class square;
  *   - 8 rows of 8 pointers to Squares
  *   - an array of 2 pointers to square which hold the two Kings
  *   - a binary Color variable to keep track of turns 
+ *   - a variable indicating the game's state
  */
 class ChessBoard{
   
@@ -47,6 +49,7 @@ private:
   Square* square_ps[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
   Square* kings_square_ps[NUMBER_OF_COLORS];
   Color color_to_play;
+  State state;
   
 public:
   
@@ -149,6 +152,12 @@ public:
    */
   void printObjects()const;
 
+
+
+  /**
+   * Observer. Returns this board's state
+   */
+  State getState(){return state;}
 };
 
 #endif
