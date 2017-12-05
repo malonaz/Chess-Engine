@@ -11,6 +11,7 @@ using namespace std;
 int main(){
 
   std::cout << "Starting tests for Chess\n\n";
+  
   testChessBoard();
   testSquare();
   testPiece();
@@ -18,5 +19,6 @@ int main(){
   testKing();
   testPawn();
   testUtils();
+  
   return 0;
 }

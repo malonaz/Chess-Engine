@@ -16,7 +16,7 @@
 void testSquare(){
   std::cout << " Starting tests for Square\n";
 
-  testStaticNumSquares();
+  //testStaticNumSquares();
   testSquareDestructor();
   testGetSquareBelow();
   testRankFileDiff();

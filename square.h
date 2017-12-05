@@ -30,9 +30,9 @@ private:
   static int num_squares;
 
   /**
-   * Constructor. Empty.
+   * Constructor. Increments num of squares
    */
-  Square(){}
+  Square(){num_squares++;}
   
   /**
    * Mutator. Initializes chessboard_p to point to the chessboard this

@@ -13,7 +13,6 @@ void Square::init(ChessBoard* chessboard_p, int rank_i, int file_i){
   this->rank_i = rank_i;
   this->file_i = file_i;
   this->piece_p = 0; // set to null
-  num_squares++;
 }
 
 
