@@ -12,7 +12,6 @@
 #include <assert.h>
 #include <cmath>
 
-
 void testPiece(){
   std::cout << " Starting tests for Piece\n";
 

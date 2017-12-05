@@ -20,4 +20,20 @@ void testKing();
 void testPawn();
 
 
+/**
+ * Tests Knight's canMove method.
+ */
+void testKnightCanMove();
+
+/**
+ * Tests King's canMove method.
+ */
+void testKingCanMove();
+
+
+/**
+ * Tests's King's canCastle method
+ */
+void testKingCanCastle();
+
 #endif
