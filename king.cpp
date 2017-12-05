@@ -14,7 +14,7 @@ Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   int file_diff = from_square_p->fileDiff(to_square_p);
 
   // assumes king cannot move this way until proven otherwise
-  Error move = PIECE_DOES_NOT_MOVE_THIS_WAY;
+  Error move = INVALID;
 
   if (std::abs(rank_diff) <= KING_MAX_1D_MOVE &&
       std::abs(file_diff) <= KING_MAX_1D_MOVE)
@@ -41,7 +41,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   // care of checking king is in the right square. If it has not moved
   // it must be in the e file & its color's first rank.
   if (has_moved)
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
 
   // king cannot castle while in check
   if (from_square_p->isUnderAttack(color)) 
@@ -63,7 +63,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   
   // there must be a piece on this square
   if (!rook_square_p->hasPiece()) 
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
   
   Piece* rook_square_piece_p = rook_square_p->getPiece();
 
@@ -71,7 +71,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   if (rook_square_piece_p->getType() != ROOK || 
       rook_square_piece_p->getColor() != color ||
       rook_square_piece_p->hasMoved()) 
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
   
   Square* path[8];
   // get path from the king to the rook it is castling with

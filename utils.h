@@ -27,9 +27,9 @@ enum Dimension{NO_CHANGE, DIAGONAL, HORIZONTAL, VERTICAL, INCORRECT};
 /**
  * Error. Enum used to describe move results
  */
-enum Error{ VALID, INVALID_SQUARE, EMPTY_SQUARE, WRONG_COLOR,
+enum Error{ VALID, INVALID, INVALID_SQUARE, EMPTY_SQUARE, WRONG_COLOR,
 	    DISCOVERS_CHECK, TAKES_PIECE_OF_SAME_COLOR, PATH_OBSTRUCTED,
-	    PIECE_DOES_NOT_MOVE_THIS_WAY, GAME_IS_OVER};
+	    GAME_IS_OVER};
 
 /**
  * Function which returns true if square string describes a square such

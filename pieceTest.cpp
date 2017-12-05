@@ -103,7 +103,7 @@ void testCanMove(){
   // test moving a piece in a way it's not allowed to move
   to_square_p = cb.getSquare("E4");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // test path obstructed
   // by own piece
@@ -134,7 +134,7 @@ void testCanMove(){
   from_square_p = cb.getSquare("A8");
   to_square_p = cb.getSquare("C6");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // delete pawn on A7
   delete cb.getSquare("A7")->getPiece();
@@ -149,7 +149,7 @@ void testCanMove(){
   from_square_p = cb.getSquare("C1");
   to_square_p = cb.getSquare("C5");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // move piece diagonally
   // remember there is no piece on d2, so let's move to e3

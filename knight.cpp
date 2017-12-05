@@ -17,7 +17,7 @@ Error Knight::canMove(Square* from_square_p, Square* to_square_p, bool move_piec
   int moveMagnitudeSquared = getMoveMagnitudeSquared(rank_diff, file_diff);
   
   if (moveMagnitudeSquared != KNIGHT_MOVE_MAGNITUDE_SQUARED)
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
 
   if (move_piece)
         movePiece(from_square_p, to_square_p);

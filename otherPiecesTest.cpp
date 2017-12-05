@@ -63,7 +63,7 @@ void testKnightCanMove(){
   // try to move knight vertically
   to_square_p = cb.getSquare("B4");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // now move to valid square
   to_square_p = cb.getSquare("C3");
@@ -92,7 +92,7 @@ void testKingCanMove(){
   // tries to move king up two squares
   to_square_p = cb.getSquare("E6");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // now moves to a valid square
   // first move pawn above king
@@ -138,14 +138,14 @@ void testKingCanCastle(){
 
   // cannot castle now
   assert(white_king->canCastle(cb.getSquare("E1"), cb.getSquare("G1"), KING_SIDE)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // now delete rook on H1 and check if you can castle
   delete cb.getSquare("H1")->getPiece();
   cb.getSquare("H1")->setPiece(0);
 
   assert(white_king->canCastle(cb.getSquare("E1"), cb.getSquare("G1"), KING_SIDE)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // now add a black rook on H1 and try to castle
   cb.getSquare("H1")->setPiece(new Piece(BLACK, ROOK));
@@ -202,7 +202,7 @@ void testKingCanCastle(){
   // set king to moved and king cannot castle
   black_king->setToMoved();
   assert(black_king->canCastle(cb.getSquare("E8"), cb.getSquare("G8"), KING_SIDE)
-  	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+  	 == INVALID);
   
   // restore cout
   cr.restoreCout();
@@ -243,13 +243,13 @@ void testPawnCanMove(){
   moving_piece_p->setToMoved();
   // check pawn cannot move up two squares
   assert(moving_piece_p->canMove(from_square_p, to_square_p)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
 
   // test pawn cannot move diagonally to empty square
   to_square_p = cb.getSquare("C3");
   assert(moving_piece_p->canMove(from_square_p, to_square_p)
-	 == PIECE_DOES_NOT_MOVE_THIS_WAY);
+	 == INVALID);
 
   // test pawn cannot take a piece by moving vertically
   to_square_p = cb.getSquare("B3");

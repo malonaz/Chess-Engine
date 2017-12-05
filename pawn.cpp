@@ -62,7 +62,7 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   bool to_square_has_piece  = to_square_p->hasPiece();
 
   // assume piece cannot move this way until proven otherwise
-  Error move = PIECE_DOES_NOT_MOVE_THIS_WAY;
+  Error move = INVALID;
   
   // there cannot be a piece on the square a simple pawn push moves to    
   if (simple_pawn_push){
@@ -109,7 +109,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
 
   // en passant square must contain a piece
   if (!en_passant_square_p->hasPiece())
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
 
   // get piece
   Piece* en_passant_piece = en_passant_square_p->getPiece();
@@ -118,7 +118,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   // piece must be an opponent's pawn
   if (en_passant_piece->getColor() == color ||
       en_passant_piece->getType() == type)
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
 
   // recast piece as a pawn
   en_passant_pawn = static_cast<Pawn*>(en_passant_piece);
@@ -126,7 +126,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   // pawn must have moved past this pawn's ability to take it on the
   // previous turn. If so, it's en passant attribute is true
   if (!en_passant_pawn->en_passant)
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
 
   // checks if taking en passant discovers a check on its king
   if (enPassantDiscoversCheck(en_passant_square_p))

@@ -27,7 +27,7 @@ Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
   Square* path[8];
   if (!from_square_p->getPath(to_square_p, path, type))
     // there is no such path for this piece
-    return PIECE_DOES_NOT_MOVE_THIS_WAY;
+    return INVALID;
   
   for (int i = 1; path[i] != to_square_p; i++)
     if (path[i]->hasPiece())
