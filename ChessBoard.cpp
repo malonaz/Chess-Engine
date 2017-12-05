@@ -9,6 +9,20 @@
 
 #include <iostream>
 
+
+
+ChessBoard::ChessBoard(){  
+  
+  // initiate Squares
+  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+    for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+      square_ps[rank_i][file_i].init(this, rank_i, file_i);
+
+  init();
+
+}
+
+
 void ChessBoard::init(){
   // initialize members
   color_to_play = WHITE;
@@ -16,58 +30,50 @@ void ChessBoard::init(){
 
   // output new game start to std stream
   std::cout << "A new chess game is started!" << std::endl;
-
-
-  int file_i, rank_i;
-  // create Squares
-  for (file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
-    for (rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
-      square_ps[rank_i][file_i] = new Square(this, rank_i, file_i);
-  
+   
   // create and set Pawns
-  for (file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
-    square_ps[WHITE_RANK2][file_i]->setPiece(new Pawn(WHITE));
-    square_ps[BLACK_RANK2][file_i]->setPiece(new Pawn(BLACK));
+  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+    square_ps[WHITE_RANK2][file_i].setPiece(new Pawn(WHITE));
+    square_ps[BLACK_RANK2][file_i].setPiece(new Pawn(BLACK));
   }
 
   // create and set Knights
-  square_ps[WHITE_RANK1][KNIGHT1_FILE]->setPiece(new Knight(WHITE));
-  square_ps[WHITE_RANK1][KNIGHT2_FILE]->setPiece(new Knight(WHITE));
-  square_ps[BLACK_RANK1][KNIGHT1_FILE]->setPiece(new Knight(BLACK));
-  square_ps[BLACK_RANK1][KNIGHT2_FILE]->setPiece(new Knight(BLACK));
+  square_ps[WHITE_RANK1][KNIGHT1_FILE].setPiece(new Knight(WHITE));
+  square_ps[WHITE_RANK1][KNIGHT2_FILE].setPiece(new Knight(WHITE));
+  square_ps[BLACK_RANK1][KNIGHT1_FILE].setPiece(new Knight(BLACK));
+  square_ps[BLACK_RANK1][KNIGHT2_FILE].setPiece(new Knight(BLACK));
 
   // create and set Rooks
-  square_ps[WHITE_RANK1][ROOK1_FILE]->setPiece(new Piece(WHITE, ROOK));
-  square_ps[WHITE_RANK1][ROOK2_FILE]->setPiece(new Piece(WHITE, ROOK));
-  square_ps[BLACK_RANK1][ROOK1_FILE]->setPiece(new Piece(BLACK, ROOK));
-  square_ps[BLACK_RANK1][ROOK2_FILE]->setPiece(new Piece(BLACK, ROOK));
+  square_ps[WHITE_RANK1][ROOK1_FILE].setPiece(new Piece(WHITE, ROOK));
+  square_ps[WHITE_RANK1][ROOK2_FILE].setPiece(new Piece(WHITE, ROOK));
+  square_ps[BLACK_RANK1][ROOK1_FILE].setPiece(new Piece(BLACK, ROOK));
+  square_ps[BLACK_RANK1][ROOK2_FILE].setPiece(new Piece(BLACK, ROOK));
 
   // create and set Bishops
-  square_ps[WHITE_RANK1][BISHOP1_FILE]->setPiece(new Piece(WHITE, BISHOP));
-  square_ps[WHITE_RANK1][BISHOP2_FILE]->setPiece(new Piece(WHITE, BISHOP));
-  square_ps[BLACK_RANK1][BISHOP1_FILE]->setPiece(new Piece(BLACK, BISHOP));
-  square_ps[BLACK_RANK1][BISHOP2_FILE]->setPiece(new Piece(BLACK, BISHOP));
+  square_ps[WHITE_RANK1][BISHOP1_FILE].setPiece(new Piece(WHITE, BISHOP));
+  square_ps[WHITE_RANK1][BISHOP2_FILE].setPiece(new Piece(WHITE, BISHOP));
+  square_ps[BLACK_RANK1][BISHOP1_FILE].setPiece(new Piece(BLACK, BISHOP));
+  square_ps[BLACK_RANK1][BISHOP2_FILE].setPiece(new Piece(BLACK, BISHOP));
 
   // create and set Queens & Kings
-  square_ps[WHITE_RANK1][QUEEN_FILE]->setPiece(new Piece(WHITE, QUEEN));
-  square_ps[WHITE_RANK1][KING_FILE]->setPiece(new King(WHITE));
-  square_ps[BLACK_RANK1][QUEEN_FILE]->setPiece(new Piece(BLACK, QUEEN));
-  square_ps[BLACK_RANK1][KING_FILE]->setPiece(new King(BLACK));
+  square_ps[WHITE_RANK1][QUEEN_FILE].setPiece(new Piece(WHITE, QUEEN));
+  square_ps[WHITE_RANK1][KING_FILE].setPiece(new King(WHITE));
+  square_ps[BLACK_RANK1][QUEEN_FILE].setPiece(new Piece(BLACK, QUEEN));
+  square_ps[BLACK_RANK1][KING_FILE].setPiece(new King(BLACK));
 
   // copie pointers to kings into kings_square_ps
-  kings_square_ps[WHITE] = square_ps[WHITE_RANK1][KING_FILE];
-  kings_square_ps[BLACK] = square_ps[BLACK_RANK1][KING_FILE];
+  kings_square_ps[WHITE] = &square_ps[WHITE_RANK1][KING_FILE];
+  kings_square_ps[BLACK] = &square_ps[BLACK_RANK1][KING_FILE];
 }
 
 
 void ChessBoard::destroySquares(){
+  // delete pieces and null squares
   for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
-    for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
-      // square destructor handle deallocating Pieces memory
-      delete square_ps[rank_i][file_i];
-      // nulls pointers
-      square_ps[rank_i][file_i] = 0;
-    }
+    for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+      square_ps[rank_i][file_i].destroyPiece();
+  
+
 }
 
 
@@ -152,9 +158,9 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
 void ChessBoard::prepareNextTurn(){
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
-      if (square_ps[rank_i][file_i]->hasPiece())
-	if (square_ps[rank_i][file_i]->getPiece()->getColor() != color_to_play)
-	  square_ps[rank_i][file_i]->getPiece()->update();
+      if (square_ps[rank_i][file_i].hasPiece())
+	if (square_ps[rank_i][file_i].getPiece()->getColor() != color_to_play)
+	  square_ps[rank_i][file_i].getPiece()->update();
 
   color_to_play = (color_to_play == WHITE)? BLACK: WHITE;
 
@@ -180,17 +186,17 @@ void ChessBoard::prepareNextTurn(){
 }
 
 
-Square* ChessBoard::getSquare(const char* sqr_str) const{
+Square* ChessBoard::getSquare(const char* sqr_str) {
   int rank_i, file_i;
   // parsing functions are located in utils
   rank_i = parseRank(sqr_str);
   file_i = parseFile(sqr_str);
-  return square_ps[rank_i][file_i];
+  return &square_ps[rank_i][file_i];
 }
 
 
-Square* ChessBoard::getSquare(int rank_i, int file_i) const{
-  return square_ps[rank_i][file_i];
+Square* ChessBoard::getSquare(int rank_i, int file_i) {
+  return &square_ps[rank_i][file_i];
 }
 
 
@@ -204,14 +210,14 @@ bool ChessBoard::kingIsInCheck(Color color){
 }
 
 
-bool ChessBoard::playerCanMove(Color color) const{
+bool ChessBoard::playerCanMove(Color color) {
   Square* current_square;
   
   // iterate through all squares of the chessboard
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
       
-      current_square = square_ps[rank_i][file_i];
+      current_square = &square_ps[rank_i][file_i];
 
       // check square if current_square has a piece of the 
       // given color that can move
@@ -228,14 +234,14 @@ bool ChessBoard::playerCanMove(Color color) const{
 }
 
 
-void ChessBoard::printBoard() const{
+void ChessBoard::printBoard() {
   for (int rank_i = MAX_INDEX; rank_i >= MIN_INDEX; rank_i--){
     std::cout << HORIZONTAL_BAR  << std::endl;
 
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
       std::cout << VERTICAL_BAR;
 
-      Square* current_sqr = square_ps[rank_i][file_i];
+      Square* current_sqr = &square_ps[rank_i][file_i];
       
       if (!current_sqr->hasPiece())
 	std::cout << ' ';

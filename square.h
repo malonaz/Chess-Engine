@@ -20,8 +20,8 @@ class Square{
 
 private:
   ChessBoard* chessboard_p;
-  const int rank_i;
-  const int file_i;
+  int rank_i;
+  int file_i;
   Piece* piece_p;
 
  public:
@@ -29,13 +29,17 @@ private:
   // keeps track of number of square objects. used for testing & debugging
   static int num_squares;
 
-
   /**
-   * Constructor. Initializes chessboard_p to point to the chessboard this
+   * Constructor. Empty.
+   */
+  Square(){}
+  
+  /**
+   * Mutator. Initializes chessboard_p to point to the chessboard this
    * Square belongs to. Initializes file_i & rank_i. sets piece_p to NULL.
    * Increments num_squares.
    */
-  Square(ChessBoard* chessboard_p, int rank_i, int file_i);
+  void init(ChessBoard* chessboard_p, int rank_i, int file_i);
 
   
   /**

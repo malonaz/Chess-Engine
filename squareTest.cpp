@@ -32,13 +32,11 @@ void testSquare(){
 
 
 void testStaticNumSquares(){
-  // dummy chessboard pointer
-  ChessBoard* chessboard_p = 0;
 
   Square* square_ps[100];
   for (int i = 0; i < 100; i++){
     assert (Square::num_squares == i);
-    square_ps[i] = new Square(chessboard_p, 0, 0);
+    square_ps[i] = new Square();
   }
     
   for (int i = 99; i >= 0; i--){
@@ -51,12 +49,11 @@ void testStaticNumSquares(){
 
 void testSquareDestructor(){
   assert(Piece::num_pieces == 0);
-  // create dummy piece and dummy chessboard
+  // create dummy piece 
   Piece* piece_p = new Piece(WHITE, DUMMY);
-  ChessBoard* chessboard_p = 0;
  
   // create square
-  Square* square_p = new Square(chessboard_p, 0, 0);
+  Square* square_p = new Square();
   square_p->setPiece(piece_p);
 
   // static num_piece should be at one now
@@ -150,12 +147,14 @@ void testRankFileDiff(){
   // dummy chessboard_pointer for square initialization
   ChessBoard* chessboard_p = 0;
 
-  Square* base_square_p = new Square(chessboard_p, 0, 5);
+  Square* base_square_p = new Square();
+  base_square_p->init(chessboard_p, 0, 5);
 
   Square* current_square_p;
   
   for (int i = 0; i < 100; i++){
-    current_square_p = new Square(chessboard_p, i, i + 5);
+    current_square_p = new Square();
+    current_square_p->init(chessboard_p, i, i + 5);
     assert(current_square_p->rankDiff(base_square_p) == -i);
     assert(base_square_p->rankDiff(current_square_p) == i);
     assert(current_square_p->fileDiff(base_square_p) == -i);
@@ -163,6 +162,8 @@ void testRankFileDiff(){
     // free memory
     delete current_square_p;
   }
+  // free base square
+  delete base_square_p;
   std::cout << "   Tests for RankDiff passed!\n";
   std::cout << "   Tests for FileDiff passed!\n";
 }

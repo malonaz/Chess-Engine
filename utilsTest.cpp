@@ -91,7 +91,8 @@ void testGetPointerIndex(){
   int index = 0;
   for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
     for (int file = MIN_INDEX; file <= MAX_INDEX; file++){
-      squares[index] = new Square(chessboard_p, rank, file);
+      squares[index] = new Square();
+      squares[index]->init(chessboard_p, rank, file);
       index++;
     }
 

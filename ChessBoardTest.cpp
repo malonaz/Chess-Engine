@@ -55,10 +55,9 @@ void testChessBoardInit(){
 void testDestroySquares(){
   // redirecting cout to suppress new game started msg
   CoutRedirect cr;
-  ChessBoard cb;
+  ChessBoard* chessboard_p = new ChessBoard();
 
-  cb.destroySquares();
-
+  delete chessboard_p;
   // check number of pieces
   assert(Square::num_squares == 0);
   assert(Piece::num_pieces == 0);

@@ -2,6 +2,7 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
+#include "square.h"
 #include "piece.h"
 #include "utils.h"
 
@@ -46,7 +47,7 @@ class square;
 class ChessBoard{
   
 private:
-  Square* square_ps[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
+  Square square_ps[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
   Square* kings_square_ps[NUMBER_OF_COLORS];
   Color color_to_play;
   State state;
@@ -54,9 +55,9 @@ private:
 public:
   
   /**
-   * Constructor. Calls init method.
+   * Constructor. Initiates Squares, then calls init method
    */			 
-  ChessBoard(){init();}
+  ChessBoard();
 
   
   /**
@@ -105,14 +106,14 @@ public:
    * Observer. Requires input be a valid (see utils.h) chess square coordinate.
    * returns a pointer to the square at the given coordinates.
    */
-  Square* getSquare(const char* sqr_coordinates)const;
+  Square* getSquare(const char* sqr_coordinates);
 
 
   /**
    * Observer. Requires valid rank and file index in range [0,7], returns
    * pointer to square at the the given indices.
    */
-  Square* getSquare(int rank_i, int file_i)const;
+  Square* getSquare(int rank_i, int file_i);
   
 
   /**
@@ -138,13 +139,13 @@ public:
   /**
    * Observer. Returns true if player of given color can move a piece.
    */
-  bool playerCanMove(Color color)const;
+  bool playerCanMove(Color color);
 
   
   /**
    * Observer. Prints board state to std output stream.
    */
-  void printBoard()const;
+  void printBoard();
 
   
   /**

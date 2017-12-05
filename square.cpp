@@ -8,8 +8,11 @@
 int Square::num_squares = 0;
 
 
-Square::Square(ChessBoard* chessboard_p, int rank_i, int file_i)
-  :chessboard_p(chessboard_p), rank_i(rank_i), file_i(file_i), piece_p(0){
+void Square::init(ChessBoard* chessboard_p, int rank_i, int file_i){
+  this->chessboard_p = chessboard_p;
+  this->rank_i = rank_i;
+  this->file_i = file_i;
+  this->piece_p = 0; // set to null
   num_squares++;
 }
 
