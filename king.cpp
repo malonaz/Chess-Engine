@@ -14,12 +14,12 @@ Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   int file_diff = from_square_p->fileDiff(to_square_p);
 
   // assumes king cannot move this way until proven otherwise
-  Error move = INVALID;
+  Error move = INVALID_MOVE;
 
   if (std::abs(rank_diff) <= KING_MAX_1D_MOVE &&
       std::abs(file_diff) <= KING_MAX_1D_MOVE)
     // regular king move
-    move = VALID;
+    move = NO_ERROR;
 
   
   if (rank_diff == NO_CHANGE && file_diff == QUEEN_SIDE)
@@ -28,7 +28,7 @@ Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   if (rank_diff == NO_CHANGE && file_diff == KING_SIDE)
     move = canCastle(from_square_p, to_square_p, KING_SIDE, move_piece);
     
-  if (move == VALID && move_piece)
+  if (move == NO_ERROR && move_piece)
     movePiece(from_square_p, to_square_p);
   
   return move;
@@ -41,7 +41,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   // care of checking king is in the right square. If it has not moved
   // it must be in the e file & its color's first rank.
   if (has_moved)
-    return INVALID;
+    return INVALID_MOVE;
 
   // king cannot castle while in check
   if (from_square_p->isUnderAttack(color)) 
@@ -63,7 +63,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   
   // there must be a piece on this square
   if (!rook_square_p->hasPiece()) 
-    return INVALID;
+    return INVALID_MOVE;
   
   Piece* rook_square_piece_p = rook_square_p->getPiece();
 
@@ -71,7 +71,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   if (rook_square_piece_p->getType() != ROOK || 
       rook_square_piece_p->getColor() != color ||
       rook_square_piece_p->hasMoved()) 
-    return INVALID;
+    return INVALID_MOVE;
   
   Square* path[8];
   // get path from the king to the rook it is castling with
@@ -97,7 +97,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
     rook_square_p->setPiece(0);
   }
     
-  return VALID;
+  return NO_ERROR;
 
 }
 

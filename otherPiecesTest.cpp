@@ -63,12 +63,12 @@ void testKnightCanMove(){
   // try to move knight vertically
   to_square_p = cb.getSquare("B4");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // now move to valid square
   to_square_p = cb.getSquare("C3");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == VALID);
+	 == NO_ERROR);
   
   std::cout << "   Tests for knight's canMove passed!\n";
 
@@ -92,7 +92,7 @@ void testKingCanMove(){
   // tries to move king up two squares
   to_square_p = cb.getSquare("E6");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // now moves to a valid square
   // first move pawn above king
@@ -100,7 +100,7 @@ void testKingCanMove(){
   cb.submitMove("E7", "E6");
   to_square_p = cb.getSquare("E7");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == VALID);
+	 == NO_ERROR);
   
   // restore cout
   cr.restoreCout();
@@ -118,34 +118,34 @@ void testKingCanCastle(){
   King* white_king = static_cast<King*> (cb.getKingSquareP(WHITE)->getPiece());
   King* black_king = static_cast<King*> (cb.getKingSquareP(BLACK)->getPiece());
   // first let's setup a position
-  assert(cb.submitMove("E2", "E4") == VALID);
-  assert(cb.submitMove("E7", "E5") == VALID);
-  assert(cb.submitMove("G1", "F3") == VALID);
-  assert(cb.submitMove("B8", "C6") == VALID);
+  assert(cb.submitMove("E2", "E4") == NO_ERROR);
+  assert(cb.submitMove("E7", "E5") == NO_ERROR);
+  assert(cb.submitMove("G1", "F3") == NO_ERROR);
+  assert(cb.submitMove("B8", "C6") == NO_ERROR);
   // try to castle illegally here
   assert(white_king->canCastle(cb.getSquare("E1"), cb.getSquare("G1"), KING_SIDE)
 	 == PATH_OBSTRUCTED);
-  assert(cb.submitMove("F1", "C4") == VALID);
-  assert(cb.submitMove("F8", "C5") == VALID);
+  assert(cb.submitMove("F1", "C4") == NO_ERROR);
+  assert(cb.submitMove("F8", "C5") == NO_ERROR);
   
   
   // white king can castle
   assert(white_king->canCastle(cb.getSquare("E1"), cb.getSquare("G1"), KING_SIDE)
-	 == VALID);
+	 == NO_ERROR);
 
   // sets rook on H1 to moved
   cb.getSquare("H1")->getPiece()->setToMoved();
 
   // cannot castle now
   assert(white_king->canCastle(cb.getSquare("E1"), cb.getSquare("G1"), KING_SIDE)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // now delete rook on H1 and check if you can castle
   delete cb.getSquare("H1")->getPiece();
   cb.getSquare("H1")->setPiece(0);
 
   assert(white_king->canCastle(cb.getSquare("E1"), cb.getSquare("G1"), KING_SIDE)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // now add a black rook on H1 and try to castle
   cb.getSquare("H1")->setPiece(new Piece(BLACK, ROOK));
@@ -158,32 +158,32 @@ void testKingCanCastle(){
   delete cb.getSquare("H1")->getPiece();
   cb.getSquare("H1")->setPiece(0);
 
-  assert(cb.submitMove("B1", "C3") == VALID);
-  assert(cb.submitMove("G8", "F6") == VALID);
+  assert(cb.submitMove("B1", "C3") == NO_ERROR);
+  assert(cb.submitMove("G8", "F6") == NO_ERROR);
   assert(black_king->canCastle(cb.getSquare("E8"), cb.getSquare("G8"), KING_SIDE)
-  	 == VALID);
+  	 == NO_ERROR);
 
   // black king cannot castle queenside
   assert(black_king->canCastle(cb.getSquare("E8"), cb.getSquare("C8"), QUEEN_SIDE)
   	 == PATH_OBSTRUCTED);
   // remove pieces obstructing the path
-  assert(cb.submitMove("A2", "A3") == VALID);
-  assert(cb.submitMove("D7", "D6") == VALID);
-  assert(cb.submitMove("A3", "A4") == VALID);
-  assert(cb.submitMove("D8", "E7") == VALID);
-  assert(cb.submitMove("B2", "B3") == VALID);
-  assert(cb.submitMove("C8", "D7") == VALID);
-  assert(cb.submitMove("H2", "H3") == VALID);
+  assert(cb.submitMove("A2", "A3") == NO_ERROR);
+  assert(cb.submitMove("D7", "D6") == NO_ERROR);
+  assert(cb.submitMove("A3", "A4") == NO_ERROR);
+  assert(cb.submitMove("D8", "E7") == NO_ERROR);
+  assert(cb.submitMove("B2", "B3") == NO_ERROR);
+  assert(cb.submitMove("C8", "D7") == NO_ERROR);
+  assert(cb.submitMove("H2", "H3") == NO_ERROR);
 
   // black king can castle queenside
   assert(black_king->canCastle(cb.getSquare("E8"), cb.getSquare("C8"), QUEEN_SIDE)
-  	 == VALID);
+  	 == NO_ERROR);
 
   // add a black knight on A6 which threatens the rook's path but no the king - legal
   cb.getSquare("A6")->setPiece(new Knight(WHITE));
   // black king can castle queenside
   assert(black_king->canCastle(cb.getSquare("E8"), cb.getSquare("C8"), QUEEN_SIDE)
-  	 == VALID);
+  	 == NO_ERROR);
 
   // add a black knight on B6, which threatens the destination square of the king
   cb.getSquare("B6")->setPiece(new Knight(WHITE));
@@ -202,7 +202,7 @@ void testKingCanCastle(){
   // set king to moved and king cannot castle
   black_king->setToMoved();
   assert(black_king->canCastle(cb.getSquare("E8"), cb.getSquare("G8"), KING_SIDE)
-  	 == INVALID);
+  	 == INVALID_MOVE);
   
   // restore cout
   cr.restoreCout();
@@ -227,13 +227,13 @@ void testPawnCanMove(){
     from_square_p = cb.getSquare(white_pawn_rank, file_i);
     to_square_p = cb.getSquare(white_pawn_rank + 2, file_i);
     moving_piece_p = from_square_p->getPiece();
-    assert(moving_piece_p->canMove(from_square_p, to_square_p) == VALID);
+    assert(moving_piece_p->canMove(from_square_p, to_square_p) == NO_ERROR);
 
     // check black pawn can move up two squares
     from_square_p = cb.getSquare(black_pawn_rank, file_i);
     to_square_p = cb.getSquare(black_pawn_rank - 2, file_i);
     moving_piece_p = from_square_p->getPiece();
-    assert(moving_piece_p->canMove(from_square_p, to_square_p) == VALID);
+    assert(moving_piece_p->canMove(from_square_p, to_square_p) == NO_ERROR);
   }
 
   // now set pawn on B2 to moved
@@ -243,13 +243,13 @@ void testPawnCanMove(){
   moving_piece_p->setToMoved();
   // check pawn cannot move up two squares
   assert(moving_piece_p->canMove(from_square_p, to_square_p)
-	 == INVALID);
+	 == INVALID_MOVE);
 
 
   // test pawn cannot move diagonally to empty square
   to_square_p = cb.getSquare("C3");
   assert(moving_piece_p->canMove(from_square_p, to_square_p)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // test pawn cannot take a piece by moving vertically
   to_square_p = cb.getSquare("B3");
@@ -260,7 +260,7 @@ void testPawnCanMove(){
   // check pawn can take diagonally
   from_square_p = cb.getSquare("A2");
   assert(moving_piece_p->canMove(from_square_p, to_square_p)
-	 == VALID);
+	 == NO_ERROR);
 
   // check pawns cannot take their own piece
   from_square_p = cb.getSquare("B7");

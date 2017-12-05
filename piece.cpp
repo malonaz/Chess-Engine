@@ -27,7 +27,7 @@ Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
   Square* path[8];
   if (!from_square_p->getPath(to_square_p, path, type))
     // there is no such path for this piece
-    return INVALID;
+    return INVALID_MOVE;
   
   for (int i = 1; path[i] != to_square_p; i++)
     if (path[i]->hasPiece())
@@ -39,7 +39,7 @@ Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
     // move pieces and delete piece at to_square if there is one
     movePiece(from_square_p, to_square_p);
   
-  return VALID;
+  return NO_ERROR;
 }
 
 void Piece::movePiece(Square* from_square_p, Square* to_square_p){

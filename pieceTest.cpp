@@ -103,7 +103,7 @@ void testCanMove(){
   // test moving a piece in a way it's not allowed to move
   to_square_p = cb.getSquare("E4");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // test path obstructed
   // by own piece
@@ -120,21 +120,21 @@ void testCanMove(){
   cb.getSquare("D2")->setPiece(0); // remove piece
   to_square_p = cb.getSquare("D7");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == VALID);
+	 == NO_ERROR);
   // move queen to D7
   cb.getSquare("D1")->getPiece()->movePiece(from_square_p, to_square_p);
   from_square_p = to_square_p;
   to_square_p = cb.getSquare("E6");
   // can queen move diagonally from D7 to E6 
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == VALID);
+	 == NO_ERROR);
 
   // ROOK PIECE
   // try to move diagonally
   from_square_p = cb.getSquare("A8");
   to_square_p = cb.getSquare("C6");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // delete pawn on A7
   delete cb.getSquare("A7")->getPiece();
@@ -142,20 +142,20 @@ void testCanMove(){
   // move piece vertically
   to_square_p = cb.getSquare("A4");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == VALID);
+	 == NO_ERROR);
 
   // BISHOP PIECE
   // try to move vertically
   from_square_p = cb.getSquare("C1");
   to_square_p = cb.getSquare("C5");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == INVALID);
+	 == INVALID_MOVE);
 
   // move piece diagonally
   // remember there is no piece on d2, so let's move to e3
   to_square_p = cb.getSquare("E3");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
-	 == VALID);
+	 == NO_ERROR);
 
   // restore cout
   cr.restoreCout();

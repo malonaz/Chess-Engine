@@ -150,7 +150,7 @@ Error Square::movePiece(Square* to_square_p){
   // default call to canMove does not move pieces, simply checks
   // whether move is possible and legal
   Error move = piece_p->canMove(this, to_square_p);
-  if (move == VALID){
+  if (move == NO_ERROR){
     if (movePutsKingInCheck(to_square_p))
       return KING_IS_IN_CHECK;
     else
@@ -203,7 +203,7 @@ bool Square::pieceCanMove(){
       
       // check if this square's piece can move to the current to_square_p
       // without putting its king in check.
-      if (piece_p->canMove(this, to_square_p) == VALID &&
+      if (piece_p->canMove(this, to_square_p) == NO_ERROR &&
 	  !movePutsKingInCheck(to_square_p))
 	return true;
     }
@@ -232,7 +232,7 @@ bool Square::isUnderAttack(Color player_color){
 	if (from_square_p->getPiece()->getColor() != player_color)
 	  // here we don't check if this piece moving would induce a
 	  // a check on its king because we only care about threat
-	  if (from_square_p->getPiece()->canMove(from_square_p, this) == VALID)
+	  if (from_square_p->getPiece()->canMove(from_square_p, this) == NO_ERROR)
 	    is_under_attack = true;
     }
   

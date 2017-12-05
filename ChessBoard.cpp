@@ -120,7 +120,7 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
   std::cout << color_to_play  << "'s " << moving_piece_p->getType();
 
   Error move = from_square_p->movePiece(to_square_p);
-  if (move == VALID){
+  if (move == NO_ERROR){
     // move succeeded
     
     // update king square pointer if needed

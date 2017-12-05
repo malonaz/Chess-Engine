@@ -62,19 +62,19 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   bool to_square_has_piece  = to_square_p->hasPiece();
 
   // assume piece cannot move this way until proven otherwise
-  Error move = INVALID;
+  Error move = INVALID_MOVE;
   
   // there cannot be a piece on the square a simple pawn push moves to    
   if (simple_pawn_push){
     if (to_square_has_piece)
       return PATH_OBSTRUCTED;
     else
-      move = VALID;
+      move = NO_ERROR;
   }
   
   // if pawn takes regularly, there must be a piece on to_square_p
   if (pawn_takes && to_square_has_piece)
-    move = VALID;
+    move = NO_ERROR;
 
   // notice that we pass @param move_piece to canEnPassant.
   if (pawn_takes && !to_square_has_piece)
@@ -93,10 +93,10 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
       // this pawn can be taken en passant next turn
       en_passant = true;  
     
-    move = VALID;
+    move = NO_ERROR;
   }
 
-  if (move == VALID && move_piece)
+  if (move == NO_ERROR && move_piece)
     movePiece(from_square_p, to_square_p);
   
   return move;
@@ -109,7 +109,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
 
   // en passant square must contain a piece
   if (!en_passant_square_p->hasPiece())
-    return INVALID;
+    return INVALID_MOVE;
 
   // get piece
   Piece* en_passant_piece = en_passant_square_p->getPiece();
@@ -118,7 +118,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   // piece must be an opponent's pawn
   if (en_passant_piece->getColor() == color ||
       en_passant_piece->getType() == type)
-    return INVALID;
+    return INVALID_MOVE;
 
   // recast piece as a pawn
   en_passant_pawn = static_cast<Pawn*>(en_passant_piece);
@@ -126,7 +126,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   // pawn must have moved past this pawn's ability to take it on the
   // previous turn. If so, it's en passant attribute is true
   if (!en_passant_pawn->en_passant)
-    return INVALID;
+    return INVALID_MOVE;
 
   // checks if taking en passant discovers a check on its king
   if (enPassantDiscoversCheck(en_passant_square_p))
@@ -135,7 +135,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
   if (move_piece)
     en_passant_square_p->destroyPiece();
   
-  return VALID;
+  return NO_ERROR;
 }
 
 
