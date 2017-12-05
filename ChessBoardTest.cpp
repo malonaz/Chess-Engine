@@ -42,7 +42,7 @@ void testChessBoardInit(){
   assert(cb.getSquare("E8") == cb.getKingSquareP(BLACK));
 	 
   // check it is white turn by attempting to move a black piece
-  assert(cb.submitMove("E7", "E5") == WRONG_COLOR);
+  assert(cb.submitMove("E7", "E5") == MOVE_OUT_OF_TURN);
 
 
   // restore cout
@@ -88,11 +88,11 @@ void testSubmitMove(){
   assert(cb.submitMove("H5", "A4") == EMPTY_SQUARE);
 
   // check wrong color
-  assert(cb.submitMove("A7", "A5") == WRONG_COLOR);
-  assert(cb.submitMove("G8", "F6") == WRONG_COLOR);
+  assert(cb.submitMove("A7", "A5") == MOVE_OUT_OF_TURN);
+  assert(cb.submitMove("G8", "F6") == MOVE_OUT_OF_TURN);
   cb.submitMove("A2", "A4"); // move white piece
-  assert(cb.submitMove("B1", "C3") == WRONG_COLOR);
-  assert(cb.submitMove("H2", "H4") == WRONG_COLOR);
+  assert(cb.submitMove("B1", "C3") == MOVE_OUT_OF_TURN);
+  assert(cb.submitMove("H2", "H4") == MOVE_OUT_OF_TURN);
 
   // valid moves are tested in square and piece classes
 

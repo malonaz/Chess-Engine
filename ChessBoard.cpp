@@ -103,7 +103,7 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
   if (moving_piece_p->getColor() != color_to_play){ 
     std::cout << "It is not " << moving_piece_p->getColor();
     std::cout << "'s turn to move!\n";
-    return WRONG_COLOR;
+    return MOVE_OUT_OF_TURN;
   }
 
   // get destination square piece information
