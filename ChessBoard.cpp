@@ -18,16 +18,16 @@ void ChessBoard::init(){
   std::cout << "A new chess game is started!" << std::endl;
 
 
-  int file, rank;
+  int file_i, rank_i;
   // create Squares
-  for (file = MIN_INDEX; file <= MAX_INDEX; file++)
-    for (rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-      square_ps[rank][file] = new Square(this, rank, file);
+  for (file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+    for (rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+      square_ps[rank_i][file_i] = new Square(this, rank_i, file_i);
   
   // create and set Pawns
-  for (file = MIN_INDEX; file <= MAX_INDEX; file++){
-    square_ps[WHITE_RANK2][file]->setPiece(new Pawn(WHITE));
-    square_ps[BLACK_RANK2][file]->setPiece(new Pawn(BLACK));
+  for (file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+    square_ps[WHITE_RANK2][file_i]->setPiece(new Pawn(WHITE));
+    square_ps[BLACK_RANK2][file_i]->setPiece(new Pawn(BLACK));
   }
 
   // create and set Knights
@@ -150,11 +150,11 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
 
 
 void ChessBoard::prepareNextTurn(){
-  for (int rank = MIN_INDEX; rank <= MAX_INDEX; rank++)
-    for (int file = MIN_INDEX; file <= MAX_INDEX; file++)
-      if (square_ps[rank][file]->hasPiece())
-	if (square_ps[rank][file]->getPiece()->getColor() != color_to_play)
-	  square_ps[rank][file]->getPiece()->update();
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+      if (square_ps[rank_i][file_i]->hasPiece())
+	if (square_ps[rank_i][file_i]->getPiece()->getColor() != color_to_play)
+	  square_ps[rank_i][file_i]->getPiece()->update();
 
   color_to_play = (color_to_play == WHITE)? BLACK: WHITE;
 
@@ -181,11 +181,11 @@ void ChessBoard::prepareNextTurn(){
 
 
 Square* ChessBoard::getSquare(const char* sqr_str) const{
-  int rank, file;
+  int rank_i, file_i;
   // parsing functions are located in utils
-  rank = parseRank(sqr_str);
-  file = parseFile(sqr_str);
-  return square_ps[rank][file];
+  rank_i = parseRank(sqr_str);
+  file_i = parseFile(sqr_str);
+  return square_ps[rank_i][file_i];
 }
 
 
