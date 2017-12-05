@@ -152,7 +152,7 @@ Error Square::movePiece(Square* to_square_p){
   Error move = piece_p->canMove(this, to_square_p);
   if (move == VALID){
     if (movePutsKingInCheck(to_square_p))
-      return DISCOVERS_CHECK;
+      return KING_IS_IN_CHECK;
     else
       piece_p->canMove(this, to_square_p, true);
   }

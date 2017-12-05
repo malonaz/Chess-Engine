@@ -440,7 +440,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("E7", "E5") == VALID);
   assert(cb.submitMove("E1", "E2") == VALID);
   assert(cb.submitMove("F8", "C5") == VALID);
-  assert(cb.submitMove("E2", "E3") == DISCOVERS_CHECK); // Black king steps into check
+  assert(cb.submitMove("E2", "E3") == KING_IS_IN_CHECK); // Black king steps into check
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == VALID);
@@ -451,7 +451,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("F6", "E5") == VALID);
   assert(cb.submitMove("H2", "H3") == VALID);
   assert(cb.submitMove("E5", "E4") == VALID);
-  assert(cb.submitMove("E2", "F3") == DISCOVERS_CHECK); // White Queen is pinned
+  assert(cb.submitMove("E2", "F3") == KING_IS_IN_CHECK); // White Queen is pinned
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == VALID);
@@ -462,7 +462,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("F6", "E5") == VALID);
   assert(cb.submitMove("A3", "E3") == VALID);
   assert(cb.submitMove("E5", "E4") == VALID);
-  assert(cb.submitMove("E3", "A3") == DISCOVERS_CHECK); // White Rook is pinned
+  assert(cb.submitMove("E3", "A3") == KING_IS_IN_CHECK); // White Rook is pinned
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == VALID);
@@ -473,14 +473,14 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("F6", "E5") == VALID);
   assert(cb.submitMove("H2", "H3") == VALID);
   assert(cb.submitMove("E5", "E4") == VALID);
-  assert(cb.submitMove("E2", "F3") == DISCOVERS_CHECK); // White Bishop is pinned
+  assert(cb.submitMove("E2", "F3") == KING_IS_IN_CHECK); // White Bishop is pinned
 
   cb.resetBoard();
   assert(cb.submitMove("D2", "D4") == VALID);
   assert(cb.submitMove("E7", "E6") == VALID);
   assert(cb.submitMove("B1", "C3") == VALID);
   assert(cb.submitMove("F8", "B4") == VALID);
-  assert(cb.submitMove("C3", "D5") == DISCOVERS_CHECK); // White Knight is pinned
+  assert(cb.submitMove("C3", "D5") == KING_IS_IN_CHECK); // White Knight is pinned
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == VALID);
@@ -491,7 +491,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("F6", "E5") == VALID);
   assert(cb.submitMove("A3", "A4") == VALID);
   assert(cb.submitMove("D7", "D5") == VALID);
-  assert(cb.submitMove("E4", "D5") == DISCOVERS_CHECK); // White Pawn is pinned
+  assert(cb.submitMove("E4", "D5") == KING_IS_IN_CHECK); // White Pawn is pinned
 
   // testing black pieces
   cb.resetBoard();
@@ -500,7 +500,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("F1", "C4") == VALID);
   assert(cb.submitMove("E8", "E7") == VALID);
   assert(cb.submitMove("A2", "A3") == VALID); 
-  assert(cb.submitMove("E7", "E6") == DISCOVERS_CHECK); // Black King steps into check
+  assert(cb.submitMove("E7", "E6") == KING_IS_IN_CHECK); // Black King steps into check
   
   
   cb.resetBoard();
@@ -509,7 +509,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("D1", "H5") == VALID);
   assert(cb.submitMove("D8", "E7") == VALID);
   assert(cb.submitMove("H5", "E5") == VALID); 
-  assert(cb.submitMove("E7", "D8") == DISCOVERS_CHECK);// Black Queen is pinned
+  assert(cb.submitMove("E7", "D8") == KING_IS_IN_CHECK);// Black Queen is pinned
 
   cb.resetBoard();
   assert(cb.submitMove("E2", "E3") == VALID);
@@ -521,7 +521,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("B2", "B3") == VALID);
   assert(cb.submitMove("A6", "C6") == VALID); 
   assert(cb.submitMove("F1", "B5") == VALID);
-  assert(cb.submitMove("C6", "A6") == DISCOVERS_CHECK);// Black Rook is pinned (diagonally)
+  assert(cb.submitMove("C6", "A6") == KING_IS_IN_CHECK);// Black Rook is pinned (diagonally)
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E3") == VALID);
@@ -537,7 +537,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("A2", "A3") == VALID);
   assert(cb.submitMove("E8", "D8") == VALID); // King is moved here
   assert(cb.submitMove("A3", "A4") == VALID);
-  assert(cb.submitMove("D6", "F8") == DISCOVERS_CHECK);// Black Bishop is pinned
+  assert(cb.submitMove("D6", "F8") == KING_IS_IN_CHECK);// Black Bishop is pinned
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E3") == VALID);
@@ -549,7 +549,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("B2", "B3") == VALID);
   assert(cb.submitMove("B8", "C6") == VALID); 
   assert(cb.submitMove("F1", "B5") == VALID); 
-  assert(cb.submitMove("C6", "D4") == DISCOVERS_CHECK); // Black Knight is pinned
+  assert(cb.submitMove("C6", "D4") == KING_IS_IN_CHECK); // Black Knight is pinned
   
   cb.resetBoard();
   assert(cb.submitMove("E2", "E3") == VALID);
@@ -559,7 +559,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("E2", "D3") == VALID);
   assert(cb.submitMove("G8", "F6") == VALID);
   assert(cb.submitMove("E3", "E4") == VALID);
-  assert(cb.submitMove("D5", "E4") == DISCOVERS_CHECK); // Black Pawn is pinned
+  assert(cb.submitMove("D5", "E4") == KING_IS_IN_CHECK); // Black Pawn is pinned
   
   // testing castling
   cb.resetBoard();
@@ -570,7 +570,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("F1", "A6") == VALID);
   assert(cb.submitMove("C8", "A6") == VALID);
   // square on white king's path to kingside castled position is under attack.
-  assert(cb.submitMove("E1", "G1") == DISCOVERS_CHECK);
+  assert(cb.submitMove("E1", "G1") == KING_IS_IN_CHECK);
 
   
   cb.resetBoard();
@@ -581,7 +581,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("F1", "A6") == VALID);
   assert(cb.submitMove("G5", "E3") == VALID);
   // white king attempts to castle kingside  while in check
-  assert(cb.submitMove("E1", "G1") == DISCOVERS_CHECK);
+  assert(cb.submitMove("E1", "G1") == KING_IS_IN_CHECK);
 
   cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == VALID);
@@ -594,7 +594,7 @@ void testMovePutsKingInCheck(){
   assert(cb.submitMove("B8", "C6") == VALID);
   assert(cb.submitMove("A3", "A4") == VALID);
   // queenside castle king position under thread
-  assert(cb.submitMove("E8", "C8") == DISCOVERS_CHECK);
+  assert(cb.submitMove("E8", "C8") == KING_IS_IN_CHECK);
   
   // restore cout
   cr.restoreCout();

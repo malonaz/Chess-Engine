@@ -152,7 +152,7 @@ void testKingCanCastle(){
 
   // king cannot castle while in check!
   assert(white_king->canCastle(cb.getSquare("E1"), cb.getSquare("G1"), KING_SIDE)
-	 == DISCOVERS_CHECK);
+	 == KING_IS_IN_CHECK);
   
   // delete rook on h1 and move knight on g8 and black king can castle
   delete cb.getSquare("H1")->getPiece();
@@ -190,14 +190,14 @@ void testKingCanCastle(){
   // check king cannot castle queenside without putting itself on check but
   // the canCastle does not check the destination square. this is done higher up
   // hence my call to submitMove below and not canCastle!
-  assert(cb.submitMove("E8", "C8") == DISCOVERS_CHECK);
+  assert(cb.submitMove("E8", "C8") == KING_IS_IN_CHECK);
   
   // add a black knight on C6, threatening the path of the king
   delete cb.getSquare("C6")->getPiece();
   cb.getSquare("C6")->setPiece(new Knight(WHITE));
   // check king cannot castle queen side
   assert(black_king->canCastle(cb.getSquare("E8"), cb.getSquare("C8"), QUEEN_SIDE)
-  	 == DISCOVERS_CHECK);
+  	 == KING_IS_IN_CHECK);
   
   // set king to moved and king cannot castle
   black_king->setToMoved();

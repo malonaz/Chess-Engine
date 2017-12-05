@@ -130,7 +130,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
 
   // checks if taking en passant discovers a check on its king
   if (enPassantDiscoversCheck(en_passant_square_p))
-    return DISCOVERS_CHECK;
+    return KING_IS_IN_CHECK;
   
   if (move_piece)
     en_passant_square_p->destroyPiece();

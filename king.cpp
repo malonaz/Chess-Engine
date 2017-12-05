@@ -45,7 +45,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
 
   // king cannot castle while in check
   if (from_square_p->isUnderAttack(color)) 
-    return DISCOVERS_CHECK;
+    return KING_IS_IN_CHECK;
 
   
   Square* rank[8];
@@ -87,7 +87,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
     // move through and the square it stops on.
     if (i <= 2 && path[i]->isUnderAttack(color))
       // these squares cannot be under attack
-      return DISCOVERS_CHECK; 
+      return KING_IS_IN_CHECK; 
   }
   
   if (move_piece){
