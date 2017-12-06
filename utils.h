@@ -31,6 +31,7 @@ enum Error{ NO_ERROR, INVALID_MOVE, INVALID_SQUARE, EMPTY_SQUARE, MOVE_OUT_OF_TU
 	    KING_IS_IN_CHECK, TAKES_PIECE_OF_SAME_COLOR, PATH_OBSTRUCTED,
 	    GAME_IS_OVER};
 
+
 /**
  * Function which returns true if square string describes a square such
  * that its first char is in the range ['A', 'H'], second char is in the

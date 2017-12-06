@@ -65,7 +65,7 @@ void testDestroySquares(){
   // restore cout
   cr.restoreCout();
 
-  std::cout << "   Tests for destroySquares passed!\n";
+  std::cout << "   Tests for freePieces passed!\n";
   std::cout << "   Tests for resetBoard passed!\n";
 }
 

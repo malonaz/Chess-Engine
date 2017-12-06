@@ -43,46 +43,47 @@ private:
 public:
   
   /**
-   * Constructor. Initiates Squares, then calls Chessboard's init method
+   * Constructor. Initiates Squares 64 squares & calls init method
    */			 
   ChessBoard();
 
   
   /**
-   * Destructor. Calls destroySquares method.
+   * Destructor. Calls freePieces method (see square.h for more info)
    */
-  ~ChessBoard(){destroySquares();}
+  ~ChessBoard(){freePieces();}
   
 
   /**
-   * Mutator. Creates 64 chessboard Squares and copies their pointers into
-   * square_ps array. Creates 32 Pieces and sets them on the appropriate
-   * squares as standard chess rules would have it. Copies Kings pointers
-   * to kings_square_ps. Sets the color to play next to white.
+   * Mutator. Creates 32 Pieces and sets them on the appropriate
+   * squares as standard chess rules would have it. Copies pointers to 
+   * squares with Kings to kings_square_ps. Sets the color to play next 
+   * to white.
    */
   void init();
   
 
   /**
-   * Mutator. Frees memory allocated to all 64 ChessBoard Squares.
+   * Mutator. Frees memory allocated to all pieces on this board's squares.
    */
-  void destroySquares();
+  void freePieces();
   
 
   /**
-   * Mutator. calls destroySquares then init.
+   * Mutator. calls freePieces then init.
    */
   void resetBoard();
 
   
   /**
-   * Mutator. Requires both inputs be valid (see utils.h). If there is a piece
-   * at from_square, moves it to_square if it is possible and legal
-   * according to the rules of chess.
+   * Mutator. Requires both inputs be valid squares (see utils.h). If there 
+   * is a piece at from_square, moves it to_square if it is possible and
+   * legal according to the rules of chess. Returns an Error describing
+   * the outcome of this move submission. 
+   * (see utils.h for more info on Errors)
    */
   Error submitMove(const char* from_square, const char* to_square);
-
-
+  
   /**
    * Mutator. Changes the color to play next. Checks if next player is in
    * stalemate, checkmate or check. Writes information to std output stream.
@@ -96,7 +97,7 @@ public:
    */
   Square* getSquare(const char* sqr_coordinates);
 
-
+  
   /**
    * Observer. Requires valid rank and file index in range [0,7], returns
    * pointer to square at the the given indices.
@@ -112,8 +113,8 @@ public:
 
   
   /**
-   * Mutator. Updates the chessboard's pointer to the square where the
-   * king of given color is.
+   * Mutator. Updates the chessboard's square pointer of the king of the
+   * given color to the given square pointer.
    */
   void setKingSquareP(Color king_color, Square* king_square_p);
   
@@ -125,7 +126,7 @@ public:
 
   
   /**
-   * Observer. Returns true if player of given color can move a piece.
+   * Observer. Returns true if the player of given color can move a piece.
    */
   bool playerCanMove(Color color);
 

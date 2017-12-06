@@ -67,19 +67,18 @@ void ChessBoard::init(){
 }
 
 
-void ChessBoard::destroySquares(){
-  // delete pieces and null squares
+void ChessBoard::freePieces(){
+  // delete pieces and null piece pointers
   for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
     for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
       squares[rank_i][file_i].destroyPiece();
-  
-
 }
 
 
 void ChessBoard::resetBoard(){
-  // deallocates memory to squares and pieces, then recreates them
-  destroySquares();
+  // delete pieces, then call init to create new pieces and set them
+  // on the appropriate squares.
+  freePieces();
   init();
 }
 
@@ -90,11 +89,11 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
     return GAME_IS_OVER;
   }
   
-  // check inputs correspond to valid squares
+  // inputs must correspond to valid squares
   if (!isValidSquare(from_square) || !isValidSquare(to_square))
     return INVALID_SQUARE;
   
-  // parse squares
+  // parse Squares from inputs and get the from square's piece pointer
   Square* from_square_p = getSquare(from_square); 
   Square* to_square_p = getSquare(to_square);
   Piece* moving_piece_p = from_square_p->getPiece();
@@ -125,8 +124,8 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
   // output move info to std stream
   std::cout << color_to_play  << "'s " << moving_piece_p->getType();
 
-  Error move = from_square_p->movePiece(to_square_p);
-  if (move == NO_ERROR){
+  Error error = from_square_p->movePiece(to_square_p);
+  if (error == NO_ERROR){
     // move succeeded
     
     // update king square pointer if needed
@@ -143,6 +142,7 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
       std::cout << captured_piece_type;
     }
     
+    // process turn
     prepareNextTurn();
     
   }else{    
@@ -150,8 +150,7 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
   std::cout << " cannot move to " << to_square << std::endl;
   }
   
-  return move;
-
+  return error;
 }
 
 
@@ -162,6 +161,7 @@ void ChessBoard::prepareNextTurn(){
 	if (squares[rank_i][file_i].getPiece()->getColor() != color_to_play)
 	  squares[rank_i][file_i].getPiece()->update();
 
+  // change color to play next
   color_to_play = (color_to_play == WHITE)? BLACK: WHITE;
 
   bool player_can_move = playerCanMove(color_to_play);
@@ -174,6 +174,7 @@ void ChessBoard::prepareNextTurn(){
 	// update game state
 	state = CHECKMATE;
     }
+    
   }else{
     if (!playerCanMove(color_to_play)){
       std::cout <<  "\nstalemate";
@@ -187,10 +188,9 @@ void ChessBoard::prepareNextTurn(){
 
 
 Square* ChessBoard::getSquare(const char* sqr_str) {
-  int rank_i, file_i;
   // parsing functions are located in utils
-  rank_i = parseRank(sqr_str);
-  file_i = parseFile(sqr_str);
+  int rank_i = parseRank(sqr_str);
+  int file_i = parseFile(sqr_str);
   return &squares[rank_i][file_i];
 }
 
@@ -210,7 +210,7 @@ bool ChessBoard::kingIsInCheck(Color color){
 }
 
 
-bool ChessBoard::playerCanMove(Color color) {
+bool ChessBoard::playerCanMove(Color color){
   Square* current_square;
   
   // iterate through all squares of the chessboard
@@ -219,10 +219,10 @@ bool ChessBoard::playerCanMove(Color color) {
       
       current_square = &squares[rank_i][file_i];
 
-      // check square if current_square has a piece of the 
-      // given color that can move
+      // check square if current_square has a piece of the given color
       if (current_square->hasPiece())
 	if (current_square->getPiece()->getColor() == color)
+	  // check piece can move
 	  if (current_square->pieceCanMove())
 	    return true;
 	
@@ -246,11 +246,13 @@ void ChessBoard::printBoard() {
       if (!current_sqr->hasPiece())
 	std::cout << ' ';
       else
+	// see utils for square pointer << operator overload
 	std::cout << current_sqr->getPiece();
     }
     std::cout << VERTICAL_BAR <<  std::endl;
   }
   std::cout << HORIZONTAL_BAR;
+  // print number of Squares and Pieces
   printObjects();
   std::cout << "\n\n\n";
 }
