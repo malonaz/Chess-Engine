@@ -115,16 +115,18 @@ void Square::getDiagonal(Square* to_square_p, Square** diagonal){
     current_file_i--;
   }
 
-  
-  int current_diagonal_i= 0;
+  int current_diagonal_i = 0;
   Square* current_square;
-  // now copy diagonal squares into diagonal.
+  
+  // now copy diagonal squares into diagonal.  
   while (validIndex(current_rank_i) && validIndex(current_file_i)){
     current_square = chessboard_p->getSquare(current_rank_i, current_file_i);
     diagonal[current_diagonal_i] = current_square;
     current_diagonal_i++;
+
     // step current rank index to the next square's rank index
     current_rank_i += rank_step;
+    // step current file index to the next square's file index
     current_file_i++;
   }
 }
@@ -144,19 +146,21 @@ void Square::destroyPiece(){
   delete piece_p;
   // set to null
   piece_p = 0; 
- 
 }
 
 
 Error Square::movePiece(Square* to_square_p){
-  // default call to canMove does not move pieces, simply checks
-  // whether move is possible and legal
+  // Call to canMove does not move pieces, simply checks whether move is
+  // possible and legal
   Error move = piece_p->canMove(this, to_square_p);
   if (move == NO_ERROR){
+    // check that this move does not put the king in check
     if (movePutsKingInCheck(to_square_p))
       return KING_IS_IN_CHECK;
+    
     else
-      piece_p->canMove(this, to_square_p, true);
+      // move does not put king in check so move the piece
+      piece_p->move(this, to_square_p);
   }
   return move;
 }
@@ -171,9 +175,8 @@ bool Square::movePutsKingInCheck(Square* to_square_p){
   // save the piece pointer of the square we are moving to
   Piece* to_square_piece_p = to_square_p->piece_p;
   
-  // if we are moving the king, we must update our chessboard's kings
-  // square pointers.
   if (moving_piece_is_king)
+    // update chessboard's king square pointer
     chessboard_p->setKingSquareP(player_color, to_square_p);
 
   // manually move the piece
@@ -181,15 +184,17 @@ bool Square::movePutsKingInCheck(Square* to_square_p){
   // set this square's pointer to null since piece has moved
   piece_p = 0; 
 
+  // check whether this new position puts the king in check
   bool kingIsInCheck = chessboard_p->kingIsInCheck(player_color);
 
   // return the pieces to their squares
   piece_p = to_square_p->piece_p;
   to_square_p->piece_p = to_square_piece_p;
 
-  // if we moved the king earlier, we must restore the chessboard's kings
+
   // square pointers 
   if (moving_piece_is_king)
+    // restore the chessboard's king square pointer
     chessboard_p->setKingSquareP(player_color, this);
   
   return kingIsInCheck;
@@ -197,17 +202,18 @@ bool Square::movePutsKingInCheck(Square* to_square_p){
 
 
 bool Square::pieceCanMove(){
-  Square* to_square_p;
-  
+  Square* current_square_p;
+
+  // iterate through chessboard's squares
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++){
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
-      to_square_p = chessboard_p->getSquare(rank_i, file_i);
-      
-      // check if this square's piece can move to the current to_square_p
-      // without putting its king in check.
-      if (piece_p->canMove(this, to_square_p) == NO_ERROR &&
-	  !movePutsKingInCheck(to_square_p))
-	return true;
+      current_square_p = chessboard_p->getSquare(rank_i, file_i);
+
+      // check this piece can move to square at current_square_p
+      if (piece_p->canMove(this, current_square_p) == NO_ERROR)
+	// check move does not put king in check
+	if (!movePutsKingInCheck(current_square_p))
+	  return true;
     }
   }
   return false;
@@ -222,14 +228,18 @@ bool Square::isUnderAttack(Color player_color){
   bool is_under_attack = false;
   
   if (!this_square_has_a_piece)
-    // set a dummy piece here to check if under attack
+    // set a dummy piece here to check if under attack. this prevents
+    // moves such as a pawn push to this square from appearing to
+    // threaten this square.
     setPiece(new Piece(player_color, DUMMY));
 
+  // iterate through chessboard's squares
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
 
       from_square_p = chessboard_p->getSquare(rank_i, file_i);
-      
+
+      // check square has a piece of opponent's color
       if (from_square_p->hasPiece())
 	if (from_square_p->getPiece()->getColor() != player_color)
 	  // here we don't check if this piece moving would induce a
@@ -239,7 +249,7 @@ bool Square::isUnderAttack(Color player_color){
     }
   
   if (!this_square_has_a_piece)
-    // delete dummy piece
+    // delete dummy piece we created earlier
     destroyPiece();
   
   return is_under_attack;

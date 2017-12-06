@@ -3,7 +3,7 @@
 #define SQUARE_H
 
 #include "piece.h"
-#include "utils.h"
+
 // forward declarations
 class ChessBoard;
 
@@ -37,7 +37,6 @@ private:
   /**
    * Mutator. Initializes chessboard_p to point to the chessboard this
    * Square belongs to. Initializes file_i & rank_i. sets piece_p to NULL.
-   * Increments num_squares.
    */
   void init(ChessBoard* chessboard_p, int rank_i, int file_i);
 
@@ -65,18 +64,18 @@ private:
   /**
    * Observer. Returns this Square's rank index
    */
-  int getRankIndex(){return rank_i;}
+  int getRankIndex()const{return rank_i;}
 
   
   /**
    * Observer. Returns this Square's file index.
    */
-  int getFileIndex(){return file_i;}
+  int getFileIndex()const{return file_i;}
 
 
   /**
-   * Mutator. Requires path array size >= 8. Requires this != to_square_p.
-   * Copies all squares on the diagonal, horizontal or vertical path  
+   * Mutator. Requires path array size >= 8. Copies pointers to all
+   * the squares on the diagonal, horizontal or vertical path  
    * starting at this Square & ending with the Square at the given 
    * pointer, into the given path array, then returns true. Returns 
    * false if there is no such path.
@@ -110,7 +109,7 @@ private:
   /**
    * Observer. Requires this square to have 0 < rank index < 7. Returns a 
    * pointer to the Square below this Square, from the perspective of the 
-   *  player with the given color.
+   * player with the given color.
    */
   Square* getSquareBelow(const Color color) const;
 
@@ -122,14 +121,15 @@ private:
   
 
   /**
-   * Observer. Returns a pointer to this square's piece.
+   * Observer. Returns this square's piece pointer. Caller should call
+   * hasPiece method before to make sure this square has a piece.
    */
   Piece* getPiece() const {return piece_p;}
 
   
   /**
    * Mutator. Caller must make sure that if called while this square has
-   * a piece, its pointer is saved or its  memory allocated freed prior the
+   * a piece, its pointer is saved or its allocated memory freed prior the
    * to the call to avoid a memory leak. Sets this square's piece pointer
    * equal to the given pointer.
    */ 
@@ -144,13 +144,13 @@ private:
 
   
   /**
-   * Mutator. Requires this Square has a piece, which is of the color that
-   * is play next. If moving the piece from this square to the square at
-   * given pointer is legal as per chess rules, this method calls 
-   * the destination Square's destroy method on it,  moves this 
-   * square's piece to it, updates the moved piece to indicate it has moved, 
-   * then sets this square's piece pointer to NULL. Returns true if piece 
-   * what moved. Returns false otherwise.
+   * Mutator. Requires this Square has a piece. If moving the piece from 
+   * this square to the square at given pointer is legal as per chess 
+   * rules, this method moves this square's piece to it, updates the moved 
+   * piece to indicate it has moved, then sets this square's piece pointer 
+   * to NULL. If to_square has a piece, the piece will be deleted off the heap.  
+   * Returns an Error describing the outcome of this move attempts.
+   * (see utils.h for Error descriptions)
    */
   Error movePiece(Square* to_square_p);
 
@@ -158,8 +158,8 @@ private:
   /**
    * Mutator. Requires this Square to have a piece. Returns true if moving
    * this Square's piece to the Square at the given pointer would put the 
-   * king of the player in check, as per chess rules. This method will undo
-   *  any mutation it induces.
+   * player's king in check, as per chess rules. This method will undo
+   * any mutation it induces.
    */
   bool movePutsKingInCheck(Square* to_square_p);
 

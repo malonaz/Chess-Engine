@@ -120,7 +120,7 @@ public:
   
   
   /**
-   * Observer. returns true if king is in check.
+   * Observer. Returns true if king of given color is in check.
    */
   bool kingIsInCheck(Color color);
 

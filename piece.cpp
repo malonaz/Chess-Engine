@@ -42,6 +42,11 @@ Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
   return NO_ERROR;
 }
 
+
+void Piece::move(Square* from_square_p, Square* to_square_p){
+  canMove(from_square_p, to_square_p, true);
+}
+
 void Piece::movePiece(Square* from_square_p, Square* to_square_p){
     to_square_p->destroyPiece();
     to_square_p->setPiece(this);
