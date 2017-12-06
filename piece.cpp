@@ -1,6 +1,7 @@
 // -*- C++ -*-
 #include "piece.h"
 #include "square.h"
+#include "utils.h"
 
 // initializes static variable
 int Piece::num_pieces = 0;
