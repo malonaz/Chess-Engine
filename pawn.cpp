@@ -110,7 +110,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
 
   // piece must be an opponent's pawn
   if (piece_below_p->getColor() == color ||
-      piece_below_p->getType() == type)
+      piece_below_p->getType() != type)
     return INVALID_MOVE;
 
   // recast piece as a pawn
