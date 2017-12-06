@@ -7,7 +7,7 @@
 chess: ChessMain.o ChessBoard.o square.o piece.o pawn.o knight.o king.o utils.o
 	g++ -Wall -g -o chess $^
 
-ChessMain.o: ChessMain.cpp ChessBoard.h
+ChessMain.o: ChessMain.cpp ChessBoard.h ## done
 
 ChessBoard.o: ChessBoard.cpp ChessBoard.h square.h piece.h
 

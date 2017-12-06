@@ -3,8 +3,6 @@
 #define CHESSBOARD_H
 
 #include "square.h"
-#include "piece.h"
-#include "utils.h"
 
 // GUI
 #define HORIZONTAL_BAR " ---------------------------------"
@@ -32,6 +30,7 @@
 #define KNIGHT2_FILE 6
 #define ROOK2_FILE   7
 
+
 enum State{PLAYING_GAME, CHECKMATE, STALEMATE};
 
 // forward declaration
@@ -47,7 +46,7 @@ class square;
 class ChessBoard{
   
 private:
-  Square square_ps[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
+  Square squares[SQUARES_PER_SIDE][SQUARES_PER_SIDE];
   Square* kings_square_ps[NUMBER_OF_COLORS];
   Color color_to_play;
   State state;
