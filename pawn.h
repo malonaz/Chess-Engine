@@ -10,6 +10,8 @@
 #define PAWN_FORWARD_MOVE 1
 #define PAWN_MAX_FIRST_FORWARD_MOVE 2
 
+#define KING_NOT_FOUND -1
+
 // forward declarations
 class Square;
 

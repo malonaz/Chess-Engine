@@ -18,7 +18,6 @@ class Square;
 #define LOWEST_FILE_CHAR 'A'
 #define LOWEST_RANK_CHAR '1'
 
-
 /**
  * Definitions used to describe dimensions of moves 
  */

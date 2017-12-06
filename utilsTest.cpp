@@ -96,14 +96,12 @@ void testGetPointerIndex(){
       index++;
     }
 
-  for (int index = 0; index < 64; index++)
+  for (int index = MIN_INDEX; index <= MAX_INDEX; index++){
     assert(getPointerIndex(squares, squares[index]) == index);
-  
-
-  for (int index = 0; index < 64; index++)
     // free memory
     delete squares[index];
-  
+  }
+
   std::cout << "   Tests for getPointerIndex passed!" << std::endl;
 }
 

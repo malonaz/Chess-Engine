@@ -133,55 +133,85 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
 }
 
 
+
+
+
+/**
+ * Internal helper function. Requires index_a and index_b > 0 and 
+ * max(index_a, index_b) < size of square_ps. Returns true if 
+ * given the index of a square a, and a square b in square_ps, there
+ * are only two squares between them that have pieces.
+ */
+bool onlyTwoPiecesBetween(int index_a, int index_b, Square** square_ps){
+  int num_pieces = 0;
+  int index_step = (index_a < index_b)? 1: -1;
+  int current_i = index_a + index_step;
+
+  for(; current_i != index_b; current_i += index_step)
+    if (square_ps[current_i]->hasPiece())
+      num_pieces++;
+  
+  return num_pieces == 2;
+}
+
+
 bool Pawn::enPassantDiscoversCheck(Square* en_passant_square_p)const{
+  // please read readme.txt before you look at this function's code!
+  
   Square* rank[8];
   // get rank of en_passant_square
   en_passant_square_p->getRank(rank);
 
-  bool enemy_queen_present = false, king_present = false;
-  int enemy_queen_file_i, king_file_i;
-  int en_passant_file_i = en_passant_square_p->getFileIndex();
+  // assume king is not in rank until proven otherwise
+  int king_file_i = KING_NOT_FOUND;
   
-  for ( int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+  // map rank array to: true if square has a rook or a piece, else false
+  // using this array. initiate to false until proven otherwise
+  bool rook_or_queen[8] = {false};
+
+  // iterate through the squares of the rank of the en_passant_square
+  PieceType piece_type;
+  Color piece_color;
+  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
 
     if (rank[file_i]->hasPiece()){
-      
-      if (rank[file_i]->getPiece()->getType() == QUEEN &&
-	  rank[file_i]->getPiece()->getColor() != color){
-	// found enemy queen
-	enemy_queen_present = true;
-	enemy_queen_file_i = file_i;
-      }
+      // get piece information
+      piece_type = rank[file_i]->getPiece()->getType();
+      piece_color = rank[file_i]->getPiece()->getColor();
 
-      if (rank[file_i]->getPiece()->getType() == KING &&
-	  rank[file_i]->getPiece()->getColor() == color){
+      if (piece_color == color && piece_type == KING)
 	// found king
-	king_present = true;
 	king_file_i = file_i;
-      }
+
+      if (piece_color != color)
+	if (piece_type == QUEEN || piece_type == ROOK)
+	  // found enemy queen or rook
+	  rook_or_queen[file_i] = true;
     }
   }
 
-  // no discovered check. please read readme.txt file for more info
-  if (!enemy_queen_present  || !king_present)
-    return false;
-    
-  // check if en_passant pawn is in between enemy queen and king
-  if (!isInBetween(en_passant_file_i, enemy_queen_file_i, king_file_i))
+  // please read readme.txt file
+  if (king_file_i == KING_NOT_FOUND)
     return false;
 
-  // check that there are only two pieces between enemy queen and king
-  int num_pieces_between_queen_and_king = 0;
-  int file_i_step = (enemy_queen_file_i < king_file_i)? 1 : -1;
-  int current_file_i = enemy_queen_file_i + file_i_step;
-  for (; current_file_i != king_file_i; current_file_i += file_i_step)
-    if (rank[current_file_i]->hasPiece())
-      num_pieces_between_queen_and_king++;
-
-  // if en_passant pawn is in between, then so must this pawn. if there
-  // are any other piece, then removing both will not discover check
-  if (num_pieces_between_queen_and_king != 2)
-    return false;
+  // get file_index of en_passant_square
+  int en_passant_file_i = en_passant_square_p->getFileIndex();
   
-  return true;
+  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
+    if (rook_or_queen[file_i]){
+      // queen/rook present in rank at current file index
+
+      // en passant square must be in between queen/rook and king
+      if (isInBetween(en_passant_file_i, file_i, king_file_i))
+	// if there are only two pieces between the king and the queen/rook
+	// and en passant is one of them, then the other one is the pawn
+	// trying to take en passant. That en passant take will discover
+	// a check that would not be picked up by movePutsKingInCheck!
+	if (onlyTwoPiecesBetween(file_i, king_file_i, rank))
+	  return true;
+    }
+  }
+  
+  return false;
 }
+
