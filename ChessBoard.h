@@ -12,7 +12,6 @@
 // definitions
 #define SQUARES_PER_SIDE 8
 #define NUMBER_OF_COLORS 2
-#define NUMBER_OF_PIECES_PER_COLOR 8
 
 // ranks
 #define WHITE_RANK1 0
@@ -20,26 +19,16 @@
 #define BLACK_RANK1 7
 #define BLACK_RANK2 6
 
-// files
-#define ROOK1_FILE   0
-#define KNIGHT1_FILE 1
-#define BISHOP1_FILE 2
-#define QUEEN_FILE   3
-#define KING_FILE    4
-#define BISHOP2_FILE 5
-#define KNIGHT2_FILE 6
-#define ROOK2_FILE   7
-
+enum File{ROOK1_FILE, KNIGHT1_FILE, BISHOP1_FILE, QUEEN_FILE,
+	  KING_FILE, BISHOP2_FILE, KNIGHT2_FILE,ROOK2_FILE};
 
 enum State{PLAYING_GAME, CHECKMATE, STALEMATE};
 
-// forward declaration
-class square;
 
 /**
  * Chessboard. This class represents a chessboard as:
- *   - 8 rows of 8 pointers to Squares
- *   - an array of 2 pointers to square which hold the two Kings
+ *   - 8 rows of Squares
+ *   - an array of 2 pointers to the squares which hold Kings
  *   - a binary Color variable to keep track of turns 
  *   - a variable indicating the game's state
  */
@@ -54,7 +43,7 @@ private:
 public:
   
   /**
-   * Constructor. Initiates Squares, then calls init method
+   * Constructor. Initiates Squares, then calls Chessboard's init method
    */			 
   ChessBoard();
 
