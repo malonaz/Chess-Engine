@@ -147,9 +147,6 @@ void testCanEnPassant(){
 	 canMove(cb.getSquare("E5"), cb.getSquare("D6"))
 	 == KING_IS_IN_CHECK);
   
-  
-
-  
   // restore cout
   cr.restoreCout();
   std::cout << "   Tests for canEnPassant passed!\n";
