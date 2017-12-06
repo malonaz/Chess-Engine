@@ -122,7 +122,7 @@ void testCanMove(){
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
 	 == NO_ERROR);
   // move queen to D7
-  cb.getSquare("D1")->getPiece()->movePiece(from_square_p, to_square_p);
+  cb.getSquare("D1")->getPiece()->move(from_square_p, to_square_p);
   from_square_p = to_square_p;
   to_square_p = cb.getSquare("E6");
   // can queen move diagonally from D7 to E6 

@@ -65,17 +65,13 @@ public:
   
   /**
    * Mutator. Moves this piece from the square at from_square_p to 
-   * the square at to_square_p. note: this method deletes the piece
-   * at to_square_p if there is one.
-   */
-  void movePiece(Square* from_square_p, Square* to_square_p);
-
-
-  /**
-   *
+   * the square at to_square_p. Calls canMove with move_piece = true as
+   * derived classes may need to move other pieces (en passant, castling).
+   * note: this method deletes the piece at to_square_p if there is one
    */
   void move(Square* from_square_p, Square* to_square_p);
 
+  
   // ?????????????????????????????????????
   virtual void update(){}
 
@@ -90,8 +86,6 @@ public:
    * Observer. Returns the type of this piece
    */
   const PieceType getType()const{return type;}
-
-  
 
   
   /**

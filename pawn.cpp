@@ -95,9 +95,6 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
     
     move = NO_ERROR;
   }
-
-  if (move == NO_ERROR && move_piece)
-    movePiece(from_square_p, to_square_p);
   
   return move;
 }

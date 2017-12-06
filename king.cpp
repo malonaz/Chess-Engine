@@ -27,9 +27,6 @@ Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
     
   if (rank_diff == NO_CHANGE && file_diff == KING_SIDE)
     move = canCastle(from_square_p, to_square_p, KING_SIDE, move_piece);
-    
-  if (move == NO_ERROR && move_piece)
-    movePiece(from_square_p, to_square_p);
   
   return move;
 }

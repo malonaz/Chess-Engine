@@ -11,7 +11,6 @@ Piece::Piece(const Color color, const PieceType type)
 }
 
 
-
 Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   // check we are not moving to a square occupied by a piece of the same color
   if (squareOccupiedByFriendlyPiece(to_square_p))
@@ -28,25 +27,20 @@ Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
       // this piece cannot go through another piece on its path
       return PATH_OBSTRUCTED;
 
-  
-  if (move_piece)
-    // move pieces and delete piece at to_square if there is one
-    movePiece(from_square_p, to_square_p);
-  
   return NO_ERROR;
 }
 
 
 void Piece::move(Square* from_square_p, Square* to_square_p){
+  // calls canMove function with move_piece = true
+  // see canMove documentation in piece.h
   canMove(from_square_p, to_square_p, true);
-}
 
-void Piece::movePiece(Square* from_square_p, Square* to_square_p){
-    to_square_p->destroyPiece();
-    to_square_p->setPiece(this);
-    from_square_p->setPiece(0);
+  // move piece
+  to_square_p->destroyPiece();
+  to_square_p->setPiece(this);
+  from_square_p->setPiece(0);
 }
-
 
 
 bool Piece::squareOccupiedByFriendlyPiece(Square* square_p)const{
@@ -54,8 +48,6 @@ bool Piece::squareOccupiedByFriendlyPiece(Square* square_p)const{
     return true;
   return false;
 }
-
-
 
 
 std::ostream& operator<<(std::ostream& stream, Color color){
