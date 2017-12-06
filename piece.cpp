@@ -11,12 +11,6 @@ Piece::Piece(const Color color, const PieceType type)
 }
 
 
-bool Piece::squareOccupiedByFriendlyPiece(Square* square_p){
-  if (square_p->hasPiece() && square_p->getPiece()->color == color)
-    return true;
-  return false;
-}
-
 
 Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   // check we are not moving to a square occupied by a piece of the same color
@@ -52,6 +46,17 @@ void Piece::movePiece(Square* from_square_p, Square* to_square_p){
     to_square_p->setPiece(this);
     from_square_p->setPiece(0);
 }
+
+
+
+bool Piece::squareOccupiedByFriendlyPiece(Square* square_p)const{
+  if (square_p->hasPiece() && square_p->getPiece()->color == color)
+    return true;
+  return false;
+}
+
+
+
 
 std::ostream& operator<<(std::ostream& stream, Color color){
   if (color == WHITE)

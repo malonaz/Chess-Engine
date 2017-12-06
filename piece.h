@@ -8,18 +8,18 @@
 
 // colors
 enum Color {BLACK, WHITE};
+  
+// piece types
+enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING, DUMMY};
+
 /* overloads Color's << operator */
 std::ostream& operator<<(std::ostream& stream, Color color);
-  
-// pieces
-enum PieceType {PAWN, KNIGHT, ROOK, BISHOP, QUEEN, KING, DUMMY};
+
 /* overloads PieceType's operator */
 std::ostream& operator<<(std::ostream& stream, PieceType type);
 
-
 // forward declaration
 class Square;
-class Piece;
 
 
 /**
@@ -44,22 +44,36 @@ public:
 
   
   /**
-   * Destructor. Virtual so that derived class destructors are called
-   * when manipulating Piece objects. Decrements num_pieces.
+   * Destructor. Virtual but not needed as derived classes do not have
+   * destructors. Decrements num_pieces.
    */
   virtual ~Piece(){num_pieces--;}
 
-  bool squareOccupiedByFriendlyPiece(Square* square_p);
-
-    
+   
   /**
    * Observer. Virtual so that derived classes implementation is called
-   * when manipulating Piece objects. Returns true if the move from the 
-   * Square at from_square_p to the Square at to_square_p is legal for 
-   * this piece as per chess rules.
+   * when manipulating Piece objects. Checks if move from square at 
+   * from_square_p to square at to_square_p is legal and possible. Does not 
+   * check for king checks in base class implementation. Returns an Error
+   * describing the move (see utils.h for more info). The move_piece boolean
+   * variable is not used in the base class implementation but can be used by
+   * derived classes s.t. if true, the method may modify squares other than the 
+   * from_square and to_square for moves such as enPassant or castling!
    */
   virtual Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
+  
+  /**
+   * Mutator. Moves this piece from the square at from_square_p to 
+   * the square at to_square_p. note: this method deletes the piece
+   * at to_square_p if there is one.
+   */
+  void movePiece(Square* from_square_p, Square* to_square_p);
+
+
+  /**
+   *
+   */
   void move(Square* from_square_p, Square* to_square_p);
 
   // ?????????????????????????????????????
@@ -77,13 +91,8 @@ public:
    */
   const PieceType getType()const{return type;}
 
+  
 
-  /**
-   * Mutator. Moves this piece from the square at from_square_p to 
-   * the square at to_square_p. note: this method deletes the piece
-   * at to_square_p if there is one.
-   */
-  void movePiece(Square* from_square_p, Square* to_square_p);
   
   /**
    * Observer. Returns the color of this piece
@@ -96,6 +105,14 @@ public:
    * the chessboard was initialized or reset.
    */
   bool hasMoved()const{return has_moved;}  
+
+  
+  /**
+   * Observer. Returns true if the square at the given pointer has a piece
+   * of the same color as this piece.
+   */  
+  bool squareOccupiedByFriendlyPiece(Square* square_p)const;
+
   
   /**
    * Friend. overloads operator for piece pointers. Used by printBoard()
