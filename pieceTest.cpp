@@ -35,7 +35,7 @@ void testStaticNumPieces(){
     delete piece_ps[i];
     assert (Piece::num_pieces == i);
   }
-  
+
   std::cout << "   Tests for static member num_pieces passed!\n";
 }
 
@@ -111,13 +111,13 @@ void testCanMove(){
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
 	 == PATH_OBSTRUCTED);
   // by enemy piece
-  delete cb.getSquare("D2")->getPiece(); // free white pawn
+  cb.getSquare("D2")->destroyPiece(); // free white pawn
   cb.getSquare("D2")->setPiece(new Piece(BLACK, DUMMY)); // add black dummy 
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
 	 == PATH_OBSTRUCTED);
 
   // test valid move
-  cb.getSquare("D2")->setPiece(0); // remove piece
+  cb.getSquare("D2")->destroyPiece(); // free black dummy piece
   to_square_p = cb.getSquare("D7");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
 	 == NO_ERROR);
@@ -137,8 +137,7 @@ void testCanMove(){
 	 == INVALID_MOVE);
 
   // delete pawn on A7
-  delete cb.getSquare("A7")->getPiece();
-  cb.getSquare("A7")->setPiece(0);
+  cb.getSquare("A7")->destroyPiece();
   // move piece vertically
   to_square_p = cb.getSquare("A4");
   assert(from_square_p->getPiece()->canMove(from_square_p, to_square_p)
