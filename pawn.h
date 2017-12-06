@@ -35,12 +35,15 @@ public:
 
   
   /**
-   * Observer. Checks if this Pawn can move from the Square at from_square_p
+   * Mutator. Checks if this Pawn can move from the Square at from_square_p
    * to the Square at to_square_p legally as per chess rules. Returns an Error
    * describing the move (see utils.h for more info). if move_piece is true, 
    * this method will modify pieces and objects as needed to complete moves
    * such as an enPassant take or a two-square pawn push that makes the pawn
-   * vulnerable to enPassant takes.
+   * vulnerable to enPassant takes. note: if a move is correct en_passant 
+   * move, this method will return an KING_IS_IN_CHECK error if doing so would
+   * place the king in check for scenarios that would not be detected by the
+   * movePutsKingInCheck method.
    */
   Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
   

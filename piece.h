@@ -51,7 +51,7 @@ public:
 
    
   /**
-   * Observer. Virtual so that derived classes implementation is called
+   * Mutator. Virtual so that derived classes implementation is called
    * when manipulating Piece objects. Checks if move from square at 
    * from_square_p to square at to_square_p is legal and possible. Does not 
    * check for king checks in base class implementation. Returns an Error

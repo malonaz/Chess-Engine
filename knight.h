@@ -26,7 +26,7 @@ public:
 
   
   /**
-   * Observer. Checks if this Knight can move from the Square at from_square_p 
+   * Mutator. Checks if this Knight can move from the Square at from_square_p 
    * to the Square at to_square_p legally as per chess rules. Returns an error 
    * describing the move (see utils.h for more info). Here move_piece has no
    * effect.

@@ -2,8 +2,8 @@
 #include "king.h"
 #include "ChessBoard.h"
 #include "square.h"
+
 #include <cmath>
-#include <iostream>
 
 Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   // check we are not moving to a square occupied by a piece of the same color
@@ -13,22 +13,19 @@ Error King::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   int rank_diff = from_square_p->rankDiff(to_square_p);
   int file_diff = from_square_p->fileDiff(to_square_p);
 
-  // assumes king cannot move this way until proven otherwise
-  Error move = INVALID_MOVE;
-
   if (std::abs(rank_diff) <= KING_MAX_1D_MOVE &&
       std::abs(file_diff) <= KING_MAX_1D_MOVE)
     // regular king move
-    move = NO_ERROR;
+    return NO_ERROR;
 
   
-  if (rank_diff == NO_CHANGE && file_diff == QUEEN_SIDE)
-    move = canCastle(from_square_p, to_square_p, QUEEN_SIDE, move_piece); 
+  if (rank_diff == NO_CHANGE && file_diff == -KING_CASTLE_MOVE)
+    return canCastle(from_square_p, to_square_p, QUEEN_SIDE, move_piece); 
     
-  if (rank_diff == NO_CHANGE && file_diff == KING_SIDE)
-    move = canCastle(from_square_p, to_square_p, KING_SIDE, move_piece);
+  if (rank_diff == NO_CHANGE && file_diff == +KING_CASTLE_MOVE)
+    return canCastle(from_square_p, to_square_p, KING_SIDE, move_piece);
   
-  return move;
+  return INVALID_MOVE;
 }
 
 
@@ -43,9 +40,9 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   // king cannot castle while in check
   if (from_square_p->isUnderAttack(color)) 
     return KING_IS_IN_CHECK;
-
   
   Square* rank[8];
+  // get the squares in the same rank as the king
   from_square_p->getRank(rank);
 
   // king castles with rook in 1st file when castling queen side
@@ -53,21 +50,16 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   int rook_square_file_i = (castle == QUEEN_SIDE)? MIN_INDEX: MAX_INDEX;
   Square* rook_square_p = rank[rook_square_file_i];
   
-  // get pointer to rook square after castling
-  int rook_castle_file_i = (castle == QUEEN_SIDE)? KING_FILE -1: KING_FILE + 1;
-  Square* rook_castle_square_p = rank[rook_castle_file_i];
-
-  
   // there must be a piece on this square
   if (!rook_square_p->hasPiece()) 
     return INVALID_MOVE;
-  
+
   Piece* rook_square_piece_p = rook_square_p->getPiece();
 
-  // piece must be a rook of the same color as the king that has not moved.
-  if (rook_square_piece_p->getType() != ROOK || 
-      rook_square_piece_p->getColor() != color ||
-      rook_square_piece_p->hasMoved()) 
+  // piece must be a rook that has not moved of the same color as the
+  // king. If the rook_square_piece has not moved, it must be the rook
+  // of the correct color!
+  if (rook_square_piece_p->hasMoved())
     return INVALID_MOVE;
   
   Square* path[8];
@@ -78,19 +70,24 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   for (int i = 1; path[i] != rook_square_p; i++){
     // there cannot be a piece on that path
     if (path[i]->hasPiece()) 
-      return PATH_OBSTRUCTED; 
-
-    // this pathway is activated only for the squares that the king will
-    // move through and the square it stops on.
-    if (i <= 2 && path[i]->isUnderAttack(color))
-      // these squares cannot be under attack
+      return PATH_OBSTRUCTED;
+    
+    // this pathway is activated only for the square the king travels
+    // through on its way to castle.
+    if (i < KING_CASTLE_MOVE && path[i]->isUnderAttack(color))
+      // that square cannot be under attack
       return KING_IS_IN_CHECK; 
   }
   
   if (move_piece){
-    // move rook to new castle square and set old square's pointer to null
-    // we know square rook is moving to is empty
+    // get pointer to rook's post-castling square
+    int rook_castle_file_i = (castle == QUEEN_SIDE)? KING_FILE -1: KING_FILE + 1;
+    Square* rook_castle_square_p = rank[rook_castle_file_i];
+    
+    // move rook to its post_castling square which we know is empty
     rook_castle_square_p->setPiece(rook_square_piece_p);
+    
+    // set old square's pointer to null
     rook_square_p->setPiece(0);
   }
     
