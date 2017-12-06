@@ -1,5 +1,6 @@
 // -*- C++ -*-
 #include "piece.h"
+#include "ChessBoard.h"
 #include "square.h"
 #include "utils.h"
 
@@ -18,7 +19,7 @@ Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
     return TAKES_PIECE_OF_SAME_COLOR;
   
   // create square array for getPath method
-  Square* path[8];
+  Square* path[SQUARES_PER_SIDE];
   if (!from_square_p->getPath(to_square_p, path, type))
     // there is no such path for this piece
     return INVALID_MOVE;

@@ -41,7 +41,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   if (from_square_p->isUnderAttack(color)) 
     return KING_IS_IN_CHECK;
   
-  Square* rank[8];
+  Square* rank[SQUARES_PER_SIDE];
   // get the squares in the same rank as the king
   from_square_p->getRank(rank);
 
@@ -62,7 +62,7 @@ Error King::canCastle(Square* from_square_p, Square* to_square_p, Castle castle,
   if (rook_square_piece_p->hasMoved())
     return INVALID_MOVE;
   
-  Square* path[8];
+  Square* path[SQUARES_PER_SIDE];
   // get path from the king to the rook it is castling with
   from_square_p->getPath(rook_square_p, path, type);
 

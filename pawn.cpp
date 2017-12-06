@@ -1,5 +1,6 @@
 // -*- C++ -*-
 #include "pawn.h"
+#include "ChessBoard.h"
 #include "square.h"
 #include <cmath>
 #include <iostream>
@@ -158,7 +159,7 @@ bool onlyTwoPiecesBetween(int index_a, int index_b, Square** square_ps){
 bool Pawn::enPassantDiscoversCheck(Square* en_passant_square_p)const{
   // please read readme.txt before you look at this function's code!
   
-  Square* rank[8];
+  Square* rank[SQUARES_PER_SIDE];
   // get rank of en_passant_square
   en_passant_square_p->getRank(rank);
 
@@ -167,7 +168,7 @@ bool Pawn::enPassantDiscoversCheck(Square* en_passant_square_p)const{
   
   // map rank array to: true if square has a rook or a piece, else false
   // using this array. initiate to false until proven otherwise
-  bool rook_or_queen[8] = {false};
+  bool rook_or_queen[SQUARES_PER_SIDE] = {false};
 
   // iterate through the squares of the rank of the en_passant_square
   PieceType piece_type;

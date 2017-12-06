@@ -109,7 +109,7 @@ void testGetPath(){
   // restore cout
   cr.restoreCout();
   
-  Square* path[8];
+  Square* path[SQUARES_PER_SIDE];
   Square* from_square_p;
   Square* to_square_p;
   int rank_diff, file_diff;
@@ -178,8 +178,8 @@ void testGetRankGetFile(){
   // restore cout
   cr.restoreCout();
 
-  Square* rank[8];
-  Square* file[8];
+  Square* rank[SQUARES_PER_SIDE];
+  Square* file[SQUARES_PER_SIDE];
   Square* current_square_p;
   for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
     for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
@@ -207,7 +207,7 @@ void testGetDiagonal(){
   // restore cout
   cr.restoreCout();
 
-  Square* diagonal[8];
+  Square* diagonal[SQUARES_PER_SIDE];
   Square* from_square_p;
   Square* to_square_p;
   // rank increasing diagonals
@@ -304,7 +304,7 @@ void testIsUnderAttack(){
   // add a white bishop on D6, cb destructor will free it
   cb.getSquare("D4")->setPiece(new Piece(WHITE, BISHOP));
   
-  Square* square_ps[8];
+  Square* square_ps[SQUARES_PER_SIDE];
   // get rank increasing diagonal
   cb.getSquare("D4")->getDiagonal(cb.getSquare("E5"), square_ps);
   
