@@ -256,7 +256,7 @@ void testPawnCanMove(){
   to_square_p->setPiece(new Piece(BLACK, DUMMY));
   // check pawn cannot take by moving up one
   assert(moving_piece_p->canMove(from_square_p, to_square_p)
-	 == PATH_OBSTRUCTED);
+	 == INVALID_MOVE);
   // check pawn can take diagonally
   from_square_p = cb.getSquare("A2");
   assert(moving_piece_p->canMove(from_square_p, to_square_p)

@@ -62,6 +62,7 @@ public:
    */
   virtual Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
+
   
   /**
    * Mutator. Moves this piece from the square at from_square_p to 

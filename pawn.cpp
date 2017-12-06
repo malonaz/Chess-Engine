@@ -40,6 +40,7 @@ bool pawnTakes(int rank_diff, int file_diff){
    return true;
 }
 
+
 Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
   // check we are not moving to a square occupied by a piece of the same color
   if (squareOccupiedByFriendlyPiece(to_square_p))
@@ -53,39 +54,34 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
   // If piece is black, a rank_diff of 1 corresponds to a forward move of 1
   rank_diff *= (color == WHITE)? 1: -1;
 
-  // process move vector
+  // match move vector against correct ones. No multiple matches possible
   bool pawn_takes = pawnTakes(rank_diff, abs_file_diff);
   bool simple_pawn_push = simplePawnPush(rank_diff, abs_file_diff);
   bool two_square_pawn_push = twoSquarePawnPush(rank_diff, abs_file_diff);
   
   // gather information about destination square
   bool to_square_has_piece  = to_square_p->hasPiece();
-
-  // assume piece cannot move this way until proven otherwise
-  Error move = INVALID_MOVE;
   
   // there cannot be a piece on the square a simple pawn push moves to    
   if (simple_pawn_push){
-    if (to_square_has_piece)
-      return PATH_OBSTRUCTED;
-    else
-      move = NO_ERROR;
+    if (!to_square_has_piece)
+      return NO_ERROR;
   }
   
   // if pawn takes regularly, there must be a piece on to_square_p
   if (pawn_takes && to_square_has_piece)
-    move = NO_ERROR;
+    return NO_ERROR;
 
   // notice that we pass @param move_piece to canEnPassant.
   if (pawn_takes && !to_square_has_piece)
-    move = canEnPassant(to_square_p, move_piece);
+    return canEnPassant(to_square_p, move_piece);
 
   // there cannot be a piece on the square a two square pawn push moves to
   if (two_square_pawn_push && !to_square_has_piece & !has_moved){
     // get square below the square at to_square_p
-    Square* square_below = to_square_p->getSquareBelow(color); 
+    Square* square_below_p = to_square_p->getSquareBelow(color); 
     
-    if (square_below->hasPiece())
+    if (square_below_p->hasPiece())
       // pawn cannot move through a piece !
       return PATH_OBSTRUCTED;
 
@@ -93,10 +89,10 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
       // this pawn can be taken en passant next turn
       en_passant = true;  
     
-    move = NO_ERROR;
+    return NO_ERROR;
   }
-  
-  return move;
+
+  return INVALID_MOVE;
 }
 
 
@@ -109,20 +105,20 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
     return INVALID_MOVE;
 
   // get piece
-  Piece* en_passant_piece = en_passant_square_p->getPiece();
-  Pawn* en_passant_pawn;
+  Piece* piece_below_p = en_passant_square_p->getPiece();
+  Pawn* en_passant_pawn_p;
 
   // piece must be an opponent's pawn
-  if (en_passant_piece->getColor() == color ||
-      en_passant_piece->getType() == type)
+  if (piece_below_p->getColor() == color ||
+      piece_below_p->getType() == type)
     return INVALID_MOVE;
 
   // recast piece as a pawn
-  en_passant_pawn = static_cast<Pawn*>(en_passant_piece);
+  en_passant_pawn_p = static_cast<Pawn*>(piece_below_p);
 
   // pawn must have moved past this pawn's ability to take it on the
   // previous turn. If so, it's en passant attribute is true
-  if (!en_passant_pawn->en_passant)
+  if (!en_passant_pawn_p->en_passant)
     return INVALID_MOVE;
 
   // checks if taking en passant discovers a check on its king
@@ -130,6 +126,7 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
     return KING_IS_IN_CHECK;
   
   if (move_piece)
+    // delete en passant pawn
     en_passant_square_p->destroyPiece();
   
   return NO_ERROR;

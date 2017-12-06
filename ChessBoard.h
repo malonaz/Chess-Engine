@@ -85,7 +85,8 @@ public:
   Error submitMove(const char* from_square, const char* to_square);
   
   /**
-   * Mutator. Changes the color to play next. Checks if next player is in
+   * Mutator. Changes the color to play next. Updates pawns of color to play next
+   * so that they can no longer be taken en passant. Checks if next player is in
    * stalemate, checkmate or check. Writes information to std output stream.
    */
   void prepareNextTurn();
