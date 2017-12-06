@@ -26,7 +26,7 @@ utils.o: utils.cpp utils.h
 
 ########### TESTER #############
 
-tester: ChessBoard.o square.o piece.o pawn.o knight.o king.o utils.o TestMain.o ChessBoardTest.o squareTest.o pieceTest.o otherPiecesTest.o utilsTest.o
+tester: ChessBoard.o square.o piece.o pawn.o knight.o king.o utils.o TestMain.o ChessBoardTest.o squareTest.o pieceTest.o pawnTest.o kingTest.o knightTest.o utilsTest.o
 	g++ -Wall -g -o tester $^
 
 TestMain.o: TestMain.cpp utilsTest.h squareTest.h
@@ -37,7 +37,11 @@ squareTest.o: squareTest.cpp squareTest.h ChessBoard.h
 
 pieceTest.o: pieceTest.cpp pieceTest.h ChessBoard.h
 
-otherPiecesTest.o: otherPiecesTest.cpp otherPiecesTest.h ChessBoard.h
+pawnTest.o: pawnTest.cpp pawnTest.h ChessBoard.h
+
+kingTest.o: kingTest.cpp kingTest.h ChessBoard.h
+
+knightTest.o: knightTest.cpp knightTest.h ChessBoard.h
 
 utilsTest.o: utilsTest.cpp utilsTest.h utils.h
 

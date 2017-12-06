@@ -1,7 +1,9 @@
 #include "ChessBoardTest.h"
 #include "squareTest.h"
 #include "pieceTest.h"
-#include "otherPiecesTest.h"
+#include "pawnTest.h"
+#include "kingTest.h"
+#include "knightTest.h"
 #include "utilsTest.h"
 #include <iostream>
 
@@ -15,10 +17,12 @@ int main(){
   testChessBoard();
   testSquare();
   testPiece();
+  testPawn();
   testKnight();
   testKing();
   testPawn();
   testUtils();
-  
+
+  std::cout << "Tests for Chess passed!\n\n";
   return 0;
 }
