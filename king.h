@@ -40,8 +40,6 @@ public:
   Error canCastle(Square* from_square_p, Square* to_square_p, Castle castle, bool move_piece = false);
 
 
-  void update(){}
-
 
   
   

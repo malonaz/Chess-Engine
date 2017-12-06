@@ -155,14 +155,22 @@ Error ChessBoard::submitMove(const char* from_square, const char* to_square){
 
 
 void ChessBoard::prepareNextTurn(){
-  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
-    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
-      if (squares[rank_i][file_i].hasPiece())
-	if (squares[rank_i][file_i].getPiece()->getColor() != color_to_play)
-	  squares[rank_i][file_i].getPiece()->update();
-
   // change color to play next
   color_to_play = (color_to_play == WHITE)? BLACK: WHITE;
+
+  Pawn* pawn_p;
+  // iterate through chessboard squares
+  for (int rank_i = MIN_INDEX; rank_i <= MAX_INDEX; rank_i++)
+    for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++)
+      // find a square that has a piece
+      if (squares[rank_i][file_i].hasPiece())
+	// piece must be a pawn of color to play next
+	if (squares[rank_i][file_i].getPiece()->getColor() == color_to_play){
+	  // downcast to pawn
+	  pawn_p = static_cast<Pawn*>(squares[rank_i][file_i].getPiece());
+	  // set en passant to false
+	  pawn_p->setEnPassantToFalse();
+	}
 
   bool player_can_move = playerCanMove(color_to_play);
   

@@ -32,7 +32,7 @@ public:
   Pawn(const Color  color): Piece(color, PAWN), en_passant(false){}
 
 
-  void update(){en_passant = false;}
+  void setEnPassantToFalse(){en_passant = false;}
 
   
    /**
