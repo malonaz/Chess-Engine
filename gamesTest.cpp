@@ -78,11 +78,7 @@ void testGame1(){
   assert(cb.getState() == CHECKMATE);
   // check submission of additional move returns GAME OVER
   assert(cb.submitMove("E8", "A8") == GAME_IS_OVER);
-  
-  
-  cr.restoreCout();
-  cb.printBoard();
-    
+      
   // restore cout
   cr.restoreCout();
 

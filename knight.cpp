@@ -1,7 +1,6 @@
 // -*- C++ -*-
 #include "knight.h"
 #include "square.h"
-#include "utils.h"
 
 
 Error Knight::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){

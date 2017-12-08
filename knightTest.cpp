@@ -1,8 +1,6 @@
 #include "knightTest.h"
 #include "ChessBoard.h"
 #include "square.h"
-#include "piece.h"
-#include "knight.h"
 #include "utils.h"
 #include "coutRedirect.h"
 
@@ -15,7 +13,6 @@ void testKnight(){
   std::cout << " Starting tests for Knight\n";
 
   testKnightCanMove();
-
   
   std::cout << " finished tests for Knight\n\n";
   

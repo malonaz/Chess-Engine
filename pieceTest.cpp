@@ -2,9 +2,6 @@
 #include "ChessBoard.h"
 #include "square.h"
 #include "piece.h"
-#include "pawn.h"
-#include "king.h"
-#include "knight.h"
 #include "utils.h"
 #include "coutRedirect.h"
 
