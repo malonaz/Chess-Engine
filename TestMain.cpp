@@ -1,4 +1,5 @@
 #include "ChessBoardTest.h"
+#include "gamesTest.h"
 #include "squareTest.h"
 #include "pieceTest.h"
 #include "pawnTest.h"
@@ -15,6 +16,7 @@ int main(){
   std::cout << "Starting tests for Chess\n\n";
   
   testChessBoard();
+  testGames();
   testSquare();
   testPiece();
   testPawn();
