@@ -78,10 +78,6 @@ int getMoveMagnitudeSquared(int rank_diff, int file_diff);
 int getPointerIndex(Square** pointers, Square* pointer);
 
 
-/**
- * Returns true if num is in range (a, b).
- */
-bool isInBetween(int num, int a, int b);
 
 
 #endif

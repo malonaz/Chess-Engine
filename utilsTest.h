@@ -24,10 +24,4 @@ void testGetMoveDimension();
 void testGetPointerIndex();
 
 
-/**
- * Tests isInBetween function.
- */
-void testIsInBetween();
-
-
 #endif

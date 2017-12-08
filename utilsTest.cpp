@@ -15,7 +15,6 @@ void testUtils(){
   testIsValidSquare();
   testGetMoveDimension();
   testGetPointerIndex();
-  testIsInBetween();
   
   std::cout << " finished tests for utils\n\n";
 }
@@ -105,36 +104,4 @@ void testGetPointerIndex(){
   std::cout << "   Tests for getPointerIndex passed!" << std::endl;
 }
 
-
-
-void testIsInBetween(){
-  int left = -10;
-  int right = 40;
-  for (int i = -10 + 1; i < 40; i++){
-    assert(isInBetween(i, left, right));
-    assert(isInBetween(i, right, left));
-  }
-
-  // test edges
-  assert(!isInBetween(left, left, right));
-  assert(!isInBetween(left, right, left));
-  assert(!isInBetween(right, left, right));
-  assert(!isInBetween(left, right, left));
-
-  // test no number in between
-  left = 0;
-  right = 1;
-  for (int i = -10 + 1; i < 40; i++){
-    assert(!isInBetween(i, left, right));
-    assert(!isInBetween(i, right, left));
-  }
-
-  // test tricky boundary
-  left = -1;
-  right = 1;
-  assert(isInBetween(0, left, right));
-
-  std::cout << "   Tests for IsInBetween passed!" << std::endl;
-
-}
 

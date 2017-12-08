@@ -97,7 +97,7 @@ void testCanEnPassant(){
   
   ChessBoard cb;
 
-  // let's get to a valid pawn en passant take
+  // let's get to a valid pawn en passant take 
   assert(cb.submitMove("E2", "E4") == NO_ERROR);
   assert(cb.submitMove("A7", "A6") == NO_ERROR);
   assert(cb.submitMove("E4", "E5") == NO_ERROR);
@@ -105,8 +105,8 @@ void testCanEnPassant(){
   // attempt to take en passant
   assert(cb.submitMove("E5", "D6") == NO_ERROR);
 
-  // let's get to an en passant take that discovers a check
-  // that would be picked up by putsKingInCheck
+  // let's get to an en passant take that discovers a check that would 
+  // get picked up by both movePutsKingInCheck and canEnPassant method
   cb.resetBoard();
   assert(cb.submitMove("E2", "E4") == NO_ERROR);
   assert(cb.submitMove("C7", "C5") == NO_ERROR);
@@ -116,14 +116,12 @@ void testCanEnPassant(){
   assert(cb.submitMove("B6", "E6") == NO_ERROR);  
   assert(cb.submitMove("H2", "H3") == NO_ERROR);
   assert(cb.submitMove("D7", "D5") == NO_ERROR);
-  // check that submitMove returns putsKingInCheck
+  // check that submitMove detects king is in check
   assert(cb.submitMove("E5", "D6") == KING_IS_IN_CHECK); 
-  // but canMove should return true as we do monitor for that kind
-  // of check in the pawn's canMove method. this is implemented at a
-  // a lower level
+  // check that canMove detects king in check
   assert(cb.getSquare("E5")->getPiece()->
 	 canMove(cb.getSquare("E5"), cb.getSquare("D6"))
-	 == NO_ERROR);
+	 == KING_IS_IN_CHECK);
 
   // let's get to a position that would not be picked up by putsKingInCheck
   // but will get caught by pawn's canMove method. see readme.txt for more info
@@ -146,6 +144,7 @@ void testCanEnPassant(){
   assert(cb.getSquare("E5")->getPiece()->
 	 canMove(cb.getSquare("E5"), cb.getSquare("D6"))
 	 == KING_IS_IN_CHECK);
+
   
   // restore cout
   cr.restoreCout();

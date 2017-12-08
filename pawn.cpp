@@ -75,7 +75,7 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
 
   // notice that we pass @param move_piece to canEnPassant.
   if (pawn_takes && !to_square_has_piece)
-    return canEnPassant(to_square_p, move_piece);
+    return canEnPassant(from_square_p, to_square_p, move_piece);
 
   // there cannot be a piece on the square a two square pawn push moves to
   if (two_square_pawn_push && !to_square_has_piece & !has_moved){
@@ -97,7 +97,7 @@ Error Pawn::canMove(Square* from_square_p, Square* to_square_p, bool move_piece)
 }
 
 
-Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
+Error Pawn::canEnPassant(Square* from_square_p, Square* to_square_p, bool move_piece){
   // get square below the square at to_square_p
   Square* en_passant_square_p = to_square_p->getSquareBelow(color); 
 
@@ -123,7 +123,14 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
     return INVALID_MOVE;
 
   // checks if taking en passant discovers a check on its king
-  if (enPassantDiscoversCheck(en_passant_square_p))
+  // null en_passant_square's piece pointer
+  en_passant_square_p->setPiece(0);
+  // check if move puts king in check
+  bool king_is_in_check = from_square_p->movePutsKingInCheck(to_square_p);
+  // return the en passant piece to its square
+  en_passant_square_p->setPiece(piece_below_p);
+  
+  if (king_is_in_check)
     return KING_IS_IN_CHECK;
   
   if (move_piece)
@@ -131,88 +138,5 @@ Error Pawn::canEnPassant(Square* to_square_p, bool move_piece){
     en_passant_square_p->destroyPiece();
   
   return NO_ERROR;
-}
-
-
-
-
-
-/**
- * Internal helper function. Requires index_a and index_b > 0 and 
- * max(index_a, index_b) < size of square_ps. Returns true if 
- * given the index of a square a, and a square b in square_ps, there
- * are only two squares between them that have pieces.
- */
-bool onlyTwoPiecesBetween(int index_a, int index_b, Square** square_ps){
-  int num_pieces = 0;
-  int index_step = (index_a < index_b)? 1: -1;
-  int current_i = index_a + index_step;
-
-  for(; current_i != index_b; current_i += index_step)
-    if (square_ps[current_i]->hasPiece())
-      num_pieces++;
-  
-  return num_pieces == 2;
-}
-
-
-bool Pawn::enPassantDiscoversCheck(Square* en_passant_square_p)const{
-  // please read readme.txt before you look at this function's code!
-  
-  Square* rank[SQUARES_PER_SIDE];
-  // get rank of en_passant_square
-  en_passant_square_p->getRank(rank);
-
-  // assume king is not in rank until proven otherwise
-  int king_file_i = KING_NOT_FOUND;
-  
-  // map rank array to: true if square has a rook or a piece, else false
-  // using this array. initiate to false until proven otherwise
-  bool rook_or_queen[SQUARES_PER_SIDE] = {false};
-
-  // iterate through the squares of the rank of the en_passant_square
-  PieceType piece_type;
-  Color piece_color;
-  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
-
-    if (rank[file_i]->hasPiece()){
-      // get piece information
-      piece_type = rank[file_i]->getPiece()->getType();
-      piece_color = rank[file_i]->getPiece()->getColor();
-
-      if (piece_color == color && piece_type == KING)
-	// found king
-	king_file_i = file_i;
-
-      if (piece_color != color)
-	if (piece_type == QUEEN || piece_type == ROOK)
-	  // found enemy queen or rook
-	  rook_or_queen[file_i] = true;
-    }
-  }
-
-  // please read readme.txt file
-  if (king_file_i == KING_NOT_FOUND)
-    return false;
-
-  // get file_index of en_passant_square
-  int en_passant_file_i = en_passant_square_p->getFileIndex();
-  
-  for (int file_i = MIN_INDEX; file_i <= MAX_INDEX; file_i++){
-    if (rook_or_queen[file_i]){
-      // queen/rook present in rank at current file index
-
-      // en passant square must be in between queen/rook and king
-      if (isInBetween(en_passant_file_i, file_i, king_file_i))
-	// if there are only two pieces between the king and the queen/rook
-	// and en passant is one of them, then the other one is the pawn
-	// trying to take en passant. That en passant take will discover
-	// a check that would not be picked up by movePutsKingInCheck!
-	if (onlyTwoPiecesBetween(file_i, king_file_i, rank))
-	  return true;
-    }
-  }
-  
-  return false;
 }
 

@@ -56,7 +56,7 @@ public:
    * error if the en passant take puts the king in check. if move_piece is
    * true and the move is valid, this method will delete the en_passant piece.
    */
-  Error canEnPassant(Square* to_square_p, bool move_piece = false);
+  Error canEnPassant(Square* from_square_p, Square* to_square_p, bool move_piece);
 
 
   /**
