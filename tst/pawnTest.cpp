@@ -1,9 +1,9 @@
 #include "pawnTest.h"
-#include "ChessBoard.h"
-#include "square.h"
-#include "piece.h"
-#include "pawn.h"
-#include "utils.h"
+#include "../src/ChessBoard.h"
+#include "../src/square.h"
+#include "../src/piece.h"
+#include "../src/pawn.h"
+#include "../src/utils.h"
 #include "coutRedirect.h"
 
 #include <iostream>

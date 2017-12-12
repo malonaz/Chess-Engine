@@ -1,6 +1,6 @@
 #include "gamesTest.h"
-#include "ChessBoard.h"
-#include "utils.h"
+#include "../src/ChessBoard.h"
+#include "../src/utils.h"
 #include "coutRedirect.h"
 
 #include <iostream>
