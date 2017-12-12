@@ -6,7 +6,6 @@ using namespace std;
 
 
 int main() {
-  cout << endl;
   cout << "===========================" << endl;
   cout << "Testing the Chess Engine" << endl;
   cout << "===========================" << endl;
