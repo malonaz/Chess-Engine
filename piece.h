@@ -44,8 +44,7 @@ public:
 
   
   /**
-   * Destructor. Virtual but not needed as derived classes do not have
-   * destructors. Decrements num_pieces.
+   * Destructor. Decrements num_pieces.
    */
   virtual ~Piece(){num_pieces--;}
 
