@@ -23,9 +23,10 @@ class Square;
 
 
 /**
- * Piece. This abstract class represents a chess piece. A
- * chess piece is represented by a color, a type and a boolean variable
- * indicating whether this piece has moved since its creation.
+ * Piece. This class represent pieces. a chess piece is represented by 
+ * a color, a type and a boolean variable indicating whether this piece 
+ * has moved since its creation.
+ * This class will be instantiated to represent the queen, bishops and rooks
  */
 class Piece{
   
