@@ -60,9 +60,16 @@ public:
    * derived classes s.t. if true, the method may modify squares other than the 
    * from_square and to_square for moves such as enPassant or castling!
    */
-  virtual Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
+  virtual Error moveIsLegal(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
+  /**
+   * Observer. Method which checks that move from the square at to_square_p to 
+   * square at to_square_p does not move a piece on top of a piece of the same color.
+   * It then calls moveIsLegal virtual method.
+   */
+  Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
+  
   
   /**
    * Mutator. Moves this piece from the square at from_square_p to 

@@ -31,7 +31,7 @@ public:
    * describing the move (see utils.h for more info). Here move_piece has no
    * effect.
    */
-  Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
+  Error moveIsLegal(Square* from_square_p, Square* to_square_p, bool move_piece = false);
 
 };
 

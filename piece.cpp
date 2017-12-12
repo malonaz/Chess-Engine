@@ -13,11 +13,7 @@ Piece::Piece(const Color color, const PieceType type)
 }
 
 
-Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
-  // check we are not moving to a square occupied by a piece of the same color
-  if (squareOccupiedByFriendlyPiece(to_square_p))
-    return TAKES_PIECE_OF_SAME_COLOR;
-  
+Error Piece::moveIsLegal(Square* from_square_p, Square* to_square_p, bool move_piece){
   // create square array for getPath method
   Square* path[SQUARES_PER_SIDE];
   if (!from_square_p->getPath(to_square_p, path, type))
@@ -30,6 +26,16 @@ Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece
       return PATH_OBSTRUCTED;
 
   return NO_ERROR;
+}
+
+Error Piece::canMove(Square* from_square_p, Square* to_square_p, bool move_piece){
+  // check we are not movint to a square occupied by a piece of the same color
+  if (squareOccupiedByFriendlyPiece(to_square_p))
+    return TAKES_PIECE_OF_SAME_COLOR;
+  
+  // check if move is legal
+  return moveIsLegal(from_square_p, to_square_p, move_piece);
+
 }
 
 

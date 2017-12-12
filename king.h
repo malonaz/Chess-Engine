@@ -35,7 +35,7 @@ public:
    * return a KING_IS_IN_CHECK error if the squares the king must travel 
    * through to get to its castled position are under threat.
    */
-  Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
+  Error moveIsLegal(Square* from_square_p, Square* to_square_p, bool move_piece = false);
   
 
   /** 

@@ -47,7 +47,7 @@ public:
    * place the king in check for scenarios that would not be detected by the
    * movePutsKingInCheck method.
    */
-  Error canMove(Square* from_square_p, Square* to_square_p, bool move_piece = false);
+  Error moveIsLegal(Square* from_square_p, Square* to_square_p, bool move_piece = false);
   
 
   /**
