@@ -10,8 +10,7 @@
 
 using namespace std;
 
-// Modified from https://stackoverflow.com/a/44586088/126039
-
+// Inspired from https://stackoverflow.com/a/44586088/126039
 class CoutRedirect {
 private:
   stringstream buffer;
@@ -24,10 +23,6 @@ public:
   }
 
   ~CoutRedirect(){}
-
-  string getString() {
-    return buffer.str(); // get string
-  }
 
   
   void restoreCout() {
