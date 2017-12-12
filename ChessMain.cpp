@@ -1,4 +1,4 @@
-#include "ChessBoard.h"
+#include "src/ChessBoard.h"
 #include <iostream>
 
 using namespace std;
@@ -6,7 +6,7 @@ using namespace std;
 
 
 int main() {
-  return 0;
+
   cout << "===========================" << endl;
   cout << "Testing the Chess Engine" << endl;
   cout << "===========================" << endl;
