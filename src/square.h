@@ -74,11 +74,12 @@ private:
 
 
   /**
-   * Mutator. Requires path array size >= 8. Copies pointers to all
-   * the squares on the diagonal, horizontal or vertical path  
-   * starting at this Square & ending with the Square at the given 
-   * pointer, into the given path array, then returns true. Returns 
-   * false if there is no such path.
+   * Mutator. Requires path array size >= 8. Makes sure that the dimensions
+   * of the path requested correspond to the type of the piece moving. 
+   * Copies pointers to all the squares on the diagonal, horizontal 
+   * or vertical path the squares starting at this Square & ending with 
+   * the Square at the given pointer, into the given path array, then 
+   * returns true. Returns false if there is no such path.
    */
   bool getPath(Square* to_square_p, Square** path, PieceType type);
 
