@@ -3,7 +3,7 @@ CXXFLAGS = -g -Wall -MMD
 
 ################################### MAIN ###################################mv 
 EXE = bin/chess
-SRC_DIR = ./
+SRC_DIR = src/
 OBJS = $(addprefix $(SRC_DIR), ChessMain.o ChessBoard.o square.o piece.o pawn.o knight.o king.o utils.o)
 
 $(EXE): $(OBJS)
@@ -20,7 +20,7 @@ $(OBJS): %.o : %.cpp
 
 ################################### TESTER ################################
 TEST = bin/test
-TEST_DIR = ./
+TEST_DIR = test/
 TEST_OBJS = $(addprefix $(TEST_DIR), TestMain.o gamesTest.o ChessBoardTest.o squareTest.o pieceTest.o \
 pawnTest.o kingTest.o knightTest.o utilsTest.o)
 
