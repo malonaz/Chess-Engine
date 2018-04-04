@@ -1,12 +1,12 @@
 #include "squareTest.h"
-#include "ChessBoard.h"
-#include "square.h"
-#include "piece.h"
-#include "pawn.h"
-#include "king.h"
-#include "knight.h"
-#include "utils.h"
-#include "coutRedirect.h"
+#include "../src/ChessBoard.h"
+#include "../src/square.h"
+#include "../src/piece.h"
+#include "../src/pawn.h"
+#include "../src/king.h"
+#include "../src/knight.h"
+#include "../src/utils.h"
+#include "../src/coutRedirect.h"
 
 #include <iostream>
 #include <assert.h>

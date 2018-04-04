@@ -1,7 +1,7 @@
 #include "gamesTest.h"
-#include "ChessBoard.h"
-#include "utils.h"
-#include "coutRedirect.h"
+#include "../src/ChessBoard.h"
+#include "../src/utils.h"
+#include "../src/coutRedirect.h"
 
 #include <iostream>
 #include <assert.h>
